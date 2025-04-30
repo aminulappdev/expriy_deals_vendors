@@ -1,11 +1,14 @@
+import 'package:expriy_deals_vendors/app/modules/profile/views/change_password_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/edit_profile_screen.dart';
+import 'package:expriy_deals_vendors/app/modules/profile/views/info_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/widgets/profile_drawer_feature.dart';
+import 'package:expriy_deals_vendors/app/utils/app_text.dart';
 import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
+import 'package:expriy_deals_vendors/app/widgets/custom_alert_dialoge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -87,6 +90,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
               heightBox8,
+              ProfileDrawerFeature(
+                feature: 'Change password',
+                icon: Icons.lock,
+                ontap: () {
+                  Get.to(ChangePasswordScreen());
+                },
+              ),
+              heightBox8,
+              ProfileDrawerFeature(
+                feature: 'Delete account',
+                icon: Icons.delete,
+                ontap: onTapChangeAccount,
+              ),
+              heightBox8,
               Text(
                 'Support',
                 style: GoogleFonts.poppins(
@@ -100,50 +117,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     feature: 'Policies',
                     icon: Icons.security,
                     ontap: () {
-                      // Navigator.pushNamed(context, InfoScreen.routeName,
-                      //     arguments: {
-                      //       'appBarTitle': 'Privacy and Policies',
-                      //       'data':
-                      //           '${controller.contentlist?[0].privacyPolicy}'
-                      //     });
+                      Get.to(InfoScreen(appBarTitle: 'Privacy & Policies', data: DemoText.policies));
                     },
                   ),
                   ProfileDrawerFeature(
                     feature: 'About Us',
                     icon: Icons.groups_2_sharp,
                     ontap: () {
-                      // Navigator.pushNamed(context, InfoScreen.routeName,
-                      //     arguments: {
-                      //       'appBarTitle': 'About Us',
-                      //       'data': '${controller.contentlist?[0].aboutUs}'
-                      //     });
+                      Get.to(InfoScreen(appBarTitle: 'About Us', data: DemoText.aboutUs));
                     },
                   ),
                   heightBox8,
                   heightBox14,
                   Align(
                     alignment: Alignment.center,
-                    child: Container(
-                      height: 40,
-                      width: 140,
-                      decoration: BoxDecoration(
-                        color: Color(0xffFF0000).withOpacity(0.20),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.logout,
-                            color: Colors.red,
-                          ),
-                          widthBox4,
-                          Text(
-                            'Logout',
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.w600),
-                          )
-                        ],
+                    child: InkWell(
+                      onTap: onTapLogoutBTN,
+                      child: Container(
+                        height: 40,
+                        width: 140,
+                        decoration: BoxDecoration(
+                          // ignore: deprecated_member_use
+                          color: Color(0xffFF0000).withOpacity(0.20),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.logout,
+                              color: Colors.red,
+                            ),
+                            widthBox4,
+                            Text(
+                              'Logout',
+                              style: TextStyle(
+                                  color: Colors.red, fontWeight: FontWeight.w600),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   )
@@ -152,6 +164,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void onTapLogoutBTN() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => CustomAlertDialog(
+        title: 'Do you want to log out this profile?',
+        noOntap: () {
+          Navigator.pop(context);
+        },
+        yesOntap: () {},
+      ),
+    );
+  }
+
+   void onTapChangeAccount() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => CustomAlertDialog(
+        title: 'Do you want to delete this account?',
+        noOntap: () {
+          Navigator.pop(context);
+        },
+        yesOntap: () {},
       ),
     );
   }

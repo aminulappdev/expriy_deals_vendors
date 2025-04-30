@@ -1,4 +1,7 @@
 import 'package:expriy_deals_vendors/app/modules/home/views/home_screen.dart';
+import 'package:expriy_deals_vendors/app/modules/order/views/order_details_screen.dart';
+import 'package:expriy_deals_vendors/app/modules/order/views/order_screen.dart';
+import 'package:expriy_deals_vendors/app/modules/product/views/product_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/profile_screen.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +31,8 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
 
   List<Widget> pageList = [
     HomeScreen(),
-    HomeScreen(),
-    HomeScreen(),
+    ProductScreen(shouldBackButton: false,),
+    OrderScreen(),
     HomeScreen(),
     ProfileScreen(),
   ];

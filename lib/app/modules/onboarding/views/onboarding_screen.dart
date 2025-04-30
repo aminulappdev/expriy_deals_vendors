@@ -1,3 +1,4 @@
+import 'package:expriy_deals_vendors/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/views/sign_up_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/onboarding/views/page_view.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
@@ -103,7 +104,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         curve: Curves.easeInOut,
                       );
                     } else {
-                     Get.to(SignUpScreen());
+                     Get.to(SignInScreen());
                     }
                   },
                   child: Row(

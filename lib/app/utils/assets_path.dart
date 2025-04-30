@@ -8,6 +8,7 @@ class AssetsPath {
   static const String fbLogo = '$imagePath/fbLogo.png';
   static const String appleLogo = '$imagePath/appleLogo.png';
   static const String emailLogo = '$imagePath/emailLogo.png';
+  static const String headphone = '$imagePath/headphone.jpg';
   
 
 

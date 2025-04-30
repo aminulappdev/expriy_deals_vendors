@@ -1,5 +1,4 @@
 import 'package:expriy_deals_vendors/app/modules/authentication/views/verify_email_forgot_screen.dart';
-import 'package:expriy_deals_vendors/app/modules/authentication/views/verify_email_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/auth_header_text.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
