@@ -95,7 +95,7 @@
 //                               Text(
 //                                 '${controller.notificationList[index].description}',
 //                                 style: TextStyle(fontSize: 12),
-//                               )
+//                               ) 
 //                             ],
 //                           ),
 //                         ),

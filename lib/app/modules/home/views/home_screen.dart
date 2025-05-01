@@ -1,5 +1,12 @@
+import 'package:expriy_deals_vendors/app/modules/home/widgets/percentage_button.dart';
+import 'package:expriy_deals_vendors/app/modules/home/widgets/revenue_card.dart';
+import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
+import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
+import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphic/graphic.dart' as graphic;
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -48,6 +55,45 @@ class _HomeScreenState extends State<HomeScreen> {
     {'month': 'Dec', 'value': 3100, 'type': 'C'},
   ];
 
+  final List<String> months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+
+  final List<String> years = [
+    '2000',
+    '2001',
+    '2002',
+    '2003',
+    '2004',
+    '2005',
+    '2006',
+    '2007',
+    '2008',
+    '2009',
+    '2010',
+    '2020',
+    '2025'
+  ];
+
+  String selectedMonth = 'Jan';
+  String selectedYar = '2025';
+
+  final Map<String, String> monthlyRevenue = {
+    'Jan': '\$18,562',
+    'Feb': '\$17,200',
+    'Mar': '\$19,000',
+    'Apr': '\$15,300',
+    'May': '\$20,450',
+    'Jun': '\$21,300',
+    'Jul': '\$22,000',
+    'Aug': '\$20,100',
+    'Sep': '\$19,700',
+    'Oct': '\$18,900',
+    'Nov': '\$20,350',
+    'Dec': '\$21,000',
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,15 +102,112 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              const Center(
-                child: Text(
-                  'Monthly Sales Chart',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CircleAvatar(
+                    radius: 21,
+                    backgroundImage: AssetImage(AssetsPath.headphone),
+                  ),
+                  Container(
+                    height: 42,
+                    width: 42,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xffFB6000).withOpacity(0.10),
+                    ),
+                    child: const Icon(Icons.notifications),
+                  )
+                ],
               ),
-              const SizedBox(height: 20),
+              heightBox12,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RevenueCard(
+                    selectedMonth: selectedMonth,
+                    onMonthChanged: (val) {
+                      if (val != null) {
+                        setState(() {
+                          selectedMonth = val;
+                        });
+                      }
+                    },
+                    revenue: monthlyRevenue[selectedMonth] ?? '\$0',
+                    monthList: months,
+                    dropdownColor: AppColors.iconButtonThemeColor,
+                    highlightColor: Colors.green,
+                  ),
+                   RevenueCard(
+                    selectedMonth: selectedMonth,
+                    onMonthChanged: (val) {
+                      if (val != null) {
+                        setState(() {
+                          selectedMonth = val;
+                        });
+                      }
+                    },
+                    revenue: monthlyRevenue[selectedMonth] ?? '\$0',
+                    monthList: months,
+                    dropdownColor: AppColors.iconButtonThemeColor,
+                    highlightColor: Colors.green,
+                  ),
+                ],
+              ),
+              heightBox12,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Earning Summery',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 15),
+                  
+                  ),
+                  Column(
+                    children: [
+                      Text('Yearly Revenue'),
+                      heightBox4,
+                      ShowPercentageButton(highlightColor: Colors.green.shade100, val: '10'),
+                    ],
+                  ),
+                  Container(
+                    height: 30.h,
+                    width: 80,
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.iconButtonThemeColor,
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: selectedYar,
+                        icon: const Icon(
+                          Icons.arrow_drop_down_circle_sharp,
+                          size: 24,
+                          color: Colors.white,
+                        ),
+                        dropdownColor: AppColors.iconButtonThemeColor,
+                        style: const TextStyle(color: Colors.white),
+                        items: years
+                            .map((year) => DropdownMenuItem(
+                                  value: year,
+                                  child: Text(year),
+                                ))
+                            .toList(),
+                        onChanged:  (val) {
+                      if (val != null) {
+                        setState(() {
+                          selectedYar = val;
+                        });
+                      }
+                    },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            
+              heightBox20,
               SizedBox(
-                height: 300,
+                height: 250,
                 child: graphic.Chart(
                   data: chartData,
                   variables: {
@@ -80,13 +223,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   marks: [
                     graphic.IntervalMark(
-                      position: graphic.Varset('month') * graphic.Varset('value'),
+                      position:
+                          graphic.Varset('month') * graphic.Varset('value'),
                       color: graphic.ColorEncode(
                         variable: 'type',
                         values: [
-                          const Color(0xfffb5c00), // deep orange
-                          const Color(0xffff7f24), // orange
-                          const Color(0xffffb27f), // light orange
+                          const Color(0xfffb5c00),
+                          const Color(0xffff7f24),
+                          const Color(0xffffb27f),
                         ],
                       ),
                       modifiers: [graphic.StackModifier()],
@@ -106,5 +250,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-
