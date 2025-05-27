@@ -50,13 +50,13 @@ class ImagePickerHelper {
                   onPressed: () {
                     pickImageFromCamera(context, onImagePicked);
                   },
-                  icon:  Icon(Icons.camera_alt, size: 40.h, color: Color(0xff9C57FF)),
+                  icon:  Icon(Icons.camera_alt, size: 40.h, color: Color.fromARGB(255, 3, 3, 3)),
                 ),
                 IconButton(
                   onPressed: () {
                     pickImageFromGallery(context, onImagePicked);
                   },
-                  icon:  Icon(Icons.photo_library, size: 40.h, color: Color(0xff9C57FF)),
+                  icon:  Icon(Icons.photo_library, size: 40.h, color: Color.fromARGB(255, 2, 2, 2)),
                 ),
               ],
             ),

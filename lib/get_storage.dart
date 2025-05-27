@@ -14,4 +14,6 @@ class StorageUtil {
   static Future<void> deleteData(String key) async {
     await box.remove(key);
   }
+
+  static String userAccessToken = 'user-access-token';
 }

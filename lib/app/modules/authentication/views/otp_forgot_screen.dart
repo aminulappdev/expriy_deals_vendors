@@ -1,21 +1,20 @@
 import 'dart:async';
+import 'package:expriy_deals_vendors/app/modules/authentication/controllers/otp_verify_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/views/reset_password_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/auth_header_text.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:expriy_deals_vendors/app/widgets/gradiant_elevated_button.dart';
+import 'package:expriy_deals_vendors/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OTPVerifyForgotScreen extends StatefulWidget {
-  static const String routeName = '/otp-forgot-screen';
-  const OTPVerifyForgotScreen({super.key});
+  final String token;
+  const OTPVerifyForgotScreen({super.key, required this.token});
 
   @override
   State<OTPVerifyForgotScreen> createState() => _OTPVerifyForgotScreenState();
@@ -24,7 +23,8 @@ class OTPVerifyForgotScreen extends StatefulWidget {
 class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController otpCtrl = TextEditingController();
-
+  final OtpVerifyController otpVerifyController =
+      Get.put(OtpVerifyController());
 
   RxInt remainingTime = 60.obs;
   late Timer timer;
@@ -32,8 +32,6 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
 
   String email = '';
 
- 
- 
   // void resendOTP() async {
   //   enableResendCodeButtom.value = false;
   //   remainingTime.value = 60;
@@ -52,7 +50,7 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
 
   //   if (isSuccess) {
   //     if (mounted) {
-       
+
   //       showSnackBarMessage(context, 'OTP succsessfully sent');
   //     } else {
   //       if (mounted) {
@@ -118,20 +116,36 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                       ),
                     ),
                     heightBox8,
-                    CustomElevatedButton(
-                      onPressed: () {
-                         Get.to(ResetPasswordScreen());
+                    GetBuilder<OtpVerifyController>(
+                      builder: (controller) {
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CustomElevatedButton(
+                              onPressed: controller.inProgress
+                                  ? () {}
+                                  : () => onTapToNextButton(),
+                              text: controller.inProgress ? '' : 'Confirm',
+                            ),
+                            if (controller.inProgress)
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              ),
+                          ],
+                        );
                       },
-                      text: 'Confirm',
                     ),
                     heightBox12,
                     Obx(
                       () => Visibility(
                         visible: !enableResendCodeButtom.value,
                         replacement: GestureDetector(
-                          onTap: () {
-                          
-                          },
+                          onTap: () {},
                           child: Text('Resend code',
                               style: GoogleFonts.poppins(
                                   color: Colors.black,
@@ -146,7 +160,7 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
                                   style: GoogleFonts.poppins(
                                       color: Colors.black, fontSize: 16.sp)),
                               TextSpan(
-                                  text: '$remainingTime',
+                                  text: ' $remainingTime',
                                   style: GoogleFonts.poppins(
                                       color: Colors.orange, fontSize: 16.sp)),
                               TextSpan(
@@ -168,24 +182,24 @@ class _OTPVerifyForgotScreenState extends State<OTPVerifyForgotScreen> {
     );
   }
 
-  // Future<void> onTapToNextButton() async {
-  //   if (_formKey.currentState!.validate()) {
-  //     final bool isSuccess =
-  //         await verifyOtpController.verifyOtp(otpCtrl.text, resendOTPController.accessToken.toString());
+  Future<void> onTapToNextButton() async {
+    if (_formKey.currentState!.validate()) {
+      final bool isSuccess =
+          await otpVerifyController.otyVerify(otpCtrl.text, widget.token);
 
-  //     if (isSuccess) {
-  //       if (mounted) {
-  //         showSnackBarMessage(context, 'Otp verification successfully done');
-  //         Navigator.pushNamed(context, ResetPasswordScreen.routeName);
-  //       } else {
-  //         if (mounted) {
-  //           showSnackBarMessage(
-  //               context, verifyOtpController.errorMessage!, true);
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
+      if (isSuccess) {
+        if (mounted) {
+          showSnackBarMessage(context, 'Otp verification successfully done');
+          Get.to(ResetPasswordScreen());
+        } else {
+          if (mounted) {
+            showSnackBarMessage(
+                context, otpVerifyController.errorMessage!, true);
+          }
+        }
+      }
+    }
+  }
 
   void clearTextField() {
     otpCtrl.clear();

@@ -1,10 +1,15 @@
 
+import 'package:expriy_deals_vendors/app/modules/authentication/controllers/reset_password_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/auth_header_text.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:expriy_deals_vendors/app/widgets/gradiant_elevated_button.dart';
+import 'package:expriy_deals_vendors/app/widgets/show_snackBar_message.dart';
+import 'package:expriy_deals_vendors/get_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -19,13 +24,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController passwordCtrl = TextEditingController();
   TextEditingController confirmPasswordCtrl = TextEditingController();
-  
+  final ResetPasswordController resetPasswordController =
+      Get.put(ResetPasswordController());
+
   bool _obscureText = true;
-
-  String email = '';
-  String accessToken = '';
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -124,11 +126,31 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                     ),
                     heightBox24,
-                    CustomElevatedButton(
-                      onPressed: () {
-                        
+                    GetBuilder<ResetPasswordController>(
+                      builder: (controller) {
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CustomElevatedButton(
+                              onPressed: controller.inProgress
+                                  ? () {}
+                                  : () => onTapToNextButton(),
+                              text: controller.inProgress
+                                  ? ''
+                                  : 'Update Password',
+                            ),
+                            if (controller.inProgress)
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              ),
+                          ],
+                        );
                       },
-                      text: 'Update Password',
                     ),
                   ],
                 ),
@@ -140,24 +162,26 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 
-  // Future<void> onTapToNextButton() async {
-  //   if (_formKey.currentState!.validate()) {
-  //     final bool isSuccess = await resetPasswordController.resetPassword(
-  //         email, passwordCtrl.text, confirmPasswordCtrl.text, accessToken);
+  Future<void> onTapToNextButton() async {
+    if (_formKey.currentState!.validate()) {
+      final bool isSuccess = await resetPasswordController.resetPassword(
+          passwordCtrl.text,
+          confirmPasswordCtrl.text,
+          StorageUtil.getData(StorageUtil.userAccessToken));
 
-  //     if (isSuccess) {
-  //       if (mounted) {
-  //         showSnackBarMessage(context, 'Reset password successfully done');
-  //         Navigator.pushNamed(context, SignInScreen.routeName);
-  //       } else {
-  //         if (mounted) {
-  //           showSnackBarMessage(
-  //               context, resetPasswordController.errorMessage!, true);
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
+      if (isSuccess) {
+        if (mounted) {
+          showSnackBarMessage(context, 'Reset password successfully done');
+          Get.to(SignInScreen());
+        } else {
+          if (mounted) {
+            showSnackBarMessage(
+                context, resetPasswordController.errorMessage!, true);
+          }
+        }
+      }
+    }
+  }
 
   void clearTextField() {
     passwordCtrl.clear();
