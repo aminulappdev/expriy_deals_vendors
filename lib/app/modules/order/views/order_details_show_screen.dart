@@ -1,13 +1,11 @@
+// ignore_for_file: deprecated_member_use
 
-import 'package:expriy_deals_vendors/app/modules/order/controllers/order_details_screen.dart';
-import 'package:expriy_deals_vendors/app/modules/order/model/order_details_model.dart';
+import 'package:expriy_deals_vendors/app/modules/order/controllers/order_details_controller.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -20,24 +18,11 @@ class _OrderScreenState extends State<OrderScreen> {
   final OrderDetailsController orderDetailsController =
       Get.find<OrderDetailsController>();
 
-  // DataGridSource to manage the data
-  late OrderDataGridSource _dataGridSource;
-
   @override
   void initState() {
     super.initState();
     // Fetch order details when the screen initializes
     orderDetailsController.getCart();
-    // Initialize the DataGridSource with empty data
-    _dataGridSource = OrderDataGridSource(data: []);
-    // Update DataGridSource reactively when data changes
-    ever(orderDetailsController.orderDetailsModel, (data) {
-      if (data != null && data.data != null) {
-        _dataGridSource = OrderDataGridSource(data: data);
-        _dataGridSource.buildDataGridRows();
-        setState(() {});
-      }
-    });
   }
 
   @override
@@ -105,53 +90,53 @@ class _OrderScreenState extends State<OrderScreen> {
                 ],
               ),
               heightBox12,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Pending',
-                        style: TextStyle(color: AppColors.iconButtonThemeColor),
-                      ),
-                      widthBox8,
-                      CircleAvatar(
-                        backgroundColor: AppColors.iconButtonThemeColor,
-                        radius: 13,
-                        child: const Icon(
-                          Icons.arrow_drop_down_outlined,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 13,
-                        backgroundColor:
-                            AppColors.iconButtonThemeColor.withOpacity(0.10),
-                        child: const Icon(
-                          Icons.visibility,
-                          size: 16,
-                        ),
-                      ),
-                      widthBox8,
-                      CircleAvatar(
-                        radius: 13,
-                        backgroundColor:
-                            AppColors.iconButtonThemeColor.withOpacity(0.10),
-                        child: const Icon(
-                          Icons.delete,
-                          size: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Row(
+              //       children: [
+              //         Text(
+              //           'Pending',
+              //           style: TextStyle(color: AppColors.iconButtonThemeColor),
+              //         ),
+              //         widthBox8,
+              //         CircleAvatar(
+              //           backgroundColor: AppColors.iconButtonThemeColor,
+              //           radius: 13,
+              //           child: const Icon(
+              //             Icons.arrow_drop_down_outlined,
+              //             color: Colors.white,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //     Row(
+              //       children: [
+              //         CircleAvatar(
+              //           radius: 13,
+              //           backgroundColor:
+              //               AppColors.iconButtonThemeColor.withOpacity(0.10),
+              //           child: const Icon(
+              //             Icons.visibility,
+              //             size: 16,
+              //           ),
+              //         ),
+              //         widthBox8,
+              //         CircleAvatar(
+              //           radius: 13,
+              //           backgroundColor:
+              //               AppColors.iconButtonThemeColor.withOpacity(0.10),
+              //           child: const Icon(
+              //             Icons.delete,
+              //             size: 16,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ],
+              // ),
               heightBox12,
-              // Display loading, error, or data
+              // Display loading, error, or data using DataTable
               orderDetailsController.inProgress
                   ? const Expanded(
                       child: Center(child: CircularProgressIndicator()))
@@ -175,76 +160,121 @@ class _OrderScreenState extends State<OrderScreen> {
                               ),
                             )
                           : Expanded(
-                              child: SfDataGrid(
-                                source: _dataGridSource,
-                                columns: [
-                                  GridColumn(
-                                    columnName: 'orderId',
-                                    label: Container(
-                                      padding: const EdgeInsets.all(8.0),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Order ID',
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(
+                                    border: TableBorder.all(
+                                      color: Colors.grey[300]!,
+                                      width: 1.0,
                                     ),
-                                  ),
-                                  GridColumn(
-                                    columnName: 'customer',
-                                    label: Container(
-                                      padding: const EdgeInsets.all(8.0),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Customer',
-                                        overflow: TextOverflow.ellipsis,
+                                    columnSpacing: 20.0,
+                                    dataRowHeight: 48.0,
+                                    headingRowHeight: 56.0,
+                                    columns: [
+                                      DataColumn(
+                                        label: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Order ID',
+                                            style: TextStyle(
+                                              color: AppColors
+                                                  .iconButtonThemeColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  GridColumn(
-                                    columnName: 'productName',
-                                    label: Container(
-                                      padding: const EdgeInsets.all(8.0),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Product Name',
-                                        overflow: TextOverflow.ellipsis,
+                                      DataColumn(
+                                        label: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Customer',
+                                            style: TextStyle(
+                                              color: AppColors
+                                                  .iconButtonThemeColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  GridColumn(
-                                    columnName: 'quantity',
-                                    label: Container(
-                                      padding: const EdgeInsets.all(8.0),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Quantity',
-                                        overflow: TextOverflow.ellipsis,
+                                      DataColumn(
+                                        label: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Product Name',
+                                            style: TextStyle(
+                                              color: AppColors
+                                                  .iconButtonThemeColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  GridColumn(
-                                    columnName: 'status',
-                                    label: Container(
-                                      padding: const EdgeInsets.all(8.0),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Status',
-                                        overflow: TextOverflow.ellipsis,
+                                      DataColumn(
+                                        label: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Quantity',
+                                            style: TextStyle(
+                                              color: AppColors
+                                                  .iconButtonThemeColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  GridColumn(
-                                    columnName: 'amount',
-                                    label: Container(
-                                      padding: const EdgeInsets.all(8.0),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Amount',
-                                        overflow: TextOverflow.ellipsis,
+                                      DataColumn(
+                                        label: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Status',
+                                            style: TextStyle(
+                                              color: AppColors
+                                                  .iconButtonThemeColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      DataColumn(
+                                        label: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Amount',
+                                            style: TextStyle(
+                                              color: AppColors
+                                                  .iconButtonThemeColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                    rows: orderDetailsController.addToCartData!
+                                        .map((order) {
+                                      return DataRow(cells: [
+                                        DataCell(Text(order.datumId ?? 'N/A')),
+                                        DataCell(
+                                            Text(order.user?.name ?? 'N/A')),
+                                        DataCell(
+                                            Text(order.product?.name ?? 'N/A')),
+                                        DataCell(Text(
+                                            order.quantity?.toString() ?? '0')),
+                                        DataCell(Text(order.status ?? 'N/A')),
+                                        DataCell(Text(
+                                            '\$${order.totalPrice?.toStringAsFixed(2) ?? '0.00'}')),
+                                      ]);
+                                    }).toList(),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
             ],
@@ -252,44 +282,5 @@ class _OrderScreenState extends State<OrderScreen> {
         ),
       ),
     );
-  }
-}
-
-// Custom DataGridSource for OrderDetailsItemModel
-class OrderDataGridSource extends DataGridSource {
-  List<OrderDetailsItemModel> data = [];
-
-  OrderDataGridSource({required this.data});
-
-  @override
-  List<DataGridRow> get rows {
-    return data.map<DataGridRow>((order) => DataGridRow(cells: [
-          DataGridCell<String>(columnName: 'orderId', value: order.datumId ?? 'N/A'),
-          DataGridCell<String>(columnName: 'customer', value: order.user?.name ?? 'N/A'),
-          DataGridCell<String>(columnName: 'productName', value: order.product?.name ?? 'N/A'),
-          DataGridCell<String>(columnName: 'quantity', value: order.quantity?.toString() ?? '0'),
-          DataGridCell<String>(columnName: 'status', value: order.status ?? 'N/A'),
-          DataGridCell<String>(columnName: 'amount', value: '\$${order.totalPrice?.toStringAsFixed(2) ?? '0.00'}'),
-        ])).toList();
-  }
-
-  @override
-  DataGridRowAdapter? buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-      cells: row.getCells().map<Widget>((dataGridCell) {
-        return Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  void buildDataGridRows() {
-    notifyListeners();
   }
 }

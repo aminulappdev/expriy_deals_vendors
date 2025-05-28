@@ -6,7 +6,7 @@ import 'package:expriy_deals_vendors/services/network_caller/network_response.da
 import 'package:expriy_deals_vendors/urls.dart';
 import 'package:get/get.dart';
 
-class OrderDetailsController extends GetxController {
+class OrderDetailsController extends GetxController { 
   final RxBool _inProgress = false.obs;
   bool get inProgress => _inProgress.value;
 
@@ -36,7 +36,7 @@ class OrderDetailsController extends GetxController {
 
     final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
       Urls.orderDetailstUrl,
-       accesToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODIxOWEwNzMwYmY5YmI3YTIzZThmZjgiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODQwODQ1MSwiZXhwIjoxNzUxMDAwNDUxfQ.oJ4hmvhAIyPNmKkzxvhLIEBOkefDpefVjYj3VfY-Ukc// Use the stored token consistently'
+       accesToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODIxOWEwNzMwYmY5YmI3YTIzZThmZjgiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODQwODQ1MSwiZXhwIjoxNzUxMDAwNDUxfQ.oJ4hmvhAIyPNmKkzxvhLIEBOkefDpefVjYj3VfY-Ukc'
     );
 
     print('API Response: ${response.responseData}');

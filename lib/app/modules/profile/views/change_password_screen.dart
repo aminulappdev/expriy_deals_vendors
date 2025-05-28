@@ -1,4 +1,4 @@
-import 'package:expriy_deals_vendors/app/modules/authentication/widgets/auth_header_text.dart';
+
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:expriy_deals_vendors/app/widgets/gradiant_elevated_button.dart';

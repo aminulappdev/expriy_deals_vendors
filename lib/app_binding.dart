@@ -5,7 +5,7 @@ import 'package:expriy_deals_vendors/app/modules/authentication/controllers/otp_
 import 'package:expriy_deals_vendors/app/modules/authentication/controllers/resend_otp_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/controllers/reset_password_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/controllers/sign_in_controller.dart';
-import 'package:expriy_deals_vendors/app/modules/order/controllers/order_details_screen.dart';
+import 'package:expriy_deals_vendors/app/modules/order/controllers/order_details_controller.dart';
 import 'package:expriy_deals_vendors/services/network_caller/network_caller.dart';
 import 'package:get/get.dart';
 

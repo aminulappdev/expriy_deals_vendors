@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+import 'package:expriy_deals_vendors/app/modules/profile/controllers/profile_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/change_password_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/edit_profile_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/info_screen.dart';
@@ -5,27 +7,29 @@ import 'package:expriy_deals_vendors/app/modules/profile/widgets/profile_drawer_
 import 'package:expriy_deals_vendors/app/utils/app_text.dart';
 import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
-import 'package:expriy_deals_vendors/app/widgets/custom_alert_dialoge.dart';
+import 'package:expriy_deals_vendors/app/utils/show_dialog_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  static final customCacheManager = CacheManager(
+    Config(
+      'customCacheKey',
+      stalePeriod: const Duration(days: 15),
+      maxNrOfCacheObjects: 100,
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ProfileController());
+    final controller = Get.find<ProfileController>();
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(12.0.h),
@@ -35,131 +39,116 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               heightBox50,
               Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: AssetImage(AssetsPath.appleLogo),
-                    ),
-                    heightBox4,
-                    Text(
-                      'Md Aminul Islam',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                    Text('aminulappdev@gmail.com',
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.w500)),
-                  ],
-                ),
+                child: Obx(() {                
+                 return controller.inProgress
+                      ? const CircularProgressIndicator()
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundImage: controller.profileData?.profile != null
+                                  ? NetworkImage(controller.profileData!.profile!)
+                                  : const AssetImage(AssetsPath.appleLogo),
+                            ),
+                            heightBox4,
+                            Text(
+                              controller.profileData?.name ?? 'No name',
+                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                            ),
+                            Text(
+                              controller.profileData?.email ?? 'No email',
+                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        );
+                }),
               ),
               heightBox12,
               ProfileDrawerFeature(
                 feature: 'Edit Profile',
                 icon: Icons.person,
                 ontap: () {
-                  Get.to(EditProfile());
+                  if (controller.profileData != null) {
+                    Get.to(EditProfile(profileData: controller.profileData!));
+                  } else {
+                    Get.snackbar('Error', 'Profile data not available');
+                  }
                 },
               ),
-              ProfileDrawerFeature(
-                feature: 'Address',
-                icon: Icons.location_on,
-                ontap: () {
-                  // Navigator.pushNamed(context, MyOrderScreen.routeName);
-                },
-              ),
-              ProfileDrawerFeature(
-                feature: 'Payment',
-                icon: Icons.payment,
-                ontap: () {
-                  // Navigator.pushNamed(context, HistoryScreen.routeName);
-                },
-              ),
+              
+              // ProfileDrawerFeature(
+              //   feature: 'Payment',
+              //   icon: Icons.payment,
+              //   ontap: () => Get.to(const PaymentSuccessScreen()),
+              // ),
               heightBox8,
               Text(
                 'Settings',
-                style: GoogleFonts.poppins(
-                    fontSize: 12, fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
               ),
               heightBox12,
               ProfileDrawerFeature(
                 feature: 'Notification',
                 icon: Icons.notifications,
                 ontap: () {
-                  // Navigator.pushNamed(context, NotificationScreen.routeName);
+                  // NotificationScreen নেভিগেশন যোগ করুন
                 },
               ),
               heightBox8,
               ProfileDrawerFeature(
                 feature: 'Change password',
                 icon: Icons.lock,
-                ontap: () {
-                  Get.to(ChangePasswordScreen());
-                },
+                ontap: () => Get.to(const ChangePasswordScreen()),
               ),
               heightBox8,
               ProfileDrawerFeature(
                 feature: 'Delete account',
                 icon: Icons.delete,
-                ontap: onTapChangeAccount,
+                ontap: () {},
               ),
               heightBox8,
               Text(
                 'Support',
-                style: GoogleFonts.poppins(
-                    fontSize: 12, fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
               ),
               heightBox12,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ProfileDrawerFeature(
-                    feature: 'Policies',
-                    icon: Icons.security,
-                    ontap: () {
-                      Get.to(InfoScreen(appBarTitle: 'Privacy & Policies', data: DemoText.policies));
-                    },
-                  ),
-                  ProfileDrawerFeature(
-                    feature: 'About Us',
-                    icon: Icons.groups_2_sharp,
-                    ontap: () {
-                      Get.to(InfoScreen(appBarTitle: 'About Us', data: DemoText.aboutUs));
-                    },
-                  ),
-                  heightBox8,
-                  heightBox14,
-                  Align(
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: onTapLogoutBTN,
-                      child: Container(
-                        height: 40,
-                        width: 140,
-                        decoration: BoxDecoration(
-                          // ignore: deprecated_member_use
-                          color: Color(0xffFF0000).withOpacity(0.20),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.logout,
-                              color: Colors.red,
-                            ),
-                            widthBox4,
-                            Text(
-                              'Logout',
-                              style: TextStyle(
-                                  color: Colors.red, fontWeight: FontWeight.w600),
-                            )
-                          ],
-                        ),
-                      ),
+              ProfileDrawerFeature(
+                feature: 'Policies',
+                icon: Icons.security,
+                ontap: () => Get.to(const InfoScreen(appBarTitle: 'Privacy & Policies', data: DemoText.policies)),
+              ),
+              ProfileDrawerFeature(
+                feature: 'About Us',
+                icon: Icons.groups_2_sharp,
+                ontap: () => Get.to(const InfoScreen(appBarTitle: 'About Us', data: DemoText.aboutUs)),
+              ),
+              heightBox8,
+              heightBox14,
+              Align(
+                alignment: Alignment.center,
+                child: InkWell(
+                  onTap: () => DialogUtils.showLogoutDialog(context, controller.logout),
+                  child: Container(
+                    height: 40,
+                    width: 140,
+                    decoration: BoxDecoration(
+                      color: const Color(0xffFF0000).withOpacity(0.20),
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                  )
-                ],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.logout, color: Colors.red),
+                        widthBox4,
+                        const Text(
+                          'Logout',
+                          style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -167,106 +156,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
-  void onTapLogoutBTN() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => CustomAlertDialog(
-        title: 'Do you want to log out this profile?',
-        noOntap: () {
-          Navigator.pop(context);
-        },
-        yesOntap: () {},
-      ),
-    );
-  }
-
-   void onTapChangeAccount() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => CustomAlertDialog(
-        title: 'Do you want to delete this account?',
-        noOntap: () {
-          Navigator.pop(context);
-        },
-        yesOntap: () {},
-      ),
-    );
-  }
-
-  // void onTapLogoutBTN() {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (context) => AlertDialog(
-  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-  //       title: Center(
-  //         child: Text(
-  //           textAlign: TextAlign.center,
-  //           'Do you want to log out this profile?',
-  //           style: GoogleFonts.poppins(fontSize: 20),
-  //         ),
-  //       ),
-  //       actions: [
-  //         GestureDetector(
-  //           onTap: () async {
-  //             // Google Sign-Out
-  //             try {
-  //               await GoogleSignIn().signOut();
-  //               print('Google signed out');
-  //             } catch (e) {
-  //               print('Error signing out from Google: $e');
-  //             }
-
-  //             // Clear local token
-  //             box.remove('user-login-access-token');
-  //             print('Token after logout: ${box.read('user-login-access-token')}');
-
-  //             // Redirect to Sign In
-  //             Navigator.pushNamedAndRemoveUntil(
-  //               context,
-  //               SignInScreen.routeName,
-  //               (Route<dynamic> route) => false,
-  //             );
-  //           },
-  //           child: Container(
-  //             height: 32.h,
-  //             width: 120.w,
-  //             decoration: BoxDecoration(
-  //               borderRadius: BorderRadius.circular(10),
-  //               color: Color(0xff305FA1).withOpacity(0.1),
-  //               border: Border.all(color: Color(0xff305FA1)),
-  //             ),
-  //             child: Center(
-  //               child: Text(
-  //                 'YES',
-  //                 style: TextStyle(color: Color(0xff305FA1), fontSize: 14),
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //         GestureDetector(
-  //           onTap: () => Navigator.pop(context),
-  //           child: Container(
-  //             height: 32.h,
-  //             width: 120.w,
-  //             decoration: BoxDecoration(
-  //               borderRadius: BorderRadius.circular(10),
-  //               color: Color(0xffA13430).withOpacity(0.1),
-  //               border: Border.all(color: Color(0xffA13430)),
-  //             ),
-  //             child: Center(
-  //               child: Text(
-  //                 'NO',
-  //                 style: TextStyle(color: Color(0xffA13430), fontSize: 14.sp),
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

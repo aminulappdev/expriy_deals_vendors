@@ -1,5 +1,4 @@
 import 'package:expriy_deals_vendors/app/modules/home/views/home_screen.dart';
-import 'package:expriy_deals_vendors/app/modules/earnings/views/earning_details_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/earnings/views/earning_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/order/views/order_details_show_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/product/views/product_screen.dart';
