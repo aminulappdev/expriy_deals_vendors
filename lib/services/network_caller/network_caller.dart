@@ -10,7 +10,7 @@ class NetworkCaller {
   final Logger _logger = Logger();
 
   Future<NetworkResponse> getRequest(String url,
-      {Map<String, dynamic>? queryParams, String? accesToken}) async {
+      {Map<String, dynamic>? queryParams, String? accesToken,}) async {
     try {
       _logRequest(url);
 

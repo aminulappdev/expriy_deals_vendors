@@ -23,7 +23,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
   bool _obscureText = true;
   bool isChecked = false;
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(

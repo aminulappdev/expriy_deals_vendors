@@ -1,4 +1,5 @@
 import 'package:expriy_deals_vendors/app/modules/onboarding/views/onboarding_screen.dart';
+import 'package:expriy_deals_vendors/app_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,7 @@ class AntoinetteApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
-       
+          initialBinding: ControllerBinder(),
           debugShowCheckedModeBanner: false,
           title: 'expriy-deals',
           theme: ThemeData(

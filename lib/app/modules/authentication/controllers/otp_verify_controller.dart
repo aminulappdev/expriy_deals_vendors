@@ -14,7 +14,7 @@ class OtpVerifyController extends GetxController {
 
   Future<bool> otyVerify(String otp, String token) async {
     bool isSuccess = false;
-
+ 
     _inProgress = true;
 
     update();
@@ -26,8 +26,8 @@ class OtpVerifyController extends GetxController {
             accesToken: token);
 
     if (response.isSuccess) {
-      StorageUtil.saveData(
-          StorageUtil.userAccessToken, response.responseData['data']['token']);
+      // StorageUtil.saveData(
+      //     StorageUtil.userAccessToken, response.responseData['data']['token']);
       print(
           'Save access token from otp verifiy controller .........................');
       print(StorageUtil.getData(StorageUtil.userAccessToken));

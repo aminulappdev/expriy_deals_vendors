@@ -1,21 +1,17 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/views/forgot_password_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/continue_elevated_button.dart';
-import 'package:expriy_deals_vendors/app/modules/authentication/widgets/footer_section.dart';
-import 'package:expriy_deals_vendors/app/modules/authentication/widgets/forgot_password_row.dart';
-import 'package:expriy_deals_vendors/app/modules/authentication/widgets/liner_widget.dart';
-import 'package:expriy_deals_vendors/app/modules/authentication/widgets/welcome_text.dart';
 import 'package:expriy_deals_vendors/app/modules/common/views/main_bottom_nav_bar.dart';
-import 'package:expriy_deals_vendors/app/modules/onboarding/widgets/custom_scafold_background.dart';
-import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
+import 'package:expriy_deals_vendors/app/modules/product/controllers/add_product_controller.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:expriy_deals_vendors/app/widgets/gradiant_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -25,261 +21,211 @@ class AddProductScreen extends StatefulWidget {
 
 class _AddProductScreenState extends State<AddProductScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController emailCtrl = TextEditingController();
-  TextEditingController passwordCtrl = TextEditingController();
+  final AddProductController _controller = Get.put(AddProductController());
+  TextEditingController nameCtrl = TextEditingController();
+  TextEditingController detailsCtrl = TextEditingController();
+  TextEditingController categoryCtrl = TextEditingController();
+  TextEditingController priceCtrl = TextEditingController();
+  TextEditingController quantityCtrl = TextEditingController();
+  TextEditingController expiryDateCtrl = TextEditingController();
+  TextEditingController daysCtrl = TextEditingController();
+  TextEditingController discountCtrl = TextEditingController();
 
-  bool _obscureText = true;
-  bool isChecked = false;
+  List<File> selectedImages = [];
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFiles = await _picker.pickMultiImage();
+    if (pickedFiles != null) {
+      setState(() {
+        selectedImages.addAll(pickedFiles.map((pickedFile) => File(pickedFile.path)));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(12.0.h),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              heightBox20,
-              CustomAppBar(name: 'Add product'),
-              heightBox16,
-              Text('Uplpad image'),
-              heightBox12,
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 140,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
+      body: GetBuilder<AddProductController>(
+        builder: (controller) => Padding(
+          padding: EdgeInsets.all(12.0.h),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                heightBox20,
+                CustomAppBar(name: 'Add product'),
+                heightBox16,
+                Text('Upload images'),
+                heightBox12,
+                InkWell(
+                  onTap: _pickImage,
+                  child: Container(
+                    height: 140,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.black)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.add,
-                        size: 40,
-                      ),
-                      Text(
-                        'Add product',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
+                      border: Border.all(color: Colors.black),
+                    ),
+                    child: selectedImages.isEmpty
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.add, size: 40),
+                              Text('Add product images', style: TextStyle(fontSize: 20)),
+                            ],
+                          )
+                        : SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: selectedImages
+                                  .asMap()
+                                  .entries
+                                  .map((entry) => Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Stack(
+                                          children: [
+                                            Image.file(
+                                              entry.value,
+                                              width: 100,
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            Positioned(
+                                              right: 0,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    selectedImages.removeAt(entry.key);
+                                                  });
+                                                },
+                                                child: Icon(Icons.remove_circle, color: Colors.red),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
                   ),
                 ),
-              ),
-              heightBox8,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      height: 63,
-                      width: 115,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.black)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                heightBox12,
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Item Name',
+                          style: GoogleFonts.poppins(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff626262))),
+                      heightBox8,
+                      TextFormField(
+                        controller: nameCtrl,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => value!.isEmpty ? 'Enter item name' : null,
+                        decoration: InputDecoration(
+                          hintText: 'Item Name',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                      heightBox8,
+                      Text('Item Details',
+                          style: GoogleFonts.poppins(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff626262))),
+                      heightBox8,
+                      TextFormField(
+                        controller: detailsCtrl,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => value!.isEmpty ? 'Enter item details' : null,
+                        decoration: InputDecoration(
+                          hintText: 'Item Details',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                      heightBox8,
+                      Text('Category',
+                          style: GoogleFonts.poppins(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff626262))),
+                      heightBox8,
+                      TextFormField(
+                        controller: categoryCtrl,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => value!.isEmpty ? 'Enter category' : null,
+                        decoration: InputDecoration(
+                          hintText: 'Category',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                      heightBox8,
+                      Text('Item Price',
+                          style: GoogleFonts.poppins(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff626262))),
+                      heightBox8,
+                      TextFormField(
+                        controller: priceCtrl,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        keyboardType: TextInputType.number,
+                        validator: (value) => value!.isEmpty ? 'Enter price' : null,
+                        decoration: InputDecoration(
+                          hintText: 'Item Price',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                      heightBox8,
+                      Text('Item Quantity',
+                          style: GoogleFonts.poppins(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff626262))),
+                      heightBox8,
+                      TextFormField(
+                        controller: quantityCtrl,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        keyboardType: TextInputType.number,
+                        validator: (value) => value!.isEmpty ? 'Enter quantity' : null,
+                        decoration: InputDecoration(
+                          hintText: 'Item Quantity',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                      heightBox8,
+                      Text('Expiry Date',
+                          style: GoogleFonts.poppins(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff626262))),
+                      heightBox8,
+                      TextFormField(
+                        controller: expiryDateCtrl,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => value!.isEmpty ? 'Enter expiry date' : null,
+                        decoration: InputDecoration(
+                          hintText: 'Expiry Date',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                      heightBox12,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
-                            Icons.add,
-                            size: 20,
-                          ),
-                          Text(
-                            'Add product',
-                            style: TextStyle(fontSize: 14),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      height: 63,
-                      width: 115,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.black)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.add,
-                            size: 20,
-                          ),
-                          Text(
-                            'Add product',
-                            style: TextStyle(fontSize: 14),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      height: 63,
-                      width: 115,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.black)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.add,
-                            size: 20,
-                          ),
-                          Text(
-                            'Add product',
-                            style: TextStyle(fontSize: 14),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              heightBox12,
-              Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Item Name',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      controller: emailCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter email';
-                        if (!EmailValidator.validate(value)) {
-                          return 'Enter a valid email address';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          hintStyle: TextStyle(color: Colors.grey)),
-                    ),
-                    heightBox8,
-                    Text('Item Details',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      controller: passwordCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter password';
-                        return null;
-                      },
-                      obscureText: _obscureText,
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    heightBox8,
-                    Text('Category',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      controller: passwordCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter password';
-                        return null;
-                      },
-                      obscureText: _obscureText,
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    heightBox8,
-                    Text('Item Price',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      controller: passwordCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter password';
-                        return null;
-                      },
-                      obscureText: _obscureText,
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    heightBox8,
-                    Text('Item Quantity',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      controller: passwordCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter password';
-                        return null;
-                      },
-                      obscureText: _obscureText,
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    heightBox8,
-                    Text('Expriye date',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      controller: passwordCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter password';
-                        return null;
-                      },
-                      obscureText: _obscureText,
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    heightBox12,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 170,
-                          child: TextFormField(
-                            controller: passwordCtrl,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            validator: (String? value) {
-                              if (value!.isEmpty) return 'Enter password';
-                              return null;
-                            },
-                            obscureText: _obscureText,
-                            decoration: InputDecoration(
-                              hintText: 'Dayes',
+                          SizedBox(
+                            width: 170,
+                            child: TextFormField(
+                              controller: daysCtrl,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              keyboardType: TextInputType.number,
+                              validator: (value) => value!.isEmpty ? 'Enter days' : null,
+                              decoration: InputDecoration(
+                              hintText: 'Days',
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
                           ),
@@ -287,27 +233,45 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         SizedBox(
                           width: 170,
                           child: TextFormField(
-                            controller: passwordCtrl,
+                            controller: discountCtrl,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
-                            validator: (String? value) {
-                              if (value!.isEmpty) return 'Enter password';
-                              return null;
-                            },
-                            obscureText: _obscureText,
+                            keyboardType: TextInputType.number,
+                            validator: (value) => value!.isEmpty ? 'Enter discount' : null,
                             decoration: InputDecoration(
                               hintText: 'Discount %',
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
                           ),
                         ),
-                       
-                       
                       ],
                     ),
                     heightBox12,
-                      CustomElevatedButton(onPressed: () {
-                        Get.to(MainButtonNavbarScreen());
-                      }, text: 'Save'),
+                    controller.inProgress
+                        ? Center(child: CircularProgressIndicator())
+                        : CustomElevatedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                bool success = await controller.addProduct(
+                                  name: nameCtrl.text,
+                                  details: detailsCtrl.text,
+                                  category: categoryCtrl.text,
+                                  price: priceCtrl.text,
+                                  quantity: quantityCtrl.text,
+                                  expiryDate: expiryDateCtrl.text,
+                                  days: daysCtrl.text,
+                                  discount: discountCtrl.text,
+                                  images: selectedImages,
+                                );
+                                if (success) {
+                                  Get.to(() => MainButtonNavbarScreen());
+                                  Get.snackbar('Success', 'Product added successfully');
+                                } else {
+                                  Get.snackbar('Error', controller.errorMessage ?? 'Failed to add product');
+                                }
+                              }
+                            },
+                            text: 'Save',
+                          ),
                   ],
                 ),
               ),
@@ -315,9 +279,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ),
         ),
       ),
-    );
+    ));
   }
-
+}
   // Future<void> onTapGoogleSignIn() async {
   //   final controller = Get.find<GoogleAuthController>();
   //   final bool isSuccess = await controller.signInWithGoogle();
@@ -374,15 +338,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
   //   }
   // }
 
-  void clearTextField() {
-    emailCtrl.clear();
-    passwordCtrl.clear();
-  }
+  // void clearTextField() {
+  //   emailCtrl.clear();
+  //   passwordCtrl.clear();
+  // }
 
-  @override
-  void dispose() {
-    emailCtrl.dispose();
-    passwordCtrl.dispose();
-    super.dispose();
-  }
-}
+  // @override
+  // void dispose() {
+  //   emailCtrl.dispose();
+  //   passwordCtrl.dispose();
+  //   super.dispose();
+  // }
+

@@ -69,6 +69,7 @@ dependencies:
   location: ^8.0.0
   permission_handler: ^12.0.0+1
   geocoding: ^3.0.0
+  syncfusion_flutter_datagrid: 
 
 dev_dependencies:
   flutter_test:
