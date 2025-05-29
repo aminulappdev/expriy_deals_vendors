@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'package:expriy_deals_vendors/app/modules/bank/views/bank_info_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/profile_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/change_password_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/edit_profile_screen.dart';
@@ -77,11 +78,11 @@ class ProfileScreen extends StatelessWidget {
                 },
               ),
               
-              // ProfileDrawerFeature(
-              //   feature: 'Payment',
-              //   icon: Icons.payment,
-              //   ontap: () => Get.to(const PaymentSuccessScreen()),
-              // ),
+              ProfileDrawerFeature(
+                feature: 'Bank Details',
+                icon: Icons.payment,
+                ontap: () => Get.to(const BankInfoScreen()),
+              ),
               heightBox8,
               Text(
                 'Settings',
