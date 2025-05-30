@@ -1,7 +1,9 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-import 'dart:io';
+import 'dart:io'; 
+import 'package:expriy_deals_vendors/get_storage.dart';
+import 'package:expriy_deals_vendors/urls.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -31,24 +33,25 @@ class AddProductController extends GetxController {
 
     try {
       var uri = Uri.parse(
-          'http://115.127.156.131:7000/api/v1/products'); // Replace with your actual API URL
+          Urls.addProductUrl); // Replace with your actual API URL
       var request = http.MultipartRequest('POST', uri);
 
       // Set product data
       Map<String, dynamic> jsonFields = {
         "name": name,
         "details": details,
-        "category": "683146eebb83252a71e24536",
-        "price": 12.00,
-        "stock": 3 ,
+        "category": category,
+        "days": days,
+        "price": double.tryParse(price) ?? 0.0,
+        "stock": int.tryParse(quantity) ?? 0,
         "expiredAt": expiryDate,
-        "discount": 10,
-        "quantity" : 20
+        "discount": double.tryParse(discount) ?? 0.0,
+        "quantity" : int.tryParse(quantity) ?? 0,
       };
 
       request.fields['data'] = jsonEncode(jsonFields);
       request.headers['Authorization'] =
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODE4ODczY2RlMzAwYzA5OTU3MzRmMzIiLCJyb2xlIjoidmVuZG9yIiwiaWF0IjoxNzQ3ODg0OTAyLCJleHAiOjE3NTA0NzY5MDJ9.lc988CLjYpvkz8aIceVF1kt3mrlAx_DxhihRsG76pMU';
+          'Bearer ${StorageUtil.getData(StorageUtil.userAccessToken)}'; // Assuming you have a StorageService to get the token
 
       // Add multiple images
       for (int i = 0; i < images.length; i++) {

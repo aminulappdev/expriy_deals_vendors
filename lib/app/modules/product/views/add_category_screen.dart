@@ -94,62 +94,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     );
   }
 
-  // Future<void> onTapGoogleSignIn() async {
-  //   final controller = Get.find<GoogleAuthController>();
-  //   final bool isSuccess = await controller.signInWithGoogle();
-
-  //   if (isSuccess) {
-  //     if (context.mounted) {
-  //       showSnackBarMessage(context, 'Google দিয়ে লগইন সফল হয়েছে');
-  //     }
-  //   } else {
-  //     String message = controller.errorMessage ?? 'Google লগইন ব্যর্থ হয়েছে';
-
-  //     if (message.contains('credentials')) {
-  //       if (context.mounted) {
-  //         showDialog(
-  //           context: context,
-  //           builder: (_) => AlertDialog(
-  //             title: Text("অ্যাকাউন্ট সমস্যা"),
-  //             content: Text("এই ইমেইলটি আগে থেকেই রেজিস্টার করা আছে ইমেইল-পাসওয়ার্ড দিয়ে। দয়া করে অন্য Google অ্যাকাউন্ট সিলেক্ট করুন।"),
-  //             actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text("ঠিক আছে"))],
-  //           ),
-  //         );
-  //       }
-  //     } else {
-  //       if (context.mounted) {
-  //         showSnackBarMessage(context, message, true);
-  //       }
-  //     }
-  //   }
-  // }
-
-  // Future<void> onTapToNextButton() async {
-  //   if (_formKey.currentState!.validate()) {
-  //     final bool isSuccess = await signInController.signIn(emailCtrl.text, passwordCtrl.text, isChecked);
-
-  //     if (isSuccess) {
-  //       if (mounted) {
-  //         showSnackBarMessage(context, 'Login successfully done');
-  //         Navigator.pushNamedAndRemoveUntil(context, MainButtonNavbarScreen.routeName, (route) => false);
-  //       }
-  //     } else {
-  //       if (mounted) {
-  //         showSnackBarMessage(context, signInController.errorMessage ?? 'Login failed', true);
-  //       }
-  //     }
-  //   }
-  // }
-
-  // Future<void> forgotPasswordBTN() async {
-  //   final bool isSuccess = await forgotPasswordController.forgotPassword(emailCtrl.text);
-  //   if (isSuccess && mounted) {
-  //     Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
-  //   } else if (mounted) {
-  //     showSnackBarMessage(context, forgotPasswordController.errorMessage ?? 'Error occurred', true);
-  //   }
-  // }
-
+  
   void clearTextField() {
     emailCtrl.clear();
     passwordCtrl.clear();

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 import 'package:email_validator/email_validator.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/controllers/create_user_controller.dart';
@@ -7,6 +9,7 @@ import 'package:expriy_deals_vendors/app/modules/authentication/widgets/agree_co
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/footer_section.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/welcome_text.dart';
 import 'package:expriy_deals_vendors/app/modules/onboarding/widgets/custom_scafold_background.dart';
+import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:expriy_deals_vendors/app/widgets/gradiant_elevated_button.dart';
@@ -16,7 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:location/location.dart' as loc;
+import 'package:permission_handler/permission_handler.dart' as ph;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -31,6 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController desCtrl = TextEditingController();
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
+  TextEditingController shopnameCtrl = TextEditingController();
   final CreateUserController createUserController =
       Get.put(CreateUserController());
 
@@ -38,8 +43,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final ImagePickerHelper _imagePickerHelper = ImagePickerHelper();
 
   bool _obscureText = true;
-
   bool showButton = false;
+  double? latitude;
+  double? longitude;
+
+  Future<void> requestLocationPermission() async {
+    final ph.PermissionStatus status = await ph.Permission.location.request();
+    if (status.isGranted) {
+      // Permission granted; you can now retrieve the location.
+    } else if (status.isDenied) {
+      // Permission denied.
+      print('Location_permission_denied');
+    }
+  }
+
+  Future<void> getCurrentLocation() async {
+    final loc.Location location = loc.Location();
+    try {
+      final loc.LocationData locationData = await location.getLocation();
+      setState(() {
+        latitude = locationData.latitude!;
+        longitude = locationData.longitude!;
+        print('Location is $latitude and $longitude');
+      });
+      // Handle the location data as needed.
+    } catch (e) {
+      // Handle errors, such as permissions not granted or location services disabled.
+      print('Error getting location: $e');
+    }
+  }
 
   void toggleShowButton() {
     setState(() {
@@ -95,6 +127,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
+                    Text('Shop Name',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
+                    heightBox8,
+                    TextFormField(
+                      controller: shopnameCtrl,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'Enter shop name';
+                        }
+
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          hintText: 'Enter your shop name',
+                          hintStyle: TextStyle(color: Colors.grey)),
+                    ),
+                    heightBox8,
                     Text('Description',
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
@@ -109,7 +163,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         if (value!.isEmpty) {
                           return 'Enter description';
                         }
-
                         return null;
                       },
                       decoration: InputDecoration(
@@ -252,6 +305,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
+                    heightBox8,
+                    Center(
+                      child: InkWell(
+                        onTap: () async {
+                          await requestLocationPermission();
+                          await getCurrentLocation();
+                        },
+                        child: Container(
+                          height: 36.h,
+                          width: 250.w,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(
+                                  color: AppColors.iconButtonThemeColor)),
+                          child: Center(child: Text('Share your location')),
+                        ),
+                      ),
+                    ),
                     AgreeConditionCheck(
                       onChanged: (value) {
                         setState(() {
@@ -259,8 +330,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         });
                       },
                     ),
-                   
-                   
                     heightBox24,
                     Visibility(
                       visible: showButton,
@@ -318,16 +387,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-
   Future<void> onTapToNextButton() async {
     print('Work');
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await createUserController.createUser(
           nameCtrl.text,
           desCtrl.text,
+          shopnameCtrl.text,
           emailCtrl.text,
           image,
-          passwordCtrl.text);
+          passwordCtrl.text,
+          latitude ?? 0.0,
+          longitude ?? 0.0);
 
       if (isSuccess) {
         if (mounted) {

@@ -1,3 +1,4 @@
+import 'package:expriy_deals_vendors/app/modules/bank/controllers/bank_details_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/bank/views/create_bank_info_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/bank/views/update_bank_info_screen.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
@@ -16,6 +17,9 @@ class BankInfoScreen extends StatefulWidget {
 }
 
 class _BankInfoScreenState extends State<BankInfoScreen> {
+  final BankDetailsController bankDetailsController =
+      Get.find<BankDetailsController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,77 +33,123 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
             heightBox12,
             Align(
               alignment: Alignment.topRight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Get.to(() => const CreateBankInfoScreen());
-                    },
-                    child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                              color: AppColors.iconButtonThemeColor,
-                              width: 1.w),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(Icons.add,
+              child: Obx(() {
+                final hasBankDetails =
+                    bankDetailsController.bankDetailsData != null;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Tooltip(
+                      message: hasBankDetails
+                          ? 'Bank details already exist'
+                          : 'Create new bank info',
+                      child: InkWell(
+                        onTap: hasBankDetails
+                            ? null
+                            : () {
+                                Get.to(() => const CreateBankInfoScreen());
+                              },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: hasBankDetails
+                                  ? Colors.grey
+                                  : AppColors.iconButtonThemeColor,
+                              width: 1.w,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.add,
                               size: 20.sp,
-                              color: AppColors.iconButtonThemeColor),
-                        )),
-                  ),
-                  widthBox8,
-                  InkWell(
-                    onTap: () { Get.to(() => const UpdateBankInfoScreen());},
-                    child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                              color: AppColors.iconButtonThemeColor,
-                              width: 1.w),
+                              color:
+                                  hasBankDetails ? Colors.grey : Colors.black,
+                            ),
+                          ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(Icons.edit,
+                      ),
+                    ),
+                    widthBox8,
+                    Tooltip(
+                      message: 'Edit bank details',
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(() => UpdateBankInfoScreen(
+                              accountId:
+                                  bankDetailsController.bankDetailsData?.id ??
+                                      ''));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColors.iconButtonThemeColor,
+                              width: 1.w,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.edit,
                               size: 20.sp,
-                              color: AppColors.iconButtonThemeColor),
-                        )),
-                  ),
-                ],
-              ),
+                              color: AppColors.iconButtonThemeColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                heightBox8,
-                CardInfoCard(
-                  title: 'Account number',
-                  subtitle: '1234567890',
-                ),
-                heightBox8,
-                CardInfoCard(
-                  title: 'Routing number',
-                  subtitle: '1234567890',
-                ),
-                heightBox8,
-                CardInfoCard(
-                  title: 'Bank name',
-                  subtitle: 'Meghna Bank',
-                ),
-                heightBox8,
-                CardInfoCard(
-                  title: 'Bankholder name',
-                  subtitle: 'Md Aminul Islam',
-                ),
-                heightBox8,
-                CardInfoCard(
-                  title: 'Bank address',
-                  subtitle: 'Banasree, Dhaka, Bangladesh',
-                ),
-              ],
-            )
+            Obx(() {
+              if (bankDetailsController.inProgress == true) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    heightBox8,
+                    CardInfoCard(
+                      title: 'Account number',
+                      subtitle: bankDetailsController
+                              .bankDetailsData?.accountNumber ??
+                          'N/A',
+                    ),
+                    heightBox8,
+                    CardInfoCard(
+                      title: 'Routing number',
+                      subtitle: bankDetailsController
+                              .bankDetailsData?.routingNumber ??
+                          'N/A',
+                    ),
+                    heightBox8,
+                    CardInfoCard(
+                      title: 'Bank name',
+                      subtitle:
+                          bankDetailsController.bankDetailsData?.bankName ??
+                              'N/A',
+                    ),
+                    heightBox8,
+                    CardInfoCard(
+                      title: 'Bankholder name',
+                      subtitle: bankDetailsController
+                              .bankDetailsData?.bankHolderName ??
+                          'N/A',
+                    ),
+                    heightBox8,
+                    CardInfoCard(
+                      title: 'Bank address',
+                      subtitle:
+                          bankDetailsController.bankDetailsData?.bankAddress ??
+                              'N/A',
+                    ),
+                  ],
+                );
+              }
+            }),
           ],
         ),
       ),
@@ -135,7 +185,7 @@ class CardInfoCard extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
-                color: const Color(0xff000000),
+                color: Colors.black,
               ),
             ),
             heightBox4,
@@ -144,7 +194,7 @@ class CardInfoCard extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
-                color: const Color(0xff000000),
+                color: Colors.black,
               ),
             ),
           ],

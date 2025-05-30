@@ -1,43 +1,47 @@
+// ignore_for_file: avoid_print
 import 'package:expriy_deals_vendors/get_storage.dart';
 import 'package:expriy_deals_vendors/services/network_caller/network_caller.dart';
 import 'package:expriy_deals_vendors/services/network_caller/network_response.dart';
 import 'package:expriy_deals_vendors/urls.dart';
 import 'package:get/get.dart';
 
-class SignInController extends GetxController {
+class UpdateBankInfoController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  Future<bool> signIn(String email, String password) async {
+  Future<bool> updateCardInfo(
+    String id,
+    String accountNumber,
+    String routingNumber,
+    String bankName,
+    String bankHolderName,
+    String bankAddress,
+  ) async {
     bool isSuccess = false;
 
     _inProgress = true;
     update();
 
     Map<String, dynamic> requestBody = {
-      "email": email,
-      "password": password
+      "accountNumber": accountNumber,
+      "routingNumber": routingNumber,
+      "bankName": bankName,
+      "bankHolderName": bankHolderName,
+      "bankAddress": bankAddress
     }; // Replace your body data
+
     print('Controller e asche');
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .postRequest(Urls.signInUrl, requestBody);
+        .patchRequest(Urls.updateBankDetailsById(id),
+            body: requestBody,
+            accesToken: StorageUtil.getData(StorageUtil.userAccessToken));
 
     if (response.isSuccess) {
-      print(response.responseData['data']['user']['role']);
-      if (response.responseData['data']['user']['role'] == 'vendor') {
-        await StorageUtil.saveData(StorageUtil.userAccessToken,
-            response.responseData['data']['accessToken']);
-        print('Access token : ${response.responseData['data']['accessToken']}');
-        _errorMessage = null;
-        isSuccess = true;
-      } else {
-        _errorMessage = 'You are not a vendor';
-      }
-    } else {
-      _errorMessage = response.errorMessage;
+      _errorMessage = null;
+      isSuccess = true;
     }
 
     _inProgress = false;

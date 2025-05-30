@@ -1,21 +1,38 @@
+import 'package:expriy_deals_vendors/app/modules/order/controllers/order_details_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/order/controllers/update_status_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/order/model/order_details_model.dart';
 import 'package:expriy_deals_vendors/app/modules/order/widgets/price_row.dart';
 import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
-  final String orderId;
-  static const String routeName = '/order-details-screen';
-  const OrderDetailsScreen({super.key, required this.orderId});
+  final OrderDetailsItemModel orderDetailsItemModel;
+
+  const OrderDetailsScreen({super.key, required this.orderDetailsItemModel});
 
   @override
   State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
 }
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+  final OrderDetailsController controller = Get.put(OrderDetailsController());
+  final UpdateStatusController updateStatusController =
+      Get.put(UpdateStatusController());
+
+  String? selectedStatus;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedStatus =
+        widget.orderDetailsItemModel.status?.capitalizeFirst ?? 'Pending';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,140 +40,231 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-
-            SizedBox(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  heightBox20,
-                  CustomAppBar(name: 'Order Details'),
-                  heightBox12,
-                  Card(
-                    child: Container(
-                      decoration: BoxDecoration(
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    heightBox20,
+                    CustomAppBar(name: 'Order Details'),
+                    heightBox12,
+                    Card(
+                      child: Container(
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Colors.white),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 60.h,
-                                  width: 60.w,
-                                  decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 60.h,
+                                    width: 60.w,
+                                    decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
                                       image: DecorationImage(
-                                          image:
-                                              AssetImage(AssetsPath.headphone),
-                                          fit: BoxFit.fill)),
-                                ),
-                                widthBox8,
-                                SizedBox(
-                                  width: 230.w,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            color: Colors.transparent,
-                                            width: 130,
-                                            child: Text(
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              'tr',
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 15.sp),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: 23.h,
-                                            width: 70.w,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                border: Border.all(
-                                                    color: Colors.black12)),
-                                            child: Center(
-                                                child: Text(
-                                              'hg',
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: Colors.red),
-                                            )),
-                                          )
-                                        ],
+                                        image: AssetImage(AssetsPath.headphone),
+                                        fit: BoxFit.fill,
                                       ),
-                                      heightBox12,
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '\$50',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 14.sp),
-                                          ),
-                                          Text(
-                                            'Qty: 1',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 14.sp),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                  widthBox8,
+                                  SizedBox(
+                                    width: 230.w,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              color: Colors.transparent,
+                                              width: 130,
+                                              child: Text(
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                widget.orderDetailsItemModel
+                                                        .product?.name ??
+                                                    'Unknown Product',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 15.sp),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 23.h,
+                                              width: 90.w,
+                                              child: Obx(() => controller
+                                                      .inProgress
+                                                  ? Center(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                              strokeWidth: 2))
+                                                  : DropdownButtonFormField<
+                                                      String>(
+                                                      value: selectedStatus,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        contentPadding:
+                                                            EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        8.w,
+                                                                    vertical:
+                                                                        0),
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .black12),
+                                                        ),
+                                                      ),
+                                                      items: const [
+                                                        DropdownMenuItem(
+                                                            value: 'Pending',
+                                                            child: Text(
+                                                                'Pending')),
+                                                        DropdownMenuItem(
+                                                            value: 'Ongoing',
+                                                            child: Text(
+                                                                'Ongoing')),
+                                                        DropdownMenuItem(
+                                                            value: 'Delivered',
+                                                            child: Text(
+                                                                'Delivered')),
+                                                        DropdownMenuItem(
+                                                            value: 'Cancel',
+                                                            child:
+                                                                Text('Cancel')),
+                                                      ],
+                                                      onChanged: (value) async {
+                                                        if (value != null) {
+                                                          setState(() {
+                                                            selectedStatus =
+                                                                value;
+                                                          });
+                                                          bool success = await updateStatusController
+                                                              .updateStatus(
+                                                                  value
+                                                                      .toLowerCase(),
+                                                                  widget.orderDetailsItemModel
+                                                                          .id ??
+                                                                      '');
+                                                          if (success) {
+                                                            Get.snackbar(
+                                                                'Success',
+                                                                'Status updated to $value');
+
+                                                            setState(() {
+                                                              controller
+                                                                  .getCart();
+                                                            });
+                                                          } else {
+                                                            Get.snackbar(
+                                                                'Error',
+                                                                controller
+                                                                        .errorMessage ??
+                                                                    'Failed to update status');
+                                                            setState(() {
+                                                              selectedStatus = widget
+                                                                      .orderDetailsItemModel
+                                                                      .status
+                                                                      ?.capitalizeFirst ??
+                                                                  'Pending';
+                                                            });
+                                                          }
+                                                        }
+                                                      },
+                                                      style: TextStyle(
+                                                          fontSize: 10,
+                                                          color: Colors.red),
+                                                      isDense: true,
+                                                      iconSize: 20,
+                                                    )),
+                                            ),
+                                          ],
+                                        ),
+                                        heightBox12,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              widget.orderDetailsItemModel
+                                                      .product?.price
+                                                      ?.toString() ??
+                                                  'N/A',
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 14.sp),
+                                            ),
+                                            Text(
+                                              'Quantity: ${widget.orderDetailsItemModel.quantity ?? 0}',
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 14.sp),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  heightBox10,
-                  Text('Order Id : '),
-                  heightBox4,
-                  Text('Delivery Address : '),
-                  heightBox4,
-                  Text('Date : '),
-                  heightBox4,
-                  Text('Payment Method : '),
-                  heightBox30,
-                  Text(
-                    'Price Details',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  heightBox8,
-                  PriceRow(
-                      name: 'Price ', price: '10', nameSize: 14, priceSize: 14),
-                  heightBox10,
-                  PriceRow(
-                      name: 'Delivery Fee',
-                      price: '50',
+                    heightBox10,
+                    Text(
+                        'Order Id: ${widget.orderDetailsItemModel.id ?? 'N/A'}'),
+                    heightBox4,
+                    Text(
+                        'Delivery Address: ${widget.orderDetailsItemModel.billingDetails?.address ?? 'N/A'}'),
+                    heightBox4,
+                    Text(
+                        'Date: ${widget.orderDetailsItemModel.createdAt ?? 'N/A'}'),
+                    heightBox30,
+                    Text(
+                      'Price Details',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    heightBox8,
+                    PriceRow(
+                      name: 'Price',
+                      price: widget.orderDetailsItemModel.product?.price
+                              ?.toString() ??
+                          'N/A',
                       nameSize: 14,
-                      priceSize: 14),
-                  heightBox5,
-                  Container(
-                    height: 1,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.black,
-                  ),
-                  heightBox10,
-                  PriceRow(
-                    name: 'Total',
-                    nameSize: 14,
-                    priceSize: 14,
-                    price: '',
-                  ),
-                ],
+                      priceSize: 14,
+                    ),
+                    heightBox10,
+                    Container(
+                      height: 1,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.black,
+                    ),
+                    heightBox10,
+                    PriceRow(
+                      name: 'Total',
+                      nameSize: 14,
+                      priceSize: 14,
+                      price: widget.orderDetailsItemModel.product?.price
+                              ?.toString() ??
+                          'N/A',
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

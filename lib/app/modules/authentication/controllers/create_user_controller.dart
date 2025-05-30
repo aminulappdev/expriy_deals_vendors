@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
 
+
 class CreateUserController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
@@ -23,9 +24,11 @@ class CreateUserController extends GetxController {
   CreateUserResponseItemModel? get createUserData =>
       createUserResponseModel?.data;
 
+  
+  
   /// 🔁 Update Profile Function
-  Future<bool> createUser(String name, String des, String email, File? image,
-      String password) async {
+  Future<bool> createUser(String name, String des, String shopname, String email, File? image,
+      String password, double latitude, double longitude) async {
     bool isSuccess = false;
     _inProgress = true;
     update();
@@ -40,6 +43,16 @@ class CreateUserController extends GetxController {
         "email": email,
         "description": des,
         "password": password,
+        "role": "vendor",
+        "shopName": shopname,
+        "location": {
+        "type": "Point",
+        "coordinates": [
+          longitude ,
+          latitude, 
+          
+        ]
+    }
       };
 
       request.fields['data'] = jsonEncode(jsonFields);

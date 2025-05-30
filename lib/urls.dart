@@ -18,6 +18,9 @@ class Urls {
   static const String allShopsUrl = '$_baseUrl/shop';
   static const String addProductUrl = '$_baseUrl/products';
   static const String orderDetailstUrl = '$_baseUrl/orders';
+  static const String createCardInfotUrl = '$_baseUrl/bank-details';
+  static const String bankDetailstUrl = '$_baseUrl/bank-details/my-bank-details';
+  
   
 
   static String productDetailsById(
@@ -26,9 +29,21 @@ class Urls {
     return '$_baseUrl/products/$id';
   }
 
+   static String updateBankDetailsById(
+    String id,
+  ) {
+    return '$_baseUrl/bank-details/$id';
+  }
+
   static String deleteCartById(
     String id,
   ) {
     return '$_baseUrl/add-to-card/$id';
+  }
+
+  static String updateOrderStatusById(
+    String id,
+  ) {
+    return '$_baseUrl/orders/$id';
   }
 }

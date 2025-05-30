@@ -4,7 +4,11 @@ import 'package:expriy_deals_vendors/app/modules/authentication/controllers/otp_
 import 'package:expriy_deals_vendors/app/modules/authentication/controllers/resend_otp_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/controllers/reset_password_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/controllers/sign_in_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/bank/controllers/bank_details_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/bank/controllers/create_bank_info_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/bank/controllers/update_bank_info_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/order/controllers/order_details_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/order/controllers/update_status_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_category_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_product_conrtoller.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/edit_profile_controller.dart';
@@ -28,6 +32,10 @@ class ControllerBinder extends Bindings {
     Get.put(EditProfileController());
     Get.put(AllCategoryController());
     Get.put(AllProductController());
+    Get.put(UpdateStatusController());
+    Get.put(CreateBankInfoController());
+    Get.put(BankDetailsController());
+    Get.put(UpdateBankInfoController());
   
   }
 }

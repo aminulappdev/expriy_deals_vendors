@@ -7,7 +7,7 @@ import 'package:expriy_deals_vendors/services/network_caller/network_response.da
 import 'package:expriy_deals_vendors/urls.dart';
 import 'package:get/get.dart';
 
-class AllCategoryController extends GetxController {
+class AllCategoryController extends GetxController { 
   final RxBool _inProgress = false.obs;
   bool get inProgress => _inProgress.value;
 

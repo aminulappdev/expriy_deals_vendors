@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:expriy_deals_vendors/app/modules/order/controllers/order_details_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/order/views/order_details_screen.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
@@ -32,110 +33,15 @@ class _OrderScreenState extends State<OrderScreen> {
         padding: const EdgeInsets.all(12),
         child: Obx(
           () => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 40.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 48.h,
-                      decoration: BoxDecoration(
-                        color: const Color(0xffFAFAFA),
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(
-                          color: Colors.grey[300]!,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          widthBox8,
-                          GestureDetector(
-                            onTap: () {
-                              // Implement search functionality if needed
-                            },
-                            child: Container(
-                              height: 34.h,
-                              width: 34.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.iconButtonThemeColor,
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.search_rounded,
-                                  size: 24.h,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          widthBox8,
-                          Expanded(
-                            child: TextFormField(
-                              onChanged: (value) {
-                                // Implement search filtering if needed
-                              },
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                contentPadding: EdgeInsets.zero,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+              Text(
+                'Earnings',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
               heightBox12,
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Row(
-              //       children: [
-              //         Text(
-              //           'Pending',
-              //           style: TextStyle(color: AppColors.iconButtonThemeColor),
-              //         ),
-              //         widthBox8,
-              //         CircleAvatar(
-              //           backgroundColor: AppColors.iconButtonThemeColor,
-              //           radius: 13,
-              //           child: const Icon(
-              //             Icons.arrow_drop_down_outlined,
-              //             color: Colors.white,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //     Row(
-              //       children: [
-              //         CircleAvatar(
-              //           radius: 13,
-              //           backgroundColor:
-              //               AppColors.iconButtonThemeColor.withOpacity(0.10),
-              //           child: const Icon(
-              //             Icons.visibility,
-              //             size: 16,
-              //           ),
-              //         ),
-              //         widthBox8,
-              //         CircleAvatar(
-              //           radius: 13,
-              //           backgroundColor:
-              //               AppColors.iconButtonThemeColor.withOpacity(0.10),
-              //           child: const Icon(
-              //             Icons.delete,
-              //             size: 16,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ],
-              // ),
-              heightBox12,
+
               // Display loading, error, or data using DataTable
               orderDetailsController.inProgress
                   ? const Expanded(
@@ -257,6 +163,20 @@ class _OrderScreenState extends State<OrderScreen> {
                                           ),
                                         ),
                                       ),
+                                      DataColumn(
+                                        label: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Details',
+                                            style: TextStyle(
+                                              color: AppColors
+                                                  .iconButtonThemeColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                     rows: orderDetailsController.addToCartData!
                                         .map((order) {
@@ -271,6 +191,21 @@ class _OrderScreenState extends State<OrderScreen> {
                                         DataCell(Text(order.status ?? 'N/A')),
                                         DataCell(Text(
                                             '\$${order.totalPrice?.toStringAsFixed(2) ?? '0.00'}')),
+                                        DataCell(InkWell(
+                                          onTap: () {
+                                            Get.to(OrderDetailsScreen(
+                                                orderDetailsItemModel: order));
+                                          },
+                                          child: Text(
+                                            'Details',
+                                            style: TextStyle(
+                                              color: AppColors
+                                                  .iconButtonThemeColor,
+                                              fontWeight: FontWeight.normal,
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
+                                        )),
                                       ]);
                                     }).toList(),
                                   ),

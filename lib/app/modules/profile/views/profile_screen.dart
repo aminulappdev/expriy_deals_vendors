@@ -5,6 +5,7 @@ import 'package:expriy_deals_vendors/app/modules/profile/views/change_password_s
 import 'package:expriy_deals_vendors/app/modules/profile/views/edit_profile_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/info_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/widgets/profile_drawer_feature.dart';
+import 'package:expriy_deals_vendors/app/modules/widthraw/views/widthdraw_screen.dart';
 import 'package:expriy_deals_vendors/app/utils/app_text.dart';
 import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
@@ -82,6 +83,12 @@ class ProfileScreen extends StatelessWidget {
                 feature: 'Bank Details',
                 icon: Icons.payment,
                 ontap: () => Get.to(const BankInfoScreen()),
+              ),
+              heightBox8,
+               ProfileDrawerFeature(
+                feature: 'Widthdaw',
+                icon: Icons.payment,
+                ontap: () => Get.to(const WidthdrawScreen()),
               ),
               heightBox8,
               Text(
