@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-import 'dart:io'; 
+import 'dart:io';
 import 'package:expriy_deals_vendors/get_storage.dart';
 import 'package:expriy_deals_vendors/urls.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -9,14 +9,15 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
 
-class AddProductController extends GetxController {
+class UpdateProductController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
- 
+
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  Future<bool> addProduct({
+  Future<bool> updateProduct({
+    required String id,
     required String name,
     required String details,
     required String category,
@@ -33,8 +34,8 @@ class AddProductController extends GetxController {
 
     try {
       var uri = Uri.parse(
-          Urls.addProductUrl); // Replace with your actual API URL
-      var request = http.MultipartRequest('POST', uri);
+          Urls.updateProductById(id)); // Replace with your actual API URL
+      var request = http.MultipartRequest('PATCH', uri);
 
       // Set product data
       Map<String, dynamic> jsonFields = {
@@ -46,7 +47,7 @@ class AddProductController extends GetxController {
         "stock": int.tryParse(quantity) ?? 0,
         "expiredAt": expiryDate,
         "discount": double.tryParse(discount) ?? 0.0,
-        "quantity" : int.tryParse(quantity) ?? 0,
+        "quantity": int.tryParse(quantity) ?? 0,
       };
 
       request.fields['data'] = jsonEncode(jsonFields);
@@ -65,7 +66,7 @@ class AddProductController extends GetxController {
             contentType: MediaType.parse(mimeType),
           ),
         );
-            }
+      }
 
       // Send request
       var streamedResponse = await request.send();
@@ -76,7 +77,8 @@ class AddProductController extends GetxController {
 
       var decodedResponse = jsonDecode(responseBody) as Map<String, dynamic>;
 
-      if (streamedResponse.statusCode == 200 || streamedResponse.statusCode == 201) {
+      if (streamedResponse.statusCode == 200 ||
+          streamedResponse.statusCode == 201) {
         print('✅ Product added successfully');
         _errorMessage = null;
         isSuccess = true;

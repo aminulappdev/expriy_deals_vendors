@@ -11,8 +11,12 @@ import 'package:expriy_deals_vendors/app/modules/order/controllers/order_details
 import 'package:expriy_deals_vendors/app/modules/order/controllers/update_status_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_category_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_product_conrtoller.dart';
+import 'package:expriy_deals_vendors/app/modules/product/controllers/update_product_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/profile/controllers/change_password_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/edit_profile_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/profile_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/widthraw/controllers/my_widthdrae_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/widthraw/controllers/widthdraw_request_controller.dart';
 import 'package:expriy_deals_vendors/services/network_caller/network_caller.dart';
 import 'package:get/get.dart';
 
@@ -36,6 +40,10 @@ class ControllerBinder extends Bindings {
     Get.put(CreateBankInfoController());
     Get.put(BankDetailsController());
     Get.put(UpdateBankInfoController());
+    Get.put(ChangePasswordController());
+    Get.put(MyWidthdrawController());
+    Get.put(WidthdrawRequestController());
+    Get.put(UpdateProductController());
   
   }
 }

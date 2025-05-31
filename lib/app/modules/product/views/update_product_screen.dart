@@ -1,5 +1,6 @@
 import 'package:expriy_deals_vendors/app/modules/product/controllers/add_product_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_category_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/product/controllers/update_product_controller.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
@@ -11,13 +12,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({super.key});
+class UpdateProductScreen extends StatefulWidget {
+  final String? productId;
+  const UpdateProductScreen({super.key, this.productId});
   @override
-  State<AddProductScreen> createState() => _AddProductScreenState();
+  State<UpdateProductScreen> createState() => _UpdateProductScreenState();
 }
 
-class _AddProductScreenState extends State<AddProductScreen> {
+class _UpdateProductScreenState extends State<UpdateProductScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController detailsCtrl = TextEditingController();
@@ -30,6 +32,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
       Get.put(AllCategoryController());
   final AddProductController addProductController =
       Get.put(AddProductController());
+  final UpdateProductController updateProductController =
+      Get.put(UpdateProductController());
+  
 
   List<File> selectedImages = [];
   final ImagePicker _picker = ImagePicker();
@@ -46,6 +51,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
   @override
   void initState() {
     super.initState();
+    print('Update Product Screen initialized with product ID: ${widget.productId}');
+    print(widget.productId);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       allCategoryController.getCategory();
     });
@@ -354,9 +361,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                     );
                                     if (success) {
                                       clearData();
-                                      allCategoryController.getCategory();
+                                      updateProductController.updateProduct(category: '',days: '',
+                                          discount: '', expiryDate: '',
+                                          name: '', price: '', quantity: '',
+                                          details: '', images: [], id: '');
                                       Get.snackbar('Success',
-                                          'Product added successfully');
+                                          'Product updated successfully');
                                     } else {
                                       Get.snackbar(
                                           'Error',

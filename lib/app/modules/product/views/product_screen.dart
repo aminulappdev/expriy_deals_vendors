@@ -1,7 +1,7 @@
-
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_category_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_product_conrtoller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/views/add_product_screen.dart';
+import 'package:expriy_deals_vendors/app/modules/product/views/update_product_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/product/widgets/product_card.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
@@ -26,8 +26,10 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final TextEditingController searchController = TextEditingController();
   final ScrollController scrollController = ScrollController();
-  final AllProductController allProductController = Get.find<AllProductController>();
-  final AllCategoryController allCategoryController = Get.find<AllCategoryController>();
+  final AllProductController allProductController =
+      Get.find<AllProductController>();
+  final AllCategoryController allCategoryController =
+      Get.find<AllCategoryController>();
   String? _selectedCategoryId; // Track selected category ID
   String searchQuery = '';
   Timer? _debounce;
@@ -37,7 +39,8 @@ class _ProductScreenState extends State<ProductScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       allCategoryController.getCategory();
-      allProductController.getProduct(categoryId: null); // Fetch all products initially
+      allProductController.getProduct(
+          categoryId: null); // Fetch all products initially
     });
     searchController.addListener(() {
       _onSearchChanged(searchController.text);
@@ -187,7 +190,8 @@ class _ProductScreenState extends State<ProductScreen> {
                     scrollDirection: Axis.horizontal,
                     itemCount: allCategoryController.categoryData!.length,
                     itemBuilder: (context, index) {
-                      final category = allCategoryController.categoryData![index];
+                      final category =
+                          allCategoryController.categoryData![index];
                       final isSelected = _selectedCategoryId == category.id;
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 4.w),
@@ -196,7 +200,8 @@ class _ProductScreenState extends State<ProductScreen> {
                             setState(() {
                               _selectedCategoryId = category.id;
                             });
-                            allProductController.getProduct(categoryId: category.id);
+                            allProductController.getProduct(
+                                categoryId: category.id);
                           },
                           child: Container(
                             height: 55.h,
@@ -204,9 +209,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(24),
                               border: Border.all(
-                                color:  AppColors.iconButtonThemeColor
-                                   
-                              ),
+                                  color: AppColors.iconButtonThemeColor),
                               color: isSelected
                                   ? AppColors.iconButtonThemeColor
                                   : Colors.transparent,
@@ -229,8 +232,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     color: isSelected
-                                  ? Colors.white
-                                  : const Color.fromARGB(255, 10, 10, 10),
+                                        ? Colors.white
+                                        : const Color.fromARGB(255, 10, 10, 10),
                                     fontWeight: FontWeight.w500,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -246,7 +249,6 @@ class _ProductScreenState extends State<ProductScreen> {
               }),
             ),
             heightBox12,
-            
             Expanded(
               child: Obx(() {
                 if (allProductController.inProgress == true) {
@@ -255,9 +257,11 @@ class _ProductScreenState extends State<ProductScreen> {
                     allProductController.productData!.isEmpty) {
                   return const Center(child: Text('No products found'));
                 }
-                final filteredProducts = _getFilteredProducts(allProductController.productData!);
+                final filteredProducts =
+                    _getFilteredProducts(allProductController.productData!);
                 if (filteredProducts.isEmpty && searchQuery.isNotEmpty) {
-                  return const Center(child: Text('No matching products found'));
+                  return const Center(
+                      child: Text('No matching products found'));
                 }
                 return GridView.builder(
                   padding: EdgeInsets.zero,
@@ -273,8 +277,20 @@ class _ProductScreenState extends State<ProductScreen> {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: ProductCard(
+                        editOntap: () {
+                          Get.to(UpdateProductScreen(
+                                  productId: product.id ?? ''))
+                              ?.then((value) {
+                            if (value == true) {
+                              allProductController.getProduct(
+                                  categoryId: _selectedCategoryId);
+                            }
+                          });
+                        },
                         isShowDiscount: false,
-                        image: product.images.isNotEmpty ? product.images[0].url ?? '' : '',
+                        image: product.images.isNotEmpty
+                            ? product.images[0].url ?? ''
+                            : '',
                         title: product.name ?? 'Product',
                         price: product.price?.toString() ?? '0',
                         productId: product.id ?? '',

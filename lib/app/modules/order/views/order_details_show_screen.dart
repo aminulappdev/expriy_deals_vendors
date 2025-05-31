@@ -37,7 +37,7 @@ class _OrderScreenState extends State<OrderScreen> {
             children: [
               SizedBox(height: 40.h),
               Text(
-                'Earnings',
+                'My Orders',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
               heightBox12,

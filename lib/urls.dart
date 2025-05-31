@@ -20,10 +20,19 @@ class Urls {
   static const String orderDetailstUrl = '$_baseUrl/orders';
   static const String createCardInfotUrl = '$_baseUrl/bank-details';
   static const String bankDetailstUrl = '$_baseUrl/bank-details/my-bank-details';
+  static const String changePasswordtUrl = '$_baseUrl/auth/change-password';
+  static const String withdrawUrl = '$_baseUrl/withdraw-request/my-request';
+  static const String withdrawRequestUrl = '$_baseUrl/withdraw-request';
   
   
 
   static String productDetailsById(
+    String id,
+  ) {
+    return '$_baseUrl/products/$id';
+  }
+
+   static String updateProductById(
     String id,
   ) {
     return '$_baseUrl/products/$id';

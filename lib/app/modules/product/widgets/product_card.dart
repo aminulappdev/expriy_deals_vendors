@@ -1,4 +1,6 @@
 
+import 'package:expriy_deals_vendors/app/modules/product/views/product_datails_screen.dart';
+import 'package:expriy_deals_vendors/app/modules/product/views/update_product_screen.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,7 @@ class ProductCard extends StatefulWidget {
   final String? discount;
   final String? title;
   final String? price;
-
+  final VoidCallback? editOntap;
   final bool isShowDiscount;
   const ProductCard({
     super.key,
@@ -21,7 +23,7 @@ class ProductCard extends StatefulWidget {
     this.title,
     this.price,
     required this.productId,
-    this.discount,
+    this.discount, this.editOntap,
   });
 
   @override
@@ -43,9 +45,9 @@ class _ProductCardState extends State<ProductCard> {
     return GestureDetector(
       onTap: () {
         print('Product card theke: ${widget.productId}');
-        // Get.to(ProductDetailScreen(
-        //   productId: widget.productId,
-        // ));
+        Get.to(ProductDetailScreen(
+          productId: widget.productId,
+        ));
       },
       child: Card(
         elevation: 1,
@@ -91,21 +93,44 @@ class _ProductCardState extends State<ProductCard> {
                           alignment: Alignment.topRight,
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: GestureDetector(
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color:
-                                              AppColors.iconButtonThemeColor)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: AppColors.iconButtonThemeColor,
-                                      size: 20,
-                                    ),
-                                  )),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                GestureDetector(
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color:
+                                                  AppColors.iconButtonThemeColor)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: AppColors.iconButtonThemeColor,
+                                          size: 20,
+                                        ),
+                                      )),
+                                ),
+                                widthBox4,
+                                GestureDetector(
+                                  onTap: widget.editOntap,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color:
+                                                  AppColors.iconButtonThemeColor)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Icon(
+                                          Icons.edit,
+                                          color: AppColors.iconButtonThemeColor,
+                                          size: 20,
+                                        ),
+                                      )),
+                                ),
+                              ],
                             ),
                           )),
                 ),

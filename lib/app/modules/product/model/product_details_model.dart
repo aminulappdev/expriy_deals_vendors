@@ -38,14 +38,14 @@ class ProductDetailsData {
         required this.stock,
     });
 
-    final int? totalSell;
+    final dynamic? totalSell;
     final String? id;
     final List<Image> images;
     final Author? author;
     final String? name;
     final String? details;
     final Category? category;
-    final double? price;
+    final dynamic price;
     final DateTime? expiredAt;
     final int? discount;
     final bool? isDeleted;
