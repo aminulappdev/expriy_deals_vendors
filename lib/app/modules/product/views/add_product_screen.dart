@@ -71,7 +71,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   heightBox16,
                   Text('Upload images'),
                   heightBox12,
-                  InkWell(
+                  InkWell( 
                     onTap: _pickImage,
                     child: Container(
                       height: 140,

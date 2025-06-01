@@ -24,7 +24,7 @@ class ControllerBinder extends Bindings {
   @override
 
   void dependencies() { 
-    Get.put(NetworkCaller());
+    Get.put(NetworkCaller()); 
     Get.put(CreateUserController());
     Get.put(OtpVerifyController());
     Get.put(SignInController());

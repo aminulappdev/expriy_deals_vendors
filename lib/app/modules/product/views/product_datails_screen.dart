@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'package:expriy_deals_vendors/app/modules/product/controllers/add_to_cart_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_product_conrtoller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/product_details_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/widgets/product_caresoul_slider.dart';
@@ -23,8 +22,7 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final ProductDetailsController productDetailsController =
       Get.put(ProductDetailsController());
-  final AddToCartController addToCartController =
-      Get.put(AddToCartController());
+  
   final AllProductController allProductController =
       Get.put(AllProductController());
 

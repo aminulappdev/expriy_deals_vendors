@@ -1,5 +1,8 @@
-import 'package:expriy_deals_vendors/app/modules/product/controllers/add_product_controller.dart';
+// ignore_for_file: deprecated_member_use, unnecessary_to_list_in_spreads, avoid_print
+
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_category_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/product/controllers/all_product_conrtoller.dart';
+import 'package:expriy_deals_vendors/app/modules/product/controllers/product_details_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/update_product_controller.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
@@ -15,6 +18,7 @@ import 'dart:io';
 class UpdateProductScreen extends StatefulWidget {
   final String? productId;
   const UpdateProductScreen({super.key, this.productId});
+
   @override
   State<UpdateProductScreen> createState() => _UpdateProductScreenState();
 }
@@ -30,15 +34,17 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   final TextEditingController discountCtrl = TextEditingController();
   final AllCategoryController allCategoryController =
       Get.put(AllCategoryController());
-  final AddProductController addProductController =
-      Get.put(AddProductController());
+  final ProductDetailsController productDetailScreen =
+      Get.put(ProductDetailsController());
   final UpdateProductController updateProductController =
       Get.put(UpdateProductController());
-  
+  final AllProductController allProductController =
+      Get.put(AllProductController());
 
-  List<File> selectedImages = [];
+  List<File> selectedImages = []; // For new images picked by the user
   final ImagePicker _picker = ImagePicker();
   String? selectedCategoryId;
+  bool isFormPrefilled = false; // Flag to prevent re-pre-filling
 
   Future<void> _pickImage() async {
     final pickedFiles = await _picker.pickMultiImage();
@@ -51,8 +57,35 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   @override
   void initState() {
     super.initState();
-    print('Update Product Screen initialized with product ID: ${widget.productId}');
-    print(widget.productId);
+    print(
+        'Update Product Screen initialized with product ID: ${widget.productId}');
+    if (widget.productId != null) {
+      // Fetch product details and pre-fill form
+      productDetailScreen.productDetails(widget.productId!).then((success) {
+        if (success && !isFormPrefilled) {
+          final productData = productDetailScreen.productDetailsData;
+          if (productData != null) {
+            setState(() {
+              nameCtrl.text = productData.name ?? '';
+              detailsCtrl.text = productData.details ?? '';
+              priceCtrl.text = productData.price.toString();
+              quantityCtrl.text = productData.stock.toString();
+              expiryDateCtrl.text = productData.expiredAt.toString();
+              // Calculate days until expiry or use a relevant field
+              if (productData.expiredAt != null) {
+                daysCtrl.text = productData.expiredAt!
+                    .difference(DateTime.now())
+                    .inDays
+                    .toString();
+              }
+              discountCtrl.text = productData.discount.toString();
+              selectedCategoryId = productData.category?.id;
+              isFormPrefilled = true; // Mark as pre-filled
+            });
+          }
+        }
+      });
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       allCategoryController.getCategory();
     });
@@ -66,7 +99,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
         return true;
       },
       child: Scaffold(
-        body: GetBuilder<AddProductController>(
+        body: GetBuilder<UpdateProductController>(
           builder: (controller) => Padding(
             padding: EdgeInsets.all(12.0.h),
             child: SingleChildScrollView(
@@ -74,7 +107,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   heightBox20,
-                  CustomAppBar(name: 'Add product'),
+                  CustomAppBar(name: 'Update product'),
                   heightBox16,
                   Text('Upload images'),
                   heightBox12,
@@ -87,51 +120,95 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: Colors.black),
                       ),
-                      child: selectedImages.isEmpty
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.add, size: 40),
-                                Text('Add product images',
-                                    style: TextStyle(fontSize: 20)),
-                              ],
-                            )
-                          : SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: selectedImages
-                                    .asMap()
-                                    .entries
-                                    .map((entry) => Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Stack(
-                                            children: [
-                                              Image.file(
-                                                entry.value,
-                                                width: 100,
-                                                height: 100,
-                                                fit: BoxFit.cover,
-                                              ),
-                                              Positioned(
-                                                right: 0,
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      selectedImages
-                                                          .removeAt(entry.key);
-                                                    });
-                                                  },
-                                                  child: Icon(
-                                                      Icons.remove_circle,
+                      child: Obx(() {
+                        // Combine controller's displayImages and local selectedImages
+                        final hasImages =
+                            productDetailScreen.displayImages.isNotEmpty ||
+                                selectedImages.isNotEmpty;
+                        return hasImages
+                            ? SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    // Display pre-fetched images (URLs)
+                                    ...productDetailScreen.displayImages
+                                        .asMap()
+                                        .entries
+                                        .map((entry) {
+                                      return Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Stack(
+                                          children: [
+                                            Image.network(
+                                              entry.value,
+                                              width: 100,
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  Icon(Icons.error,
                                                       color: Colors.red),
-                                                ),
+                                            ),
+                                            Positioned(
+                                              right: 0,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  productDetailScreen
+                                                      .displayImages
+                                                      .removeAt(entry.key);
+                                                },
+                                                child: Icon(Icons.remove_circle,
+                                                    color: Colors.red),
                                               ),
-                                            ],
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
-                            ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                    // Display newly picked images (Files)
+                                    ...selectedImages
+                                        .asMap()
+                                        .entries
+                                        .map((entry) {
+                                      return Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Stack(
+                                          children: [
+                                            Image.file(
+                                              entry.value,
+                                              width: 100,
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            Positioned(
+                                              right: 0,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    selectedImages
+                                                        .removeAt(entry.key);
+                                                  });
+                                                },
+                                                child: Icon(Icons.remove_circle,
+                                                    color: Colors.red),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                                  ],
+                                ),
+                              )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.add, size: 40),
+                                  Text('Add product images',
+                                      style: TextStyle(fontSize: 20)),
+                                ],
+                              );
+                      }),
                     ),
                   ),
                   heightBox12,
@@ -348,7 +425,9 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                           'Error', 'Please select a category');
                                       return;
                                     }
-                                    bool success = await controller.addProduct(
+                                    bool success =
+                                        await controller.updateProduct(
+                                      id: widget.productId!,
                                       name: nameCtrl.text,
                                       details: detailsCtrl.text,
                                       category: selectedCategoryId!,
@@ -361,10 +440,8 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                     );
                                     if (success) {
                                       clearData();
-                                      updateProductController.updateProduct(category: '',days: '',
-                                          discount: '', expiryDate: '',
-                                          name: '', price: '', quantity: '',
-                                          details: '', images: [], id: '');
+                                      allProductController.getProduct();
+                                      Get.back();
                                       Get.snackbar('Success',
                                           'Product updated successfully');
                                     } else {
@@ -375,7 +452,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                     }
                                   }
                                 },
-                                text: 'Save',
+                                text: 'Update Product',
                               ),
                       ],
                     ),
@@ -398,6 +475,8 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
     daysCtrl.clear();
     discountCtrl.clear();
     selectedImages.clear();
+    productDetailScreen.displayImages.clear();
+    isFormPrefilled = false; // Reset flag for future use
   }
 
   @override

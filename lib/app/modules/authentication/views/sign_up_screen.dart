@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+import 'dart:math';
 import 'package:email_validator/email_validator.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/controllers/create_user_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/views/sign_in_screen.dart';
@@ -8,6 +9,7 @@ import 'package:expriy_deals_vendors/app/modules/authentication/views/verify_ema
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/agree_condition_widget.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/footer_section.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/welcome_text.dart';
+import 'package:expriy_deals_vendors/app/modules/common/views/review_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/onboarding/widgets/custom_scafold_background.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
@@ -141,32 +143,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         if (value!.isEmpty) {
                           return 'Enter shop name';
                         }
-
                         return null;
                       },
                       decoration: InputDecoration(
                           hintText: 'Enter your shop name',
-                          hintStyle: TextStyle(color: Colors.grey)),
-                    ),
-                    heightBox8,
-                    Text('Description',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      controller: desCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (String? value) {
-                        if (value!.isEmpty) {
-                          return 'Enter description';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          hintText: 'Enter your description',
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
@@ -194,7 +174,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Uplpoad your tax documents',
+                    Text('Upload your tax documents',
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -332,12 +312,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     heightBox24,
                     Visibility(
-                      visible: showButton,
+                      visible: showButton && latitude != null, // Updated condition
                       replacement: Opacity(
                         opacity: 0.5,
                         child: CustomElevatedButton(
                           text: 'Verify Email',
-                          onPressed: () {},
+                          onPressed: () {
+                            showSnackBarMessage(
+                                context, 'Please share your location to proceed', true);
+                          },
                         ),
                       ),
                       child: GetBuilder<CreateUserController>(
@@ -392,7 +375,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await createUserController.createUser(
           nameCtrl.text,
-          desCtrl.text,
           shopnameCtrl.text,
           emailCtrl.text,
           image,
@@ -402,38 +384,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       if (isSuccess) {
         if (mounted) {
-          print(
-              'Otp Token : ${createUserController.createUserData?.otpToken?.token}');
+          clearTextField();
           showSnackBarMessage(context, 'New user created');
-          Get.to(VerifyEmailScreen(
-            token: '${createUserController.createUserData?.otpToken?.token}',
-          ));
+          Get.to(ReviewScreen());
           // print('My token ---------------------------------------');
           // print(signUpController.token);
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, createUserController.errorMessage!, true);
-          }
+        }
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, createUserController.errorMessage!, true);
         }
       }
     }
   }
 
   void clearTextField() {
+    // Clear the text fields
     emailCtrl.clear();
     nameCtrl.clear();
+    shopnameCtrl.clear();
     emailCtrl.clear();
     passwordCtrl.clear();
+    image = null;
   }
 
   @override
   void dispose() {
     super.dispose();
-
     emailCtrl.dispose();
     nameCtrl.dispose();
-    emailCtrl.dispose();
+    shopnameCtrl.dispose();
     passwordCtrl.dispose();
   }
 }

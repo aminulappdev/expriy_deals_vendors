@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-import 'dart:io';
+import 'dart:io'; 
 import 'package:expriy_deals_vendors/get_storage.dart';
 import 'package:expriy_deals_vendors/urls.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -34,7 +34,7 @@ class UpdateProductController extends GetxController {
 
     try {
       var uri = Uri.parse(
-          Urls.updateProductById(id)); // Replace with your actual API URL
+          Urls.updateProductById(id));
       var request = http.MultipartRequest('PATCH', uri);
 
       // Set product data
@@ -52,7 +52,7 @@ class UpdateProductController extends GetxController {
 
       request.fields['data'] = jsonEncode(jsonFields);
       request.headers['Authorization'] =
-          'Bearer ${StorageUtil.getData(StorageUtil.userAccessToken)}'; // Assuming you have a StorageService to get the token
+          'Bearer ${StorageUtil.getData(StorageUtil.userAccessToken)}';
 
       // Add multiple images
       for (int i = 0; i < images.length; i++) {
@@ -61,7 +61,7 @@ class UpdateProductController extends GetxController {
 
         request.files.add(
           await http.MultipartFile.fromPath(
-            'images', // Backend should expect array of images
+            'images', 
             imagePath,
             contentType: MediaType.parse(mimeType),
           ),
@@ -79,7 +79,7 @@ class UpdateProductController extends GetxController {
 
       if (streamedResponse.statusCode == 200 ||
           streamedResponse.statusCode == 201) {
-        print('✅ Product added successfully');
+        print('✅ Product Updated successfully');
         _errorMessage = null;
         isSuccess = true;
       } else {

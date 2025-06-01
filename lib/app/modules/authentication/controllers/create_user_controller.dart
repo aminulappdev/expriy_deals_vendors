@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
 
-
 class CreateUserController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
@@ -24,11 +23,9 @@ class CreateUserController extends GetxController {
   CreateUserResponseItemModel? get createUserData =>
       createUserResponseModel?.data;
 
-  
-  
   /// 🔁 Update Profile Function
-  Future<bool> createUser(String name, String des, String shopname, String email, File? image,
-      String password, double latitude, double longitude) async {
+  Future<bool> createUser(String name, String shopname, String email,
+      File? image, String password, double latitude, double longitude) async {
     bool isSuccess = false;
     _inProgress = true;
     update();
@@ -41,18 +38,16 @@ class CreateUserController extends GetxController {
       Map<String, dynamic> jsonFields = {
         "name": name,
         "email": email,
-        "description": des,
         "password": password,
         "role": "vendor",
         "shopName": shopname,
         "location": {
-        "type": "Point",
-        "coordinates": [
-          longitude ,
-          latitude, 
-          
-        ]
-    }
+          "type": "Point",
+          "coordinates": [
+            longitude,
+            latitude,
+          ]
+        }
       };
 
       request.fields['data'] = jsonEncode(jsonFields);
@@ -66,7 +61,7 @@ class CreateUserController extends GetxController {
 
         request.files.add(
           await http.MultipartFile.fromPath(
-            'profile', // 🔑 Backend should expect this key
+            'document', // 🔑 Backend should expect this key
             imagePath,
             contentType: MediaType.parse(mimeType),
           ),
@@ -83,12 +78,9 @@ class CreateUserController extends GetxController {
       var decodedResponse = jsonDecode(responseBody) as Map<String, dynamic>;
       // var decodedResponse = jsonDecode(responseBody);
 
-      if (streamedResponse.statusCode == 200) {
-        createUserResponseModel =
-            CreateUserResponseModel.fromJson(decodedResponse);
-
-        print('Model Token : ${createUserData?.otpToken?.token}');
-        print('Token : ${decodedResponse['data']['otpToken']['token']}');
+      if (streamedResponse.statusCode == 200 ||
+          streamedResponse.statusCode == 201) {
+        print('Successfully created user');
 
         _errorMessage = null;
         isSuccess = true;

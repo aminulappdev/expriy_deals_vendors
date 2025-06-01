@@ -2,7 +2,6 @@ import 'package:expriy_deals_vendors/app/modules/onboarding/widgets/custom_scafo
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
-import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
