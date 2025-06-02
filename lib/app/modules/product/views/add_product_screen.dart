@@ -290,7 +290,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              width: 170,
+                              width: 165,
                               child: TextFormField(
                                 controller: daysCtrl,
                                 autovalidateMode:
@@ -305,7 +305,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               ),
                             ),
                             SizedBox(
-                              width: 170,
+                              width: 165,
                               child: TextFormField(
                                 controller: discountCtrl,
                                 autovalidateMode:

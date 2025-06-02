@@ -1,11 +1,9 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
-import 'dart:math';
 import 'package:email_validator/email_validator.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/controllers/create_user_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/views/sign_in_screen.dart';
-import 'package:expriy_deals_vendors/app/modules/authentication/views/verify_email_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/agree_condition_widget.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/footer_section.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/welcome_text.dart';

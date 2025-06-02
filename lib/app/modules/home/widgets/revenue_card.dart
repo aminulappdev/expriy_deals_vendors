@@ -26,7 +26,7 @@ class RevenueCard extends StatelessWidget {
       elevation: 2,
       child: Container(
         height: 126,
-        width: 170,
+        width: 160,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Colors.white,
@@ -52,7 +52,7 @@ class RevenueCard extends StatelessWidget {
                         value: selectedMonth,
                         icon: const Icon(
                           Icons.arrow_drop_down_circle_sharp,
-                          size: 16,
+                          size: 12,
                           color: Colors.white,
                         ),
                         dropdownColor: dropdownColor,
@@ -60,7 +60,7 @@ class RevenueCard extends StatelessWidget {
                         items: monthList
                             .map((month) => DropdownMenuItem(
                                   value: month,
-                                  child: Text(month),
+                                  child: Text(month,style: const TextStyle(color: Colors.white,fontSize: 12),),
                                 ))
                             .toList(),
                         onChanged: onMonthChanged,

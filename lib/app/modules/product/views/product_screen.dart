@@ -1,10 +1,12 @@
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_category_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_product_conrtoller.dart';
+import 'package:expriy_deals_vendors/app/modules/product/controllers/delete_product_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/views/add_product_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/product/views/update_product_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/product/widgets/product_card.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
+import 'package:expriy_deals_vendors/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -30,6 +32,8 @@ class _ProductScreenState extends State<ProductScreen> {
       Get.find<AllProductController>();
   final AllCategoryController allCategoryController =
       Get.find<AllCategoryController>();
+  final DeleteProductController deleteProductController =
+      Get.find<DeleteProductController>();
   String? _selectedCategoryId; // Track selected category ID
   String searchQuery = '';
   Timer? _debounce;
@@ -94,7 +98,7 @@ class _ProductScreenState extends State<ProductScreen> {
               children: [
                 Expanded(
                   child: Container(
-                    height: 48.h,
+                    height: 54.h,
                     decoration: BoxDecoration(
                       color: const Color(0xffFAFAFA),
                       borderRadius: BorderRadius.circular(24),
@@ -178,7 +182,7 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             heightBox12,
             SizedBox(
-              height: 60.h,
+              height: 50.h,
               child: Obx(() {
                 if (allCategoryController.inProgress == true) {
                   return const Center(child: CircularProgressIndicator());
@@ -204,8 +208,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                 categoryId: category.id);
                           },
                           child: Container(
-                            height: 55.h,
-                            width: 150.w,
+                            height: 44.h,
+                            width: 130.w,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(24),
                               border: Border.all(
@@ -277,6 +281,9 @@ class _ProductScreenState extends State<ProductScreen> {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: ProductCard(
+                        deleteOnTap: () {
+                          onTapToNextButton(product.id ?? '');
+                        },
                         editOntap: () {
                           Get.to(UpdateProductScreen(
                                   productId: product.id ?? ''))
@@ -306,5 +313,19 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  
+  Future<void> onTapToNextButton(String id) async {
+    final bool isSuccess = await deleteProductController.deleteProduct(id);
+
+    if (isSuccess) {
+      if (mounted) {
+        allProductController.getProduct();
+        showSnackBarMessage(context, 'Product deleted successfully', false);
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, deleteProductController.errorMessage, true);
+      }
+    }
+  }
 }

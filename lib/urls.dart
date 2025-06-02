@@ -23,6 +23,7 @@ class Urls {
   static const String changePasswordtUrl = '$_baseUrl/auth/change-password';
   static const String withdrawUrl = '$_baseUrl/withdraw-request/my-request';
   static const String withdrawRequestUrl = '$_baseUrl/withdraw-request';
+  static const String contentUrl = '$_baseUrl/contents';
   
   
 

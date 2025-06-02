@@ -1,6 +1,5 @@
 
 import 'package:expriy_deals_vendors/app/modules/product/views/product_datails_screen.dart';
-import 'package:expriy_deals_vendors/app/modules/product/views/update_product_screen.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ class ProductCard extends StatefulWidget {
   final String? title;
   final String? price;
   final VoidCallback? editOntap;
+  final VoidCallback? deleteOnTap;
   final bool isShowDiscount;
   const ProductCard({
     super.key,
@@ -23,7 +23,7 @@ class ProductCard extends StatefulWidget {
     this.title,
     this.price,
     required this.productId,
-    this.discount, this.editOntap,
+    this.discount, this.editOntap, this.deleteOnTap,
   });
 
   @override
@@ -97,6 +97,7 @@ class _ProductCardState extends State<ProductCard> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 GestureDetector(
+                                  onTap: widget.deleteOnTap,
                                   child: Container(
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
