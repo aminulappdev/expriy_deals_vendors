@@ -125,6 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RevenueCard(
+                    name: 'Total Revenue',
                     selectedMonth: selectedMonth,
                     onMonthChanged: (val) {
                       if (val != null) {
@@ -139,6 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     highlightColor: Colors.green,
                   ),
                    RevenueCard(
+                    name: 'Total Producst',
                     selectedMonth: selectedMonth,
                     onMonthChanged: (val) {
                       if (val != null) {

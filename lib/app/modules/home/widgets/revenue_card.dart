@@ -9,6 +9,7 @@ class RevenueCard extends StatelessWidget {
   final List<String> monthList;
   final Color dropdownColor;
   final Color highlightColor;
+  final String name;
 
   const RevenueCard({
     super.key,
@@ -18,6 +19,7 @@ class RevenueCard extends StatelessWidget {
     required this.monthList,
     required this.dropdownColor,
     required this.highlightColor,
+    required this.name,
   });
 
   @override
@@ -39,7 +41,9 @@ class RevenueCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Total Revenue'),
+                  Text(
+                    name,
+                  ),
                   Container(
                     height: 24.h,
                     padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -60,7 +64,11 @@ class RevenueCard extends StatelessWidget {
                         items: monthList
                             .map((month) => DropdownMenuItem(
                                   value: month,
-                                  child: Text(month,style: const TextStyle(color: Colors.white,fontSize: 12),),
+                                  child: Text(
+                                    month,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 12),
+                                  ),
                                 ))
                             .toList(),
                         onChanged: onMonthChanged,

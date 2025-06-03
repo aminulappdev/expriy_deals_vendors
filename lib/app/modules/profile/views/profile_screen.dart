@@ -124,12 +124,12 @@ class ProfileScreen extends StatelessWidget {
               ProfileDrawerFeature(
                 feature: 'Policies',
                 icon: Icons.security,
-                ontap: () => Get.to(const InfoScreen(appBarTitle: 'Privacy & Policies', data: DemoText.policies)),
+                ontap: () => Get.to(const InfoScreen(appBarTitle: 'Privacy & Policies', data: DemoText.policies, params: 'privacyPolicy')),
               ),
               ProfileDrawerFeature(
                 feature: 'About Us',
                 icon: Icons.groups_2_sharp,
-                ontap: () => Get.to(const InfoScreen(appBarTitle: 'About Us', data: DemoText.aboutUs)),
+                ontap: () => Get.to(const InfoScreen(appBarTitle: 'About Us', data: DemoText.aboutUs, params: 'aboutUs')),
               ),
               heightBox8,
               heightBox14,
