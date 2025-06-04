@@ -7,6 +7,7 @@ import 'package:expriy_deals_vendors/app/modules/authentication/controllers/sign
 import 'package:expriy_deals_vendors/app/modules/bank/controllers/bank_details_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/bank/controllers/create_bank_info_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/bank/controllers/update_bank_info_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/earnings/controllers/all_earnings_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/order/controllers/order_details_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/order/controllers/update_status_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_category_controller.dart';
@@ -48,6 +49,7 @@ class ControllerBinder extends Bindings {
     Get.put(UpdateProductController());
     Get.put(DeleteProductController());
     Get.put(ContentController());
+    Get.put(AllEarningsController());
   
   }
 }

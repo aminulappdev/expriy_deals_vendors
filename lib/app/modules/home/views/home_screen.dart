@@ -1,3 +1,6 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:expriy_deals_vendors/app/modules/earnings/controllers/earning_dashboard_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/home/widgets/percentage_button.dart';
 import 'package:expriy_deals_vendors/app/modules/home/widgets/revenue_card.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
@@ -5,8 +8,8 @@ import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:graphic/graphic.dart' as graphic;
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,49 +19,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Map<String, dynamic>> chartData = [
-    {'month': 'Jan', 'value': 4000, 'type': 'A'},
-    {'month': 'Jan', 'value': 3000, 'type': 'B'},
-    {'month': 'Jan', 'value': 3000, 'type': 'C'},
-    {'month': 'Feb', 'value': 5000, 'type': 'A'},
-    {'month': 'Feb', 'value': 4000, 'type': 'B'},
-    {'month': 'Feb', 'value': 3000, 'type': 'C'},
-    {'month': 'Mar', 'value': 3000, 'type': 'A'},
-    {'month': 'Mar', 'value': 4000, 'type': 'B'},
-    {'month': 'Mar', 'value': 3000, 'type': 'C'},
-    {'month': 'Apr', 'value': 2000, 'type': 'A'},
-    {'month': 'Apr', 'value': 4000, 'type': 'B'},
-    {'month': 'Apr', 'value': 3000, 'type': 'C'},
-    {'month': 'May', 'value': 3000, 'type': 'A'},
-    {'month': 'May', 'value': 4000, 'type': 'B'},
-    {'month': 'May', 'value': 3000, 'type': 'C'},
-    {'month': 'Jun', 'value': 3500, 'type': 'A'},
-    {'month': 'Jun', 'value': 4000, 'type': 'B'},
-    {'month': 'Jun', 'value': 3000, 'type': 'C'},
-    {'month': 'Jul', 'value': 4000, 'type': 'A'},
-    {'month': 'Jul', 'value': 5000, 'type': 'B'},
-    {'month': 'Jul', 'value': 3000, 'type': 'C'},
-    {'month': 'Aug', 'value': 3500, 'type': 'A'},
-    {'month': 'Aug', 'value': 4000, 'type': 'B'},
-    {'month': 'Aug', 'value': 3000, 'type': 'C'},
-    {'month': 'Sep', 'value': 3200, 'type': 'A'},
-    {'month': 'Sep', 'value': 4200, 'type': 'B'},
-    {'month': 'Sep', 'value': 3100, 'type': 'C'},
-    {'month': 'Oct', 'value': 3300, 'type': 'A'},
-    {'month': 'Oct', 'value': 4100, 'type': 'B'},
-    {'month': 'Oct', 'value': 3100, 'type': 'C'},
-    {'month': 'Nov', 'value': 3200, 'type': 'A'},
-    {'month': 'Nov', 'value': 4200, 'type': 'B'},
-    {'month': 'Nov', 'value': 3100, 'type': 'C'},
-    {'month': 'Dec', 'value': 3300, 'type': 'A'},
-    {'month': 'Dec', 'value': 4100, 'type': 'B'},
-    {'month': 'Dec', 'value': 3100, 'type': 'C'},
-  ];
+  final EarningDashboardController earningDashboardController =
+      Get.put(EarningDashboardController());
 
-  final List<String> months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-  ];
+  @override
+  void initState() {
+    earningDashboardController.getEarningDashboard();
+    super.initState();
+  }
+
+  // Dynamic chart data from controller
+  List<Map<String, dynamic>> getChartData() {
+    final monthlyIncome =
+        earningDashboardController.earningDashboardData?.monthlyIncome ?? [];
+    return monthlyIncome
+        .map((income) => {
+              'month': income.month ?? '',
+              'value': income.income ?? 0,
+              'type': 'Income', // Single type for all income data
+            })
+        .toList();
+  }
 
   final List<String> years = [
     '2000',
@@ -76,23 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     '2025'
   ];
 
-  String selectedMonth = 'Jan';
-  String selectedYar = '2025';
-
-  final Map<String, String> monthlyRevenue = {
-    'Jan': '\$18,562',
-    'Feb': '\$17,200',
-    'Mar': '\$19,000',
-    'Apr': '\$15,300',
-    'May': '\$20,450',
-    'Jun': '\$21,300',
-    'Jul': '\$22,000',
-    'Aug': '\$20,100',
-    'Sep': '\$19,700',
-    'Oct': '\$18,900',
-    'Nov': '\$20,350',
-    'Dec': '\$21,000',
-  };
+  String selectedYear = '2025';
 
   @override
   Widget build(BuildContext context) {
@@ -121,53 +86,49 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               heightBox12,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  RevenueCard(
-                    name: 'Total Revenue',
-                    selectedMonth: selectedMonth,
-                    onMonthChanged: (val) {
-                      if (val != null) {
-                        setState(() {
-                          selectedMonth = val;
-                        });
-                      }
-                    },
-                    revenue: monthlyRevenue[selectedMonth] ?? '\$0',
-                    monthList: months,
-                    dropdownColor: AppColors.iconButtonThemeColor,
-                    highlightColor: Colors.green,
-                  ),
-                   RevenueCard(
-                    name: 'Total Producst',
-                    selectedMonth: selectedMonth,
-                    onMonthChanged: (val) {
-                      if (val != null) {
-                        setState(() {
-                          selectedMonth = val;
-                        });
-                      }
-                    },
-                    revenue: monthlyRevenue[selectedMonth] ?? '\$0',
-                    monthList: months,
-                    dropdownColor: AppColors.iconButtonThemeColor,
-                    highlightColor: Colors.green,
-                  ),
-                ],
-              ),
+              GetBuilder<EarningDashboardController>(builder: (controller) {
+                if (controller.inProgress) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (controller.earningDashboardModel.value == null) {
+                  return const Center(child: Text('No data available'));
+                } else {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RevenueCard(
+                        name: 'Total Revenue',
+                        selectedMonth: selectedYear,
+                        revenue: controller.earningDashboardData?.totalIncome
+                                .toString() ??
+                            '\$0',
+                        highlightColor: Colors.green,
+                      ),
+                      RevenueCard(
+                        name: 'Total Products',
+                        selectedMonth: selectedYear,
+                        revenue: controller.earningDashboardData?.totalProducts
+                                .toString() ??
+                            '\$0',
+                        highlightColor: Colors.green,
+                      ),
+                    ],
+                  );
+                }
+              }),
               heightBox12,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Earning Summery',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 15),
-                  
+                  Text(
+                    'Earning Summary',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
                   ),
                   Column(
                     children: [
                       Text('Yearly Revenue'),
                       heightBox4,
-                      ShowPercentageButton(highlightColor: Colors.green.shade100, val: '10'),
+                      ShowPercentageButton(
+                          highlightColor: Colors.green.shade100, val: '10'),
                     ],
                   ),
                   Container(
@@ -180,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        value: selectedYar,
+                        value: selectedYear,
                         icon: const Icon(
                           Icons.arrow_drop_down_circle_sharp,
                           size: 24,
@@ -194,56 +155,53 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Text(year),
                                 ))
                             .toList(),
-                        onChanged:  (val) {
-                      if (val != null) {
-                        setState(() {
-                          selectedYar = val;
-                        });
-                      }
-                    },
+                        onChanged: (val) {
+                          if (val != null) {
+                            setState(() {
+                              selectedYear = val;
+                            });
+                          }
+                        },
                       ),
                     ),
                   ),
                 ],
               ),
-            
               heightBox20,
               SizedBox(
                 height: 250,
-                child: graphic.Chart(
-                  data: chartData,
-                  variables: {
-                    'month': graphic.Variable(
-                      accessor: (Map map) => map['month'] as String,
-                    ),
-                    'value': graphic.Variable(
-                      accessor: (Map map) => map['value'] as num,
-                    ),
-                    'type': graphic.Variable(
-                      accessor: (Map map) => map['type'] as String,
-                    ),
-                  },
-                  marks: [
-                    graphic.IntervalMark(
-                      position:
-                          graphic.Varset('month') * graphic.Varset('value'),
-                      color: graphic.ColorEncode(
-                        variable: 'type',
-                        values: [
-                          const Color(0xfffb5c00),
-                          const Color(0xffff7f24),
-                          const Color(0xffffb27f),
-                        ],
+                child: GetBuilder<EarningDashboardController>(builder: (controller) {
+                  final chartData = getChartData();
+                  if (chartData.isEmpty) {
+                    return const Center(child: Text('No earning data available'));
+                  }
+                  return graphic.Chart(
+                    data: chartData,
+                    variables: {
+                      'month': graphic.Variable(
+                        accessor: (Map map) => map['month'] as String,
                       ),
-                      modifiers: [graphic.StackModifier()],
-                    ),
-                  ],
-                  axes: [
-                    graphic.Defaults.horizontalAxis,
-                    graphic.Defaults.verticalAxis,
-                  ],
-                  coord: graphic.RectCoord(transposed: false),
-                ),
+                      'value': graphic.Variable(
+                        accessor: (Map map) => map['value'] as num,
+                      ),
+                    },
+                    marks: [
+                      graphic.IntervalMark(
+                        position:
+                            graphic.Varset('month') * graphic.Varset('value'),
+                        color: graphic.ColorEncode(
+                          value: const Color(0xfffb5c00), // Single color for all bars
+                        ),
+                        modifiers: [graphic.StackModifier()],
+                      ),
+                    ],
+                    axes: [
+                      graphic.Defaults.horizontalAxis,
+                      graphic.Defaults.verticalAxis,
+                    ],
+                    coord: graphic.RectCoord(transposed: false),
+                  );
+                }),
               ),
             ],
           ),

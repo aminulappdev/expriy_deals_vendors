@@ -24,6 +24,8 @@ class Urls {
   static const String withdrawUrl = '$_baseUrl/withdraw-request/my-request';
   static const String withdrawRequestUrl = '$_baseUrl/withdraw-request';
   static const String contentUrl = '$_baseUrl/contents';
+  static const String vendorEarningsUrl = '$_baseUrl/payments/vendor-earnings';
+  static const String vendorEarningDashboardUrl = '$_baseUrl/payments/vendor-dashboard-data';
   
   
 

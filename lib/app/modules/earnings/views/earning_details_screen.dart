@@ -1,13 +1,16 @@
+import 'package:expriy_deals_vendors/app/modules/earnings/model/all_earnings_model.dart';
 import 'package:expriy_deals_vendors/app/modules/order/widgets/price_row.dart';
 import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:flutter/material.dart';
 
-
 class EarningDetailsScreen extends StatefulWidget {
-  final String orderId;
-  const EarningDetailsScreen({super.key, required this.orderId});
+  final AllEarningsItemModel allEarningsItemModel;
+  const EarningDetailsScreen({
+    super.key,
+    required this.allEarningsItemModel,
+  });
 
   @override
   State<EarningDetailsScreen> createState() => _EarningDetailsScreenState();
@@ -33,7 +36,7 @@ class _EarningDetailsScreenState extends State<EarningDetailsScreen> {
                     children: [
                       Container(
                         height: 86,
-                        width: 122,
+                        width: 90,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
@@ -42,30 +45,37 @@ class _EarningDetailsScreenState extends State<EarningDetailsScreen> {
                       ),
                       widthBox8,
                       SizedBox(
-                        width: 220,
+                        width: 200,
                         height: 76,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text('Full name : '),
-                                Text('Md Aminul Islam'),
+                                Text(widget.allEarningsItemModel.user?.name ??
+                                    '',style: TextStyle(overflow: TextOverflow.ellipsis, fontSize: 14),),
                               ],
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text('Email : '),
-                                Text('aminul@gmail.com'),
+                                SizedBox(
+                                  width: 150,
+                                  child: Text(widget.allEarningsItemModel.user?.email ??
+                                      '',style: TextStyle(overflow: TextOverflow.ellipsis, fontSize: 14),),
+                                ),
                               ],
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text('Number : '),
-                                Text('0197564512'),
+                                Text(widget.allEarningsItemModel.user
+                                        ?.phoneNumber ??
+                                    'Empty',style: TextStyle(overflow: TextOverflow.ellipsis, fontSize: 14),),
                               ],
                             ),
                           ],
@@ -81,39 +91,22 @@ class _EarningDetailsScreenState extends State<EarningDetailsScreen> {
                   heightBox8,
                   PriceRow(
                       name: 'Transaction ID : ',
-                      price: '10',
+                      price: widget.allEarningsItemModel.trnId ?? '',
                       nameSize: 14,
                       priceSize: 14),
                   heightBox10,
                   PriceRow(
                       name: 'A/C holder name:',
-                      price: '50',
-                      nameSize: 14,
-                      priceSize: 14),
-                  heightBox8,
-                  PriceRow(
-                      name: 'A/C number:',
-                      price: '10',
+                      price: widget.allEarningsItemModel.user?.name ?? '',
                       nameSize: 14,
                       priceSize: 14),
                   heightBox8,
                   PriceRow(
                       name: 'Received amount:',
-                      price: '10',
+                      price: widget.allEarningsItemModel.price.toString(),
                       nameSize: 14,
                       priceSize: 14),
                   heightBox8,
-                  PriceRow(
-                      name: 'Detect Percentage:',
-                      price: '10',
-                      nameSize: 14,
-                      priceSize: 14),
-                  heightBox8,
-                  PriceRow(
-                      name: 'Final Amount:',
-                      price: '10',
-                      nameSize: 14,
-                      priceSize: 14),
                 ],
               ),
             ),

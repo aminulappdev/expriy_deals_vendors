@@ -118,7 +118,7 @@ class Verification {
         required this.status,
     });
 
-    final int? otp;
+    final dynamic otp;
     final bool? status;
 
     factory Verification.fromJson(Map<String, dynamic> json){ 
