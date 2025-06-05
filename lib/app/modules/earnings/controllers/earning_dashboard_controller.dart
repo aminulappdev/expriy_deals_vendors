@@ -21,7 +21,7 @@ class EarningDashboardController extends GetxController {
       earningDashboardModel.value?.data;
 
 
-  Future<bool> getEarningDashboard() async {
+  Future<bool> getEarningDashboard(String year) async {
     final token = StorageUtil.getData(StorageUtil.userAccessToken);
     print('Token: $token');
     if (token == null) {
@@ -33,8 +33,12 @@ class EarningDashboardController extends GetxController {
     _inProgress.value = true;
     update();
 
+    Map<String, dynamic> queryParams = {
+      'incomeYear': year,
+    };
+
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .getRequest(Urls.vendorEarningDashboardUrl, accesToken: token);
+        .getRequest(Urls.vendorEarningDashboardUrl, accesToken: token, queryParams: queryParams);
 
     if (response.isSuccess) {
       _errorMessage.value = '';

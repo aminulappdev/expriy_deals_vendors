@@ -54,7 +54,7 @@ class MyWidthdrawItemModel {
     final int? amount;
     final String? status;
     final bool? isDeleted;
-    final String? bankDetails;
+    final BankDetails? bankDetails;
     final DateTime? createdAt;
     final DateTime? updatedAt;
 
@@ -65,9 +65,51 @@ class MyWidthdrawItemModel {
             amount: json["amount"],
             status: json["status"],
             isDeleted: json["isDeleted"],
-            bankDetails: json["bankDetails"],
+            bankDetails: json["bankDetails"] == null ? null : BankDetails.fromJson(json["bankDetails"]),
             createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
             updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+        );
+    }
+
+}
+
+class BankDetails {
+    BankDetails({
+        required this.id,
+        required this.vendor,
+        required this.accountNumber,
+        required this.routingNumber,
+        required this.bankName,
+        required this.bankHolderName,
+        required this.bankAddress,
+        required this.createdAt,
+        required this.updatedAt,
+        required this.v,
+    });
+
+    final String? id;
+    final String? vendor;
+    final String? accountNumber;
+    final String? routingNumber;
+    final String? bankName;
+    final String? bankHolderName;
+    final String? bankAddress;
+    final DateTime? createdAt;
+    final DateTime? updatedAt;
+    final int? v;
+
+    factory BankDetails.fromJson(Map<String, dynamic> json){ 
+        return BankDetails(
+            id: json["_id"],
+            vendor: json["vendor"],
+            accountNumber: json["accountNumber"],
+            routingNumber: json["routingNumber"],
+            bankName: json["bankName"],
+            bankHolderName: json["bankHolderName"],
+            bankAddress: json["bankAddress"],
+            createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+            updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+            v: json["__v"],
         );
     }
 

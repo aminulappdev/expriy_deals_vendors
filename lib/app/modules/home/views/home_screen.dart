@@ -1,8 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:expriy_deals_vendors/app/modules/earnings/controllers/earning_dashboard_controller.dart';
-import 'package:expriy_deals_vendors/app/modules/home/widgets/percentage_button.dart';
 import 'package:expriy_deals_vendors/app/modules/home/widgets/revenue_card.dart';
+import 'package:expriy_deals_vendors/app/modules/profile/controllers/profile_controller.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
@@ -21,10 +21,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final EarningDashboardController earningDashboardController =
       Get.put(EarningDashboardController());
+  final ProfileController profileController = Get.put(ProfileController());
 
   @override
   void initState() {
-    earningDashboardController.getEarningDashboard();
+    profileController.getProfileData();
+    earningDashboardController.getEarningDashboard(selectedYear);
     super.initState();
   }
 
@@ -42,49 +44,79 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final List<String> years = [
-    '2000',
-    '2001',
-    '2002',
-    '2003',
-    '2004',
-    '2005',
-    '2006',
-    '2007',
-    '2008',
-    '2009',
-    '2010',
     '2020',
-    '2025'
+    '2021',
+    '2022',
+    '2023',
+    '2024',
+    '2025',
+    '2026',
+    '2027',
+    '2028',
+    '2029',
+    '2030',
+    '2031',
+    '2032',
+    '2033',
+    '2034',
+    '2035',
   ];
 
   String selectedYear = '2025';
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<ProfileController>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircleAvatar(
-                    radius: 21,
-                    backgroundImage: AssetImage(AssetsPath.headphone),
-                  ),
-                  Container(
-                    height: 42,
-                    width: 42,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: const Color(0xffFB6000).withOpacity(0.10),
-                    ),
-                    child: const Icon(Icons.notifications),
-                  )
-                ],
+              Center(
+                child: Obx(() {
+                  return controller.inProgress
+                      ? const CircularProgressIndicator()
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 22,
+                              backgroundImage:
+                                  controller.profileData?.profile != null
+                                      ? NetworkImage(
+                                          controller.profileData!.profile!)
+                                      : const AssetImage(AssetsPath.appleLogo),
+                            ),
+                            // Container(
+                            //   height: 42,
+                            //   width: 42,
+                            //   decoration: BoxDecoration(
+                            //     shape: BoxShape.circle,
+                            //     color: const Color(0xffFB6000).withOpacity(0.10),
+                            //   ),
+                            //   child: const Icon(Icons.notifications),
+                            // )
+                          ],
+                        );
+                }),
               ),
+              // GetBuilder<ProfileController>(builder: (controller) {
+              //   return Row(
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [
+              //       // Container(
+              //       //   height: 42,
+              //       //   width: 42,
+              //       //   decoration: BoxDecoration(
+              //       //     shape: BoxShape.circle,
+              //       //     color: const Color(0xffFB6000).withOpacity(0.10),
+              //       //   ),
+              //       //   child: const Icon(Icons.notifications),
+              //       // )
+              //     ],
+              //   );
+              // }),
               heightBox12,
               GetBuilder<EarningDashboardController>(builder: (controller) {
                 if (controller.inProgress) {
@@ -123,14 +155,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     'Earning Summary',
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
                   ),
-                  Column(
-                    children: [
-                      Text('Yearly Revenue'),
-                      heightBox4,
-                      ShowPercentageButton(
-                          highlightColor: Colors.green.shade100, val: '10'),
-                    ],
-                  ),
                   Container(
                     height: 30.h,
                     width: 80,
@@ -159,6 +183,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (val != null) {
                             setState(() {
                               selectedYear = val;
+                              earningDashboardController
+                                  .getEarningDashboard(selectedYear);
                             });
                           }
                         },
@@ -170,10 +196,12 @@ class _HomeScreenState extends State<HomeScreen> {
               heightBox20,
               SizedBox(
                 height: 250,
-                child: GetBuilder<EarningDashboardController>(builder: (controller) {
+                child: GetBuilder<EarningDashboardController>(
+                    builder: (controller) {
                   final chartData = getChartData();
                   if (chartData.isEmpty) {
-                    return const Center(child: Text('No earning data available'));
+                    return const Center(
+                        child: Text('No earning data available'));
                   }
                   return graphic.Chart(
                     data: chartData,
@@ -190,7 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         position:
                             graphic.Varset('month') * graphic.Varset('value'),
                         color: graphic.ColorEncode(
-                          value: const Color(0xfffb5c00), // Single color for all bars
+                          value: const Color(
+                              0xfffb5c00), // Single color for all bars
                         ),
                         modifiers: [graphic.StackModifier()],
                       ),

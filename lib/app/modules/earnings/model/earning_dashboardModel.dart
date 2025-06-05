@@ -27,8 +27,8 @@ class EarningDashboardData {
     required this.monthlyIncome,
   });
 
-  final double? totalIncome;
-  final int? totalProducts;
+  final dynamic totalIncome;
+  final dynamic totalProducts;
   final List<MonthlyIncome> monthlyIncome;
 
   factory EarningDashboardData.fromJson(Map<String, dynamic> json) {
