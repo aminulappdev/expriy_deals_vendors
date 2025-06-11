@@ -61,7 +61,7 @@ class OrderDetailsItemModel {
     final Author? user;
     final Author? author;
     final Product? product;
-    final double? totalPrice;
+    final dynamic? totalPrice;
     final int? discount;
     final int? quantity;
     final String? status;
@@ -174,7 +174,7 @@ class Product {
     final String? name;
     final String? details;
     final String? category;
-    final double? price;
+    final dynamic price;
     final DateTime? expiredAt;
     final int? discount;
     final bool? isDeleted;
