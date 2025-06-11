@@ -26,6 +26,7 @@ class Urls {
   static const String contentUrl = '$_baseUrl/contents';
   static const String vendorEarningsUrl = '$_baseUrl/payments/vendor-earnings';
   static const String vendorEarningDashboardUrl = '$_baseUrl/payments/vendor-dashboard-data';
+  static const String stripeRequestUrl = '$_baseUrl/stripe/connect';
   
   
 
@@ -34,6 +35,8 @@ class Urls {
   ) {
     return '$_baseUrl/products/$id';
   }
+
+ 
 
    static String updateProductById(
     String id,

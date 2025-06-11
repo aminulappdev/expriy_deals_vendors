@@ -3,6 +3,7 @@ import 'package:expriy_deals_vendors/app/modules/payment/model/confirmed_payment
 import 'package:expriy_deals_vendors/app/utils/get_storage.dart';
 import 'package:expriy_deals_vendors/services/network_caller/network_caller.dart';
 import 'package:expriy_deals_vendors/services/network_caller/network_response.dart';
+import 'package:expriy_deals_vendors/urls.dart';
 
 import 'package:get/get.dart';
 
@@ -26,13 +27,13 @@ class ConfirmedPaymentController extends GetxController {
 
     update();
 
-    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest('Urls.confirmedPaymentUrlsById(id)');
+    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest('Urls.orderDetailsById(id)');
 
     if (response.isSuccess) {
       confirmedPaymentResponseModel = ConfirmedPaymentResponseModel.fromJson(response.responseData);
       box.write('payment-reference-id', id); 
       print('My data is .............................');
-      print(confirmedPaymentResponseModel?.data?.amount);
+      print(confirmedPaymentResponseModel?.data?.price);
       _errorMessage = null;
       isSuccess = true;
     } else {

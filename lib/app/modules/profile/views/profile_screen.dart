@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:expriy_deals_vendors/app/modules/bank/views/bank_info_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/profile_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/profile/controllers/stripe_request_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/change_password_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/edit_profile_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/info_screen.dart';
@@ -15,9 +16,13 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
+
+  final StripeRequestController stripeRequestController =
+      Get.put(StripeRequestController());
 
   static final customCacheManager = CacheManager(
     Config(
@@ -41,26 +46,30 @@ class ProfileScreen extends StatelessWidget {
             children: [
               heightBox50,
               Center(
-                child: Obx(() {                
-                 return controller.inProgress
+                child: Obx(() {
+                  return controller.inProgress
                       ? const CircularProgressIndicator()
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CircleAvatar(
                               radius: 30,
-                              backgroundImage: controller.profileData?.profile != null
-                                  ? NetworkImage(controller.profileData!.profile!)
-                                  : const AssetImage(AssetsPath.appleLogo),
+                              backgroundImage:
+                                  controller.profileData?.profile != null
+                                      ? NetworkImage(
+                                          controller.profileData!.profile!)
+                                      : const AssetImage(AssetsPath.appleLogo),
                             ),
                             heightBox4,
                             Text(
                               controller.profileData?.name ?? 'No name',
-                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w700),
                             ),
                             Text(
                               controller.profileData?.email ?? 'No email',
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w500),
                             ),
                           ],
                         );
@@ -78,22 +87,28 @@ class ProfileScreen extends StatelessWidget {
                   }
                 },
               ),
-              
               ProfileDrawerFeature(
                 feature: 'Bank Details',
                 icon: Icons.payment,
                 ontap: () => Get.to(const BankInfoScreen()),
               ),
               heightBox8,
-               ProfileDrawerFeature(
+              ProfileDrawerFeature(
                 feature: 'Widthdaw',
                 icon: Icons.payment,
                 ontap: () => Get.to(const WidthdrawScreen()),
               ),
               heightBox8,
+              ProfileDrawerFeature(
+                feature: 'Connection Request',
+                icon: Icons.link,
+                ontap: () => _launchURL(),
+              ),
+              heightBox8,
               Text(
                 'Settings',
-                style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(
+                    fontSize: 12, fontWeight: FontWeight.w500),
               ),
               heightBox12,
               ProfileDrawerFeature(
@@ -118,25 +133,33 @@ class ProfileScreen extends StatelessWidget {
               heightBox8,
               Text(
                 'Support',
-                style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(
+                    fontSize: 12, fontWeight: FontWeight.w500),
               ),
               heightBox12,
               ProfileDrawerFeature(
                 feature: 'Policies',
                 icon: Icons.security,
-                ontap: () => Get.to(const InfoScreen(appBarTitle: 'Privacy & Policies', data: DemoText.policies, params: 'privacyPolicy')),
+                ontap: () => Get.to(const InfoScreen(
+                    appBarTitle: 'Privacy & Policies',
+                    data: DemoText.policies,
+                    params: 'privacyPolicy')),
               ),
               ProfileDrawerFeature(
                 feature: 'About Us',
                 icon: Icons.groups_2_sharp,
-                ontap: () => Get.to(const InfoScreen(appBarTitle: 'About Us', data: DemoText.aboutUs, params: 'aboutUs')),
+                ontap: () => Get.to(const InfoScreen(
+                    appBarTitle: 'About Us',
+                    data: DemoText.aboutUs,
+                    params: 'aboutUs')),
               ),
               heightBox8,
               heightBox14,
               Align(
                 alignment: Alignment.center,
                 child: InkWell(
-                  onTap: () => DialogUtils.showLogoutDialog(context, controller.logout),
+                  onTap: () =>
+                      DialogUtils.showLogoutDialog(context, controller.logout),
                   child: Container(
                     height: 40,
                     width: 140,
@@ -151,7 +174,8 @@ class ProfileScreen extends StatelessWidget {
                         widthBox4,
                         const Text(
                           'Logout',
-                          style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -163,5 +187,17 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchURL() async {
+    final String? link = await stripeRequestController.stripeRequest();
+    if (link != null) {
+      final Uri url = Uri.parse(link);
+      if (!await launchUrl(url)) {
+        throw Exception('Could not launch $url');
+      }
+    } else {
+      Get.snackbar('Error', 'Link not available');
+    }
   }
 }
