@@ -18,6 +18,7 @@ import 'package:expriy_deals_vendors/app/modules/profile/controllers/change_pass
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/content_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/edit_profile_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/profile_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/profile/controllers/shop_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/widthraw/controllers/my_widthdrae_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/widthraw/controllers/widthdraw_request_controller.dart';
 import 'package:expriy_deals_vendors/services/network_caller/network_caller.dart';
@@ -50,6 +51,7 @@ class ControllerBinder extends Bindings {
     Get.put(DeleteProductController());
     Get.put(ContentController());
     Get.put(AllEarningsController());
+    Get.put(ShopController());
   
   }
 }

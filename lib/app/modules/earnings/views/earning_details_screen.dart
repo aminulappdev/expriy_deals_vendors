@@ -40,7 +40,9 @@ class _EarningDetailsScreenState extends State<EarningDetailsScreen> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
-                                image: AssetImage(AssetsPath.headphone),
+                                image: NetworkImage(widget
+                                        .allEarningsItemModel.user?.profile ??
+                                    'https://fastly.picsum.photos/id/134/200/300.jpg?hmac=KN18cCDft4FPM0XJpr7EhZLtUP6Z4cZqtF8KThtTvsI'),
                                 fit: BoxFit.fill)),
                       ),
                       widthBox8,
@@ -54,8 +56,12 @@ class _EarningDetailsScreenState extends State<EarningDetailsScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text('Full name : '),
-                                Text(widget.allEarningsItemModel.user?.name ??
-                                    '',style: TextStyle(overflow: TextOverflow.ellipsis, fontSize: 14),),
+                                Text(
+                                  widget.allEarningsItemModel.user?.name ?? '',
+                                  style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 14),
+                                ),
                               ],
                             ),
                             Row(
@@ -64,8 +70,13 @@ class _EarningDetailsScreenState extends State<EarningDetailsScreen> {
                                 Text('Email : '),
                                 SizedBox(
                                   width: 150,
-                                  child: Text(widget.allEarningsItemModel.user?.email ??
-                                      '',style: TextStyle(overflow: TextOverflow.ellipsis, fontSize: 14),),
+                                  child: Text(
+                                    widget.allEarningsItemModel.user?.email ??
+                                        '',
+                                    style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontSize: 14),
+                                  ),
                                 ),
                               ],
                             ),
@@ -73,9 +84,14 @@ class _EarningDetailsScreenState extends State<EarningDetailsScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text('Number : '),
-                                Text(widget.allEarningsItemModel.user
-                                        ?.phoneNumber ??
-                                    'Empty',style: TextStyle(overflow: TextOverflow.ellipsis, fontSize: 14),),
+                                Text(
+                                  widget.allEarningsItemModel.user
+                                          ?.phoneNumber ??
+                                      'Empty',
+                                  style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 14),
+                                ),
                               ],
                             ),
                           ],

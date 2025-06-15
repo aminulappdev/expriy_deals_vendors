@@ -55,7 +55,7 @@ class AllEarningsItemModel {
     final String? id;
     final String? status;
     final String? trnId;
-    final double? price;
+    final dynamic price;
     final DateTime? createdAt;
     final DateTime? updatedAt;
     final User? user;
@@ -158,7 +158,7 @@ class AuthorVerification {
         required this.status,
     });
 
-    final String? otp;
+    final dynamic otp;
     final DateTime? expiresAt;
     final bool? status;
 

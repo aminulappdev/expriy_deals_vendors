@@ -1,9 +1,12 @@
 // ignore_for_file: deprecated_member_use
 import 'package:expriy_deals_vendors/app/modules/bank/views/bank_info_screen.dart';
+import 'package:expriy_deals_vendors/app/modules/common/views/notification_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/profile_controller.dart';
+import 'package:expriy_deals_vendors/app/modules/profile/controllers/shop_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/stripe_request_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/change_password_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/edit_profile_screen.dart';
+import 'package:expriy_deals_vendors/app/modules/profile/views/edit_shop.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/info_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/widgets/profile_drawer_feature.dart';
 import 'package:expriy_deals_vendors/app/modules/widthraw/views/widthdraw_screen.dart';
@@ -36,6 +39,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ProfileController());
     final controller = Get.find<ProfileController>();
+    final shopController = Get.find<ShopController>();
 
     return Scaffold(
       body: Padding(
@@ -87,6 +91,18 @@ class ProfileScreen extends StatelessWidget {
                   }
                 },
               ),
+               ProfileDrawerFeature(
+                feature: 'Edit Shop',
+                icon: Icons.shop,
+                ontap: () {
+                  if (shopController.shopData != null) {
+                    print('Shop data profile page: ${shopController.shopData?.name}');
+                    Get.to(EditShopScreen(shopData: shopController.shopData!,));
+                  } else {
+                    Get.snackbar('Error', 'Shop data not available');
+                  }
+                },
+              ),
               ProfileDrawerFeature(
                 feature: 'Bank Details',
                 icon: Icons.payment,
@@ -115,7 +131,7 @@ class ProfileScreen extends StatelessWidget {
                 feature: 'Notification',
                 icon: Icons.notifications,
                 ontap: () {
-                  // NotificationScreen নেভিগেশন যোগ করুন
+                  Get.to(NotificationScreen());
                 },
               ),
               heightBox8,

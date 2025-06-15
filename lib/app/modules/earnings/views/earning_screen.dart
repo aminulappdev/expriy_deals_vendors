@@ -1,7 +1,5 @@
-
 import 'package:expriy_deals_vendors/app/modules/earnings/controllers/all_earnings_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/earnings/views/earning_details_screen.dart';
-import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -129,10 +127,12 @@ class _EarningScreenState extends State<EarningScreen> {
                             rows: List.generate(
                               controller.allEarningsData!.length,
                               (index) {
-                                final earning = controller.allEarningsData![index];
+                                final earning =
+                                    controller.allEarningsData![index];
                                 // Format date to show only 'yyyy-MM-dd'
                                 final formattedDate = earning.createdAt != null
-                                    ? DateFormat('yyyy-MM-dd').format(earning.createdAt!)
+                                    ? DateFormat('yyyy-MM-dd')
+                                        .format(earning.createdAt!)
                                     : 'N/A';
                                 return DataRow(
                                   cells: [
@@ -140,8 +140,11 @@ class _EarningScreenState extends State<EarningScreen> {
                                       SizedBox(
                                         width: 60.w,
                                         child: Text(
-                                          (index + 1).toString().padLeft(2, '0'),
-                                          style: GoogleFonts.poppins(fontSize: 14.sp),
+                                          (index + 1)
+                                              .toString()
+                                              .padLeft(2, '0'),
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 14.sp),
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -155,9 +158,12 @@ class _EarningScreenState extends State<EarningScreen> {
                                               height: 30.h,
                                               width: 30.w,
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(8),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
                                                 image: DecorationImage(
-                                                  image: AssetImage(AssetsPath.headphone),
+                                                  image: NetworkImage(earning
+                                                          .user?.profile ??
+                                                      'https://fastly.picsum.photos/id/134/200/300.jpg?hmac=KN18cCDft4FPM0XJpr7EhZLtUP6Z4cZqtF8KThtTvsI'),
                                                   fit: BoxFit.fill,
                                                 ),
                                               ),
@@ -165,8 +171,10 @@ class _EarningScreenState extends State<EarningScreen> {
                                             widthBox8,
                                             Expanded(
                                               child: Text(
-                                                earning.author?.name ?? 'Unknown Customer',
-                                                style: GoogleFonts.poppins(fontSize: 14.sp),
+                                                earning.author?.name ??
+                                                    'Unknown Customer',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 14.sp),
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
@@ -180,7 +188,8 @@ class _EarningScreenState extends State<EarningScreen> {
                                         width: 100.w,
                                         child: Text(
                                           formattedDate,
-                                          style: GoogleFonts.poppins(fontSize: 14.sp),
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 14.sp),
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -190,7 +199,8 @@ class _EarningScreenState extends State<EarningScreen> {
                                         width: 80.w,
                                         child: Text(
                                           '\$${earning.price?.toString() ?? 'N/A'}',
-                                          style: GoogleFonts.poppins(fontSize: 14.sp),
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 14.sp),
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -201,7 +211,9 @@ class _EarningScreenState extends State<EarningScreen> {
                                         child: TextButton(
                                           onPressed: () {
                                             // Placeholder action for details button
-                                           Get.to(EarningDetailsScreen(allEarningsItemModel: earning,));
+                                            Get.to(EarningDetailsScreen(
+                                              allEarningsItemModel: earning,
+                                            ));
                                           },
                                           child: Text(
                                             'View',

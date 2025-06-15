@@ -40,6 +40,8 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController stateCtrl = TextEditingController();
   TextEditingController zipcodeCtrl = TextEditingController();
   TextEditingController countrynCtrl = TextEditingController();
+  TextEditingController shopNameCtrl = TextEditingController();
+  TextEditingController descriptionCtrl = TextEditingController();
 
   static final customCacheManager = CacheManager(
     Config(
@@ -59,6 +61,8 @@ class _EditProfileState extends State<EditProfile> {
     stateCtrl.text = widget.profileData.state ?? 'no data';
     zipcodeCtrl.text = widget.profileData.zipCode ?? 'no data';
     countrynCtrl.text = widget.profileData.country ?? 'no data';
+    shopNameCtrl.text = widget.profileData.shop ?? 'no data';
+    descriptionCtrl.text = widget.profileData.document ?? 'no data';
     super.initState();
   }
 
@@ -165,6 +169,29 @@ class _EditProfileState extends State<EditProfile> {
                     TextFormField(
                       enabled: false,
                       controller: emailCtrl,
+                      decoration: InputDecoration(),
+                    ),
+                    heightBox12,
+                     Text(
+                      'Shop Name',
+                      style: TextStyle(
+                          fontSize: 14.sp, fontWeight: FontWeight.w500),
+                    ),
+                    heightBox4,
+                    TextFormField(
+                      controller: shopNameCtrl,
+                      decoration: InputDecoration(),
+                    ),
+                    heightBox12,
+                    Text(
+                      'Description',
+                      style: TextStyle(
+                          fontSize: 14.sp, fontWeight: FontWeight.w500),
+                    ),
+                    heightBox4,
+                    TextFormField(
+                      enabled: false,
+                      controller: descriptionCtrl,
                       decoration: InputDecoration(),
                     ),
                     heightBox12,

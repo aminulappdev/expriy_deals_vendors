@@ -7,8 +7,6 @@ import 'package:expriy_deals_vendors/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WidthdrawRequestScreen extends StatefulWidget {
@@ -107,7 +105,7 @@ class _WidthdrawRequestScreenState extends State<WidthdrawRequestScreen> {
       if (isSuccess) {
         if (mounted) {
           _myWidthdrawController.getWidthdraw();
-          showSnackBarMessage(context, 'Reset password successfully done');
+          showSnackBarMessage(context, 'Widthdraw successfully done');
           Get.back();
         } else {
           if (mounted) {

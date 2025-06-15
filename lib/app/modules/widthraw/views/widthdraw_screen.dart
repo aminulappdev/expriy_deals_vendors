@@ -20,8 +20,7 @@ class WidthdrawScreen extends StatefulWidget {
 class _WidthdrawScreenState extends State<WidthdrawScreen> {
   final MyWidthdrawController _myWidthdrawController =
       Get.find<MyWidthdrawController>();
-      final ProfileController _profileController =
-      Get.find<ProfileController>();
+  final ProfileController _profileController = Get.find<ProfileController>();
 
   @override
   void initState() {
@@ -60,7 +59,7 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Your Balance'),
-                       Text(
+                      Text(
                         '\$${_profileController.profileData?.balance ?? '0.00'}',
                         style: TextStyle(
                             fontSize: 40, fontWeight: FontWeight.w600),
@@ -189,7 +188,8 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
                                         ),
                                       ),
                                     ],
-                                    rows: _myWidthdrawController.myWidthdrawData!
+                                    rows: _myWidthdrawController
+                                        .myWidthdrawData!
                                         .map((withdraw) {
                                       return DataRow(cells: [
                                         DataCell(Text(withdraw.id ?? 'N/A')),
@@ -197,8 +197,7 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
                                             '\$${withdraw.amount?.toStringAsFixed(2) ?? '0.00'}')),
                                         DataCell(
                                             Text(withdraw.status ?? 'N/A')),
-                                        DataCell(Text(
-                                            'N/A')),
+                                        DataCell(Text('N/A')),
                                         DataCell(InkWell(
                                           onTap: () {
                                             // Get.to(WidthdrawRequestScreen(
