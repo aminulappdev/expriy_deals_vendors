@@ -6,14 +6,12 @@ import 'package:expriy_deals_vendors/app/modules/authentication/controllers/sign
 import 'package:expriy_deals_vendors/app/modules/authentication/views/forgot_password_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/views/sign_up_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/views/verify_email_screen.dart';
-import 'package:expriy_deals_vendors/app/modules/authentication/widgets/continue_elevated_button.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/footer_section.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/forgot_password_row.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/liner_widget.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/welcome_text.dart';
 import 'package:expriy_deals_vendors/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:expriy_deals_vendors/app/modules/onboarding/widgets/custom_scafold_background.dart';
-import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:expriy_deals_vendors/app/widgets/gradiant_elevated_button.dart';
@@ -155,11 +153,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       },
                     ),
                     Liner(),
-                    ContinueElevatedButton(
-                      name: 'Continue with google',
-                      logoPath: AssetsPath.googleLogoUp,
-                      ontap: () => onTapGoogleSignIn(context),
-                    ),
+                    
 
                     heightBox12,
                     // ContinueElevatedButton(
@@ -187,45 +181,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Future<void> onTapGoogleSignIn(BuildContext context) async {
-    final controller = Get.find<GoogleAuthController>();
-
-    bool isSuccess = await controller.signInWithGoogle();
-
-    if (isSuccess) {
-      if (context.mounted) {
-        showSnackBarMessage(context, 'Google দিয়ে সফলভাবে লগইন হয়েছে');
-      }
-    } else {
-      String message = controller.errorMessage ?? 'Google লগইন ব্যর্থ হয়েছে';
-
-      if (message.contains('credentials')) {
-        if (context.mounted) {
-          await showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: Text("অ্যাকাউন্ট সমস্যা"),
-              content: Text(
-                  "এই ইমেইলটি ইতিমধ্যে ইমেইল-পাসওয়ার্ড দিয়ে রেজিস্টার করা আছে। অনুগ্রহ করে অন্য Google অ্যাকাউন্ট সিলেক্ট করুন।"),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text("ঠিক আছে"),
-                )
-              ],
-            ),
-          );
-
-          // ডায়ালগ বন্ধ করার পর আবার নতুন করে সাইন-ইন চেষ্টা করো
-          await onTapGoogleSignIn(context);
-        }
-      } else {
-        if (context.mounted) {
-          showSnackBarMessage(context, message, true);
-        }
-      }
-    }
-  }
+  
 
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {

@@ -58,10 +58,10 @@ class OrderDetailsItemModel {
 
     final BillingDetails? billingDetails;
     final String? id;
-    final Author? user;
-    final Author? author;
+    final UserClass? user;
+    final UserClass? author;
     final Product? product;
-    final dynamic? totalPrice;
+    final int? totalPrice;
     final int? discount;
     final int? quantity;
     final String? status;
@@ -76,8 +76,8 @@ class OrderDetailsItemModel {
         return OrderDetailsItemModel(
             billingDetails: json["billingDetails"] == null ? null : BillingDetails.fromJson(json["billingDetails"]),
             id: json["_id"],
-            user: json["user"] == null ? null : Author.fromJson(json["user"]),
-            author: json["author"] == null ? null : Author.fromJson(json["author"]),
+            user: json["user"] == null ? null : UserClass.fromJson(json["user"]),
+            author: json["author"] == null ? null : UserClass.fromJson(json["author"]),
             product: json["product"] == null ? null : Product.fromJson(json["product"]),
             totalPrice: json["totalPrice"],
             discount: json["discount"],
@@ -94,10 +94,11 @@ class OrderDetailsItemModel {
 
 }
 
-class Author {
-    Author({
+class UserClass {
+    UserClass({
         required this.id,
         required this.name,
+        required this.shop,
         required this.email,
         required this.phoneNumber,
         required this.profile,
@@ -105,17 +106,46 @@ class Author {
 
     final String? id;
     final String? name;
+    final UserShop? shop;
     final String? email;
     final String? phoneNumber;
     final String? profile;
 
-    factory Author.fromJson(Map<String, dynamic> json){ 
-        return Author(
+    factory UserClass.fromJson(Map<String, dynamic> json){ 
+        return UserClass(
             id: json["_id"],
             name: json["name"],
+            shop: json["shop"] == null ? null : UserShop.fromJson(json["shop"]),
             email: json["email"],
             phoneNumber: json["phoneNumber"],
             profile: json["profile"],
+        );
+    }
+
+}
+
+class UserShop {
+    UserShop({
+        required this.id,
+        required this.name,
+        required this.logo,
+        required this.banner,
+        required this.bannerColor,
+    });
+
+    final String? id;
+    final String? name;
+    final dynamic logo;
+    final dynamic banner;
+    final String? bannerColor;
+
+    factory UserShop.fromJson(Map<String, dynamic> json){ 
+        return UserShop(
+            id: json["_id"],
+            name: json["name"],
+            logo: json["logo"],
+            banner: json["banner"],
+            bannerColor: json["bannerColor"],
         );
     }
 
@@ -150,7 +180,6 @@ class BillingDetails {
 
 class Product {
     Product({
-        required this.totalSell,
         required this.id,
         required this.images,
         required this.author,
@@ -158,48 +187,178 @@ class Product {
         required this.details,
         required this.category,
         required this.price,
+        required this.totalSell,
+        required this.stock,
         required this.expiredAt,
         required this.discount,
         required this.isDeleted,
         required this.createdAt,
         required this.updatedAt,
         required this.v,
-        required this.stock,
     });
 
-    final int? totalSell;
     final String? id;
     final List<Image> images;
-    final String? author;
+    final ProductAuthor? author;
     final String? name;
     final String? details;
-    final String? category;
-    final dynamic price;
+    final Category? category;
+    final int? price;
+    final int? totalSell;
+    final int? stock;
     final DateTime? expiredAt;
     final int? discount;
     final bool? isDeleted;
     final DateTime? createdAt;
     final DateTime? updatedAt;
     final int? v;
-    final int? stock;
 
     factory Product.fromJson(Map<String, dynamic> json){ 
         return Product(
-            totalSell: json["totalSell"],
             id: json["_id"],
             images: json["images"] == null ? [] : List<Image>.from(json["images"]!.map((x) => Image.fromJson(x))),
-            author: json["author"],
+            author: json["author"] == null ? null : ProductAuthor.fromJson(json["author"]),
             name: json["name"],
             details: json["details"],
-            category: json["category"],
+            category: json["category"] == null ? null : Category.fromJson(json["category"]),
             price: json["price"],
+            totalSell: json["totalSell"],
+            stock: json["stock"],
             expiredAt: DateTime.tryParse(json["expiredAt"] ?? ""),
             discount: json["discount"],
             isDeleted: json["isDeleted"],
             createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
             updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
             v: json["__v"],
-            stock: json["stock"],
+        );
+    }
+
+}
+
+class ProductAuthor {
+    ProductAuthor({
+        required this.id,
+        required this.name,
+        required this.shop,
+        required this.email,
+        required this.phoneNumber,
+        required this.profile,
+    });
+
+    final String? id;
+    final String? name;
+    final PurpleShop? shop;
+    final String? email;
+    final String? phoneNumber;
+    final String? profile;
+
+    factory ProductAuthor.fromJson(Map<String, dynamic> json){ 
+        return ProductAuthor(
+            id: json["_id"],
+            name: json["name"],
+            shop: json["shop"] == null ? null : PurpleShop.fromJson(json["shop"]),
+            email: json["email"],
+            phoneNumber: json["phoneNumber"],
+            profile: json["profile"],
+        );
+    }
+
+}
+
+class PurpleShop {
+    PurpleShop({
+        required this.location,
+        required this.id,
+        required this.name,
+        required this.description,
+        required this.address,
+        required this.openingHours,
+        required this.openingDays,
+        required this.logo,
+        required this.banner,
+        required this.document,
+        required this.author,
+        required this.isDeleted,
+        required this.bannerColor,
+        required this.createdAt,
+        required this.updatedAt,
+        required this.v,
+    });
+
+    final Location? location;
+    final String? id;
+    final String? name;
+    final dynamic description;
+    final dynamic address;
+    final dynamic openingHours;
+    final dynamic openingDays;
+    final dynamic logo;
+    final dynamic banner;
+    final String? document;
+    final String? author;
+    final bool? isDeleted;
+    final String? bannerColor;
+    final DateTime? createdAt;
+    final DateTime? updatedAt;
+    final int? v;
+
+    factory PurpleShop.fromJson(Map<String, dynamic> json){ 
+        return PurpleShop(
+            location: json["location"] == null ? null : Location.fromJson(json["location"]),
+            id: json["_id"],
+            name: json["name"],
+            description: json["description"],
+            address: json["address"],
+            openingHours: json["openingHours"],
+            openingDays: json["openingDays"],
+            logo: json["logo"],
+            banner: json["banner"],
+            document: json["document"],
+            author: json["author"],
+            isDeleted: json["isDeleted"],
+            bannerColor: json["bannerColor"],
+            createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+            updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+            v: json["__v"],
+        );
+    }
+
+}
+
+class Location {
+    Location({
+        required this.type,
+        required this.coordinates,
+    });
+
+    final String? type;
+    final List<double> coordinates;
+
+    factory Location.fromJson(Map<String, dynamic> json){ 
+        return Location(
+            type: json["type"],
+            coordinates: json["coordinates"] == null ? [] : List<double>.from(json["coordinates"]!.map((x) => x)),
+        );
+    }
+
+}
+
+class Category {
+    Category({
+        required this.id,
+        required this.name,
+        required this.banner,
+    });
+
+    final String? id;
+    final String? name;
+    final String? banner;
+
+    factory Category.fromJson(Map<String, dynamic> json){ 
+        return Category(
+            id: json["_id"],
+            name: json["name"],
+            banner: json["banner"],
         );
     }
 

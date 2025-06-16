@@ -37,7 +37,17 @@ class _EarningScreenState extends State<EarningScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             heightBox20,
-            CustomAppBar(name: 'Earnings'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                widthBox12,
+                Text('Earnings',
+                    style: GoogleFonts.poppins(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
+                    )),
+              ],
+            ),
             heightBox12,
             Expanded(
               child: Obx(() {

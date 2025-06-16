@@ -32,146 +32,148 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            heightBox24,
-            CustomAppBar(name: 'Fill-up Bank Info', isBack: true),
-            heightBox12,
-            Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Account number',
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff626262))),
-                  heightBox8,
-                  TextFormField(
-                    controller: _accountNumberController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    keyboardType: TextInputType.number,
-                    validator: (String? value) {
-                      if (value!.isEmpty) return 'Enter account number';
-
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        hintText: '123456789',
-                        hintStyle: TextStyle(color: Colors.grey)),
-                  ),
-                  heightBox8,
-                  Text('Routing number',
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff626262))),
-                  heightBox8,
-                  TextFormField(
-                    controller: _routingNumberController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    keyboardType: TextInputType.number,
-                    validator: (String? value) {
-                      if (value!.isEmpty) return 'Enter routing number';
-
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        hintText: '123456789',
-                        hintStyle: TextStyle(color: Colors.grey)),
-                  ),
-                  heightBox8,
-                  Text('Bank name',
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff626262))),
-                  heightBox8,
-                  TextFormField(
-                    controller: _bankNameController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (String? value) {
-                      if (value!.isEmpty) return 'Enter bank name';
-
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        hintText: 'bank name',
-                        hintStyle: TextStyle(color: Colors.grey)),
-                  ),
-                  heightBox8,
-                  Text('Bankholder name',
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff626262))),
-                  heightBox8,
-                  TextFormField(
-                    controller: _bankHolderNameController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (String? value) {
-                      if (value!.isEmpty) return 'Enter bankholder name';
-
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        hintText: 'bankholder name',
-                        hintStyle: TextStyle(color: Colors.grey)),
-                  ),
-                  heightBox8,
-                  Text('Bank address',
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff626262))),
-                  heightBox8,
-                  TextFormField(
-                    controller: _bankAddressController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (String? value) {
-                      if (value!.isEmpty) return 'Enter bank address';
-
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        hintText: 'bank address',
-                        hintStyle: TextStyle(color: Colors.grey)),
-                  ),
-                ],
-              ),
-            ),
-            heightBox12,
-            GetBuilder<CreateBankInfoController>(
-              builder: (controller) {
-                return Stack(
-                  alignment: Alignment.center,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              heightBox24,
+              CustomAppBar(name: 'Fill-up Bank Info', isBack: true),
+              heightBox12,
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomElevatedButton(
-                      onPressed: controller.inProgress
-                          ? () {}
-                          : () => onTapToNextButton(),
-                      text: controller.inProgress ? '' : 'Save Info',
+                    Text('Account number',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
+                    heightBox8,
+                    TextFormField(
+                      controller: _accountNumberController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.number,
+                      validator: (String? value) {
+                        if (value!.isEmpty) return 'Enter account number';
+          
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          hintText: '123456789',
+                          hintStyle: TextStyle(color: Colors.grey)),
                     ),
-                    if (controller.inProgress)
-                      SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      ),
+                    heightBox8,
+                    Text('Routing number',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
+                    heightBox8,
+                    TextFormField(
+                      controller: _routingNumberController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.number,
+                      validator: (String? value) {
+                        if (value!.isEmpty) return 'Enter routing number';
+          
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          hintText: '123456789',
+                          hintStyle: TextStyle(color: Colors.grey)),
+                    ),
+                    heightBox8,
+                    Text('Bank name',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
+                    heightBox8,
+                    TextFormField(
+                      controller: _bankNameController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (String? value) {
+                        if (value!.isEmpty) return 'Enter bank name';
+          
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          hintText: 'bank name',
+                          hintStyle: TextStyle(color: Colors.grey)),
+                    ),
+                    heightBox8,
+                    Text('Bankholder name',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
+                    heightBox8,
+                    TextFormField(
+                      controller: _bankHolderNameController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (String? value) {
+                        if (value!.isEmpty) return 'Enter bankholder name';
+          
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          hintText: 'bankholder name',
+                          hintStyle: TextStyle(color: Colors.grey)),
+                    ),
+                    heightBox8,
+                    Text('Bank address',
+                        style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262))),
+                    heightBox8,
+                    TextFormField(
+                      controller: _bankAddressController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (String? value) {
+                        if (value!.isEmpty) return 'Enter bank address';
+          
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          hintText: 'bank address',
+                          hintStyle: TextStyle(color: Colors.grey)),
+                    ),
                   ],
-                );
-              },
-            ),
-            // CustomElevatedButton(onPressed: onTapToNextButton, text: 'Save Info'),
-          ],
+                ),
+              ),
+              heightBox12,
+              GetBuilder<CreateBankInfoController>(
+                builder: (controller) {
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CustomElevatedButton(
+                        onPressed: controller.inProgress
+                            ? () {}
+                            : () => onTapToNextButton(),
+                        text: controller.inProgress ? '' : 'Save Info',
+                      ),
+                      if (controller.inProgress)
+                        SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+              // CustomElevatedButton(onPressed: onTapToNextButton, text: 'Save Info'),
+            ],
+          ),
         ),
       ),
     );

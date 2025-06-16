@@ -6,7 +6,7 @@ import 'package:expriy_deals_vendors/services/network_caller/network_response.da
 import 'package:expriy_deals_vendors/urls.dart';
 import 'package:get/get.dart';
 
-class OrderDetailsController extends GetxController { 
+class OrderDetailsController extends GetxController {
   final RxBool _inProgress = false.obs;
   bool get inProgress => _inProgress.value;
 
@@ -26,7 +26,6 @@ class OrderDetailsController extends GetxController {
   Future<bool> getCart() async {
     final token = StorageUtil.getData(StorageUtil.userAccessToken);
     if (token == null) {
-      print('No token found, redirecting to SignInScreen');
       Get.to(SignInScreen());
       return false;
     }
@@ -34,22 +33,21 @@ class OrderDetailsController extends GetxController {
     print('Using token: $token');
     _inProgress.value = true;
 
-    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
-      Urls.orderDetailstUrl,
-       accesToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODIxOWEwNzMwYmY5YmI3YTIzZThmZjgiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODQwODQ1MSwiZXhwIjoxNzUxMDAwNDUxfQ.oJ4hmvhAIyPNmKkzxvhLIEBOkefDpefVjYj3VfY-Ukc'
-    );
+    final NetworkResponse response = await Get.find<NetworkCaller>()
+        .getRequest(Urls.orderDetailstUrl, accesToken: token);
 
     print('API Response: ${response.responseData}');
     print('Is Success: ${response.isSuccess}, Error: ${response.errorMessage}');
 
     if (response.isSuccess) {
       _errorMessage.value = '';
-      orderDetailsModel.value = OrderDetailsModel.fromJson(response.responseData);
-      print('Fetched Orders: ${orderDetailsModel.value?.data?.data?.length}');
+      orderDetailsModel.value =
+          OrderDetailsModel.fromJson(response.responseData);
+      print('Fetched Orders: ${orderDetailsModel.value?.data?.data.length}');
       _inProgress.value = false;
       return true;
     } else {
-      _errorMessage.value = response.errorMessage ?? 'Unknown error occurred';
+      _errorMessage.value = response.errorMessage;
       print('Error Message Set: ${_errorMessage.value}');
       _inProgress.value = false;
       return false;

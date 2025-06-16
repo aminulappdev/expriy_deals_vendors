@@ -281,15 +281,16 @@ class _ProductScreenState extends State<ProductScreen> {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: ProductCard(
+                        discount: product.discount?.toString() ?? '0',
                         deleteOnTap: () {
                           onTapToNextButton(product.id ?? '');
-                        },
+                        }, 
                         editOntap: () {
                           Get.to(UpdateProductScreen(
                                   productId: product.id ?? ''))
                               ?.then((value) {
                             if (value == true) {
-                              allProductController.getProduct(
+                               allProductController.getProduct(
                                   categoryId: _selectedCategoryId);
                             }
                           });

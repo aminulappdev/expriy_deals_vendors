@@ -17,7 +17,6 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-
 class EditProfile extends StatefulWidget {
   final ProfileData profileData;
   const EditProfile({super.key, required this.profileData});
@@ -172,28 +171,6 @@ class _EditProfileState extends State<EditProfile> {
                       decoration: InputDecoration(),
                     ),
                     heightBox12,
-                     Text(
-                      'Shop Name',
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500),
-                    ),
-                    heightBox4,
-                    TextFormField(
-                      controller: shopNameCtrl,
-                      decoration: InputDecoration(),
-                    ),
-                    heightBox12,
-                    Text(
-                      'Description',
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500),
-                    ),
-                    heightBox4,
-                    TextFormField(
-                      enabled: false,
-                      controller: descriptionCtrl,
-                      decoration: InputDecoration(),
-                    ),
                     heightBox12,
                     Text(
                       'Contact Information',

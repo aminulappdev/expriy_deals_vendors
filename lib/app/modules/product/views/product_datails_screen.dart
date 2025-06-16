@@ -3,10 +3,10 @@
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_product_conrtoller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/product_details_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/widgets/product_caresoul_slider.dart';
-import 'package:expriy_deals_vendors/app/modules/product/widgets/see_more_button.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,11 +22,10 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final ProductDetailsController productDetailsController =
       Get.put(ProductDetailsController());
-  
+
   final AllProductController allProductController =
       Get.put(AllProductController());
 
-  bool _isExpandedProduct = false;
 
   @override
   void initState() {
@@ -59,7 +58,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   children: [
                     CustomAppBar(name: 'Product Details'),
                     heightBox12,
-                    HomeCarouselSlider(),
+                    HomeCarouselSlider(
+                      images:
+                          productDetailsController.productDetailsData?.images ??
+                              [],
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -83,56 +86,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           fontSize: 16.sp, fontWeight: FontWeight.w400),
                     ),
                     heightBox4,
-                    AnimatedCrossFade(
-                      firstChild: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                              'Product Name: ${data.name ?? 'UltraShield SPF 50+ Sunscreen'}'),
-                          Text('Brand: '),
-                          Text('Type: Broad-Spectrum Protection'),
-                          Text('SPF: 50+'),
-                          Text('Formulation: Lotion'),
-                          Text('Volume: 150 ml'),
-                          Text('Price: \$${discountValue.toStringAsFixed(2)}'),
-                          Text(
-                              'Key Ingredients: Avobenzone, Octinoxate, Titanium Dioxide'),
-                          Text('Water Resistance: Up to 80 minutes'),
-                          Text(
-                              'Application: Apply generously on all exposed skin areas 15 minutes before sun exposure. Reapply every 2 hours or after swimming or sweating.'),
-                          Text(
-                              'Benefits: Helps prevent sunburn, premature skin aging, and skin cancer. Suitable for all skin types, including sensitive skin.'),
-                        ],
-                      ),
-                      secondChild: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                              'Product Name: ${data.name ?? 'UltraShield SPF 50+ Sunscreen'}'),
-                          Text('Brand:'),
-                          Text('Type: Broad-Spectrum Protection'),
-                          Text('SPF: 50+'),
-                          Text('Formulation: Lotion'),
-                          Text('Volume: 150 ml'),
-                        ],
-                      ),
-                      crossFadeState: _isExpandedProduct
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
-                      duration: const Duration(milliseconds: 300),
-                    ),
-                    SizedBox(height: 8.h),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isExpandedProduct = !_isExpandedProduct;
-                        });
-                      },
-                      child: SeeMoreButton(
-                        isExpanded: _isExpandedProduct,
-                      ),
-                    ),
-                    heightBox4,
+                    Html(data: data.details ?? ''),
                   ],
                 );
               }

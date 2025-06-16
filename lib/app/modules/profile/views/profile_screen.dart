@@ -10,7 +10,6 @@ import 'package:expriy_deals_vendors/app/modules/profile/views/edit_shop.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/views/info_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/widgets/profile_drawer_feature.dart';
 import 'package:expriy_deals_vendors/app/modules/widthraw/views/widthdraw_screen.dart';
-import 'package:expriy_deals_vendors/app/utils/app_text.dart';
 import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/utils/show_dialog_utils.dart';
@@ -91,13 +90,16 @@ class ProfileScreen extends StatelessWidget {
                   }
                 },
               ),
-               ProfileDrawerFeature(
+              ProfileDrawerFeature(
                 feature: 'Edit Shop',
                 icon: Icons.shop,
-                ontap: () {
+                ontap: () { 
                   if (shopController.shopData != null) {
-                    print('Shop data profile page: ${shopController.shopData?.name}');
-                    Get.to(EditShopScreen(shopData: shopController.shopData!,));
+                    print(
+                        'Shop data profile page: ${shopController.shopData?.name}');
+                    Get.to(EditShopScreen(
+                      shopData: shopController.shopData!,
+                    ));
                   } else {
                     Get.snackbar('Error', 'Shop data not available');
                   }
@@ -116,7 +118,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               heightBox8,
               ProfileDrawerFeature(
-                feature: 'Connection Request',
+                feature: 'Connect Account',
                 icon: Icons.link,
                 ontap: () => _launchURL(),
               ),
@@ -141,35 +143,29 @@ class ProfileScreen extends StatelessWidget {
                 ontap: () => Get.to(const ChangePasswordScreen()),
               ),
               heightBox8,
-              ProfileDrawerFeature(
-                feature: 'Delete account',
-                icon: Icons.delete,
-                ontap: () {},
-              ),
+              // ProfileDrawerFeature(
+              //   feature: 'Delete account',
+              //   icon: Icons.delete,
+              //   ontap: () {},
+              // ),
               heightBox8,
               Text(
                 'Support',
                 style: GoogleFonts.poppins(
                     fontSize: 12, fontWeight: FontWeight.w500),
               ),
-              heightBox12,
               ProfileDrawerFeature(
                 feature: 'Policies',
                 icon: Icons.security,
-                ontap: () => Get.to(const InfoScreen(
-                    appBarTitle: 'Privacy & Policies',
-                    data: DemoText.policies,
-                    params: 'privacyPolicy')),
+                ontap: () => Get.to(InfoScreen(
+                    appBarTitle: 'Privacy & Policies', param: 'privacyPolicy')),
               ),
               ProfileDrawerFeature(
                 feature: 'About Us',
                 icon: Icons.groups_2_sharp,
-                ontap: () => Get.to(const InfoScreen(
-                    appBarTitle: 'About Us',
-                    data: DemoText.aboutUs,
-                    params: 'aboutUs')),
+                ontap: () => Get.to(
+                    InfoScreen(appBarTitle: 'About Us', param: 'aboutUs')),
               ),
-              heightBox8,
               heightBox14,
               Align(
                 alignment: Alignment.center,

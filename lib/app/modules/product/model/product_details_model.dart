@@ -38,9 +38,9 @@ class ProductDetailsData {
         required this.stock,
     });
 
-    final dynamic? totalSell;
+    final int? totalSell;
     final String? id;
-    final List<Image> images;
+    final List<ImageModel> images;
     final Author? author;
     final String? name;
     final String? details;
@@ -58,7 +58,7 @@ class ProductDetailsData {
         return ProductDetailsData(
             totalSell: json["totalSell"],
             id: json["_id"],
-            images: json["images"] == null ? [] : List<Image>.from(json["images"]!.map((x) => Image.fromJson(x))),
+            images: json["images"] == null ? [] : List<ImageModel>.from(json["images"]!.map((x) => ImageModel.fromJson(x))),
             author: json["author"] == null ? null : Author.fromJson(json["author"]),
             name: json["name"],
             details: json["details"],
@@ -193,8 +193,8 @@ class Category {
 
 }
 
-class Image {
-    Image({
+class ImageModel {
+    ImageModel({
         required this.key,
         required this.url,
         required this.id,
@@ -204,8 +204,8 @@ class Image {
     final String? url;
     final String? id;
 
-    factory Image.fromJson(Map<String, dynamic> json){ 
-        return Image(
+    factory ImageModel.fromJson(Map<String, dynamic> json){ 
+        return ImageModel(
             key: json["key"],
             url: json["url"],
             id: json["_id"],

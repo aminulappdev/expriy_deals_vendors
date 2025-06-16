@@ -42,7 +42,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   File? image;
   final ImagePickerHelper _imagePickerHelper = ImagePickerHelper();
 
-  bool _obscureText = true;
   bool showButton = false;
   double? latitude;
   double? longitude;
@@ -249,41 +248,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                     heightBox8,
-                    Text('Password',
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      controller: passwordCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (String? value) {
-                        if (value!.isEmpty) {
-                          return 'Enter password';
-                        }
-                        return null;
-                      },
-                      obscureText: _obscureText,
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Colors.grey,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscureText = !_obscureText;
-                            });
-                          },
-                        ),
-                        hintText: '***********',
-                        hintStyle: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    heightBox8,
                     Center(
                       child: InkWell(
                         onTap: () async {
@@ -310,14 +274,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     heightBox24,
                     Visibility(
-                      visible: showButton && latitude != null, // Updated condition
+                      visible:
+                          showButton && latitude != null, // Updated condition
                       replacement: Opacity(
                         opacity: 0.5,
                         child: CustomElevatedButton(
                           text: 'Verify Email',
                           onPressed: () {
-                            showSnackBarMessage(
-                                context, 'Please share your location to proceed', true);
+                            showSnackBarMessage(context,
+                                'Please share your location to proceed', true);
                           },
                         ),
                       ),

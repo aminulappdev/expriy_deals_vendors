@@ -12,7 +12,7 @@ class Urls {
   static const String updateProfileUrl = '$_baseUrl/users/update-my-profile';
   static const String updateShopUrl = '$_baseUrl/shop/update-my-shop';
   static const String categoryUrl = '$_baseUrl/categories';
-  static const String productUrl = '$_baseUrl/products';
+  static const String productUrl = '$_baseUrl/products/my-products';
   static const String ordertUrl = '$_baseUrl/orders';
   static const String addToCartUrl = '$_baseUrl/add-to-card';
   static const String myOrderUrl = '$_baseUrl/orders/my-orders';
@@ -32,6 +32,7 @@ class Urls {
   static const String stripeRequestUrl = '$_baseUrl/stripe/connect';
   static const String getShopUrl = '$_baseUrl/shop/my-shop';
   static const String notificationUrl = '$_baseUrl/notifications';
+  static const String contentByParam = '$_baseUrl/contents';
 
   static String productDetailsById(
     String id,

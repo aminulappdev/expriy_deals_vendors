@@ -22,10 +22,9 @@ class _WidthdrawRequestScreenState extends State<WidthdrawRequestScreen> {
   TextEditingController regionController = TextEditingController();
   final WidthdrawRequestController widthdrawRequestController =
       Get.put(WidthdrawRequestController());
-      final MyWidthdrawController _myWidthdrawController =
+  final MyWidthdrawController _myWidthdrawController =
       Get.find<MyWidthdrawController>();
 
-      
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,6 +111,11 @@ class _WidthdrawRequestScreenState extends State<WidthdrawRequestScreen> {
             showSnackBarMessage(
                 context, widthdrawRequestController.errorMessage!, true);
           }
+        }
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, widthdrawRequestController.errorMessage!, true);
         }
       }
     }

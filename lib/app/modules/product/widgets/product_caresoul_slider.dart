@@ -1,15 +1,17 @@
-
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:expriy_deals_vendors/app/modules/product/model/product_details_model.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
-import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
+
 
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeCarouselSlider extends StatefulWidget {
+  final List<ImageModel> images;
   const HomeCarouselSlider({
     super.key,
+    required this.images,
   });
 
   @override
@@ -34,7 +36,7 @@ class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
                     _selectedIndex.value = currentIndex;
                   },
                 ),
-                items: [1, 2, 3, 4].map(
+                items: widget.images.map(
                   (banner) {
                     return Builder(
                       builder: (BuildContext context) {
@@ -46,7 +48,9 @@ class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
                               margin: EdgeInsets.symmetric(horizontal: 2.w),
                               decoration: BoxDecoration(
                                   image: DecorationImage(
-                                      image: AssetImage(AssetsPath.headphone),
+                                      image: NetworkImage(widget
+                                              .images[_selectedIndex.value].url ??
+                                          'https://fastly.picsum.photos/id/1/200/300.jpg?hmac=jH5bDkLr6Tgy3oAg5khKCHeunZMHq0ehBZr6vGifPLY'),
                                       fit: BoxFit.cover),
                                   borderRadius: BorderRadius.circular(8.r)),
                             ),

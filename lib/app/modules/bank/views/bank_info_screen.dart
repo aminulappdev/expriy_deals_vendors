@@ -42,7 +42,7 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
                     Tooltip(
                       message: hasBankDetails
                           ? 'Bank details already exist'
-                          : 'Create new bank info',
+                          : 'Create new bankInfo',
                       child: InkWell(
                         onTap: hasBankDetails
                             ? null
@@ -64,42 +64,43 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
                             child: Icon(
                               Icons.add,
                               size: 20.sp,
-                              color:
-                                  hasBankDetails ? Colors.grey : Colors.black,
+                              color: hasBankDetails ? Colors.grey : Colors.black,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    widthBox8,
-                    Tooltip(
-                      message: 'Edit bank details',
-                      child: InkWell(
-                        onTap: () {
-                          Get.to(() => UpdateBankInfoScreen(
-                              accountId:
-                                  bankDetailsController.bankDetailsData?.id ??
-                                      ''));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColors.iconButtonThemeColor,
-                              width: 1.w,
+                    if (hasBankDetails) ...[
+                      widthBox8,
+                      Tooltip(
+                        message: 'Edit bank details',
+                        child: InkWell(
+                          onTap: () {
+                            Get.to(() => UpdateBankInfoScreen(
+                                accountId: bankDetailsController
+                                        .bankDetailsData?.id ??
+                                    ''));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.iconButtonThemeColor,
+                                width: 1.w,
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.edit,
-                              size: 20.sp,
-                              color: AppColors.iconButtonThemeColor,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.edit,
+                                size: 20.sp,
+                                color: AppColors.iconButtonThemeColor,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ],
                 );
               }),

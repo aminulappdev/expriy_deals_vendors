@@ -5,6 +5,7 @@ import 'package:expriy_deals_vendors/app/modules/widthraw/controllers/my_widthdr
 import 'package:expriy_deals_vendors/app/modules/widthraw/views/widthdraw_request_screen.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
+import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:expriy_deals_vendors/app/widgets/gradiant_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,11 +41,7 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 40.h),
-              Text(
-                'Earnings',
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
+              CustomAppBar(name: 'Earnings'),
               heightBox12,
               Container(
                 height: 192,
