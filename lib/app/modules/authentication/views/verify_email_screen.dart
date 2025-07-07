@@ -1,4 +1,3 @@
-
 import 'package:expriy_deals_vendors/app/modules/authentication/views/otp_screen.dart';
 import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
@@ -21,8 +20,6 @@ class VerifyEmailScreen extends StatefulWidget {
 }
 
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
-  // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +31,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
             children: [
               heightBox20,
               CustomAppBar(
-                name: 'Verify Email',
+                name: 'verify_email_screen.title'.tr,
               ),
               heightBox100,
               CircleAvatar(
@@ -44,7 +41,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               ),
               heightBox16,
               Text(
-                'Check Email',
+                'verify_email_screen.check_email'.tr,
                 style: GoogleFonts.poppins(
                     fontSize: 20.sp, fontWeight: FontWeight.w400),
               ),
@@ -52,7 +49,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               SizedBox(
                 width: 210.w,
                 child: Text(
-                  'Please check your email to verify your account.',
+                  'verify_email_screen.check_email_subtitle'.tr,
                   style: GoogleFonts.poppins(
                       fontSize: 12.sp, fontWeight: FontWeight.w400),
                   textAlign: TextAlign.center,
@@ -61,9 +58,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               heightBox30,
               CustomElevatedButton(
                 onPressed: () { 
-                   Get.to(OTPVerifyScreen(token: widget.token,));
+                   Get.to(OTPVerifyScreen(token: widget.token));
                 },
-                text: 'Confirm Now',
+                text: 'verify_email_screen.confirm_button'.tr,
               ),
               heightBox8,
             ],

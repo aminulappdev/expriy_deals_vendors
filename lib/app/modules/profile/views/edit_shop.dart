@@ -1,5 +1,3 @@
-// ignore_for_file: unused_field
-
 import 'dart:io';
 import 'package:expriy_deals_vendors/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/edit_profile_controller.dart';
@@ -17,10 +15,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EditShopScreen extends StatefulWidget {
   const EditShopScreen({super.key, required this.shopData});
   final MyShopData shopData;
+
   @override
   State<EditShopScreen> createState() => _EditShopScreenState();
 }
@@ -50,9 +50,6 @@ class _EditShopScreenState extends State<EditShopScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch shop data and update controllers when data is available
-
-    print('Shop data: ${shopController.shopData?.address}');
     shopNameCtrl.text = widget.shopData.name ?? '';
     descriptionCtrl.text = widget.shopData.description ?? '';
     addressCtrl.text = widget.shopData.address ?? '';
@@ -71,7 +68,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   heightBox20,
-                  CustomAppBar(name: 'Update Shop'),
+                  CustomAppBar(name: 'edit_shop_screen.title'.tr),
                   heightBox12,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -95,9 +92,9 @@ class _EditShopScreenState extends State<EditShopScreen> {
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         fit: BoxFit.fill,
-                                        image: NetworkImage( 
+                                        image: NetworkImage(
                                           widget.shopData.logo ??
-                                          'https://fastly.picsum.photos/id/879/200/300.jpg?hmac=07llkorYxtpw0EwxaeqFKPC5woveWVLykQVnIOyiwd8',
+                                              'https://fastly.picsum.photos/id/879/200/300.jpg?hmac=07llkorYxtpw0EwxaeqFKPC5woveWVLykQVnIOyiwd8',
                                         ),
                                       ),
                                       shape: BoxShape.circle,
@@ -136,51 +133,66 @@ class _EditShopScreenState extends State<EditShopScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Shop Name',
-                        style: TextStyle(
-                            fontSize: 14.sp, fontWeight: FontWeight.w500),
+                        'edit_shop_screen.shop_name'.tr,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       heightBox4,
                       TextFormField(
                         controller: shopNameCtrl,
-                        decoration: InputDecoration(),
+                        decoration: InputDecoration(
+                          hintText: 'edit_shop_screen.shop_name'.tr,
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter shop name';
+                            return 'edit_shop_screen.enter_shop_name'.tr;
                           }
                           return null;
                         },
                       ),
                       heightBox12,
                       Text(
-                        'Description',
-                        style: TextStyle(
-                            fontSize: 14.sp, fontWeight: FontWeight.w500),
+                        'edit_shop_screen.description'.tr,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       heightBox4,
                       TextFormField(
                         controller: descriptionCtrl,
-                        decoration: InputDecoration(),
+                        decoration: InputDecoration(
+                          hintText: 'edit_shop_screen.description'.tr,
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter description';
+                            return 'edit_shop_screen.enter_description'.tr;
                           }
                           return null;
                         },
                       ),
                       heightBox12,
                       Text(
-                        'Address',
-                        style: TextStyle(
-                            fontSize: 14.sp, fontWeight: FontWeight.w500),
+                        'edit_shop_screen.address'.tr,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       heightBox4,
                       TextFormField(
                         controller: addressCtrl,
-                        decoration: InputDecoration(),
+                        decoration: InputDecoration(
+                          hintText: 'edit_shop_screen.address'.tr,
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter address';
+                            return 'edit_shop_screen.enter_address'.tr;
                           }
                           return null;
                         },
@@ -189,7 +201,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
                       SizedBox(height: 20.h),
                     ],
                   ),
-                  GetBuilder<EditProfileController>(
+                  GetBuilder<EditShopController>(
                     builder: (controller) {
                       return Stack(
                         alignment: Alignment.center,
@@ -198,10 +210,10 @@ class _EditShopScreenState extends State<EditShopScreen> {
                             onPressed: controller.inProgress
                                 ? () {}
                                 : () => onTapToNextButton(),
-                            text: controller.inProgress ? '' : 'Update',
+                            text: controller.inProgress ? '' : 'edit_shop_screen.title'.tr,
                           ),
                           if (controller.inProgress)
-                            SizedBox(
+                            const SizedBox(
                               width: 24,
                               height: 24,
                               child: CircularProgressIndicator(
@@ -235,13 +247,13 @@ class _EditShopScreenState extends State<EditShopScreen> {
       if (isSuccess) {
         if (mounted) {
           await shopController.getShopData();
-          showSnackBarMessage(context, 'Shop updated');
+          showSnackBarMessage(context, 'edit_shop_screen.success_message'.tr);
           Get.to(() => MainButtonNavbarScreen());
         }
       } else {
         if (mounted) {
-          showSnackBarMessage(context,
-              editShopController.errorMessage ?? 'Failed to update shop', true);
+          showSnackBarMessage(
+              context, editShopController.errorMessage ?? 'edit_shop_screen.error_message'.tr, true);
         }
       }
     }

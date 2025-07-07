@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:io';
 import 'package:email_validator/email_validator.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/controllers/create_user_controller.dart';
@@ -51,7 +49,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (status.isGranted) {
       // Permission granted; you can now retrieve the location.
     } else if (status.isDenied) {
-      // Permission denied.
       print('Location_permission_denied');
     }
   }
@@ -65,9 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         longitude = locationData.longitude!;
         print('Location is $latitude and $longitude');
       });
-      // Handle the location data as needed.
     } catch (e) {
-      // Handle errors, such as permissions not granted or location services disabled.
       print('Error getting location: $e');
     }
   }
@@ -89,14 +84,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               heightBox20,
               CustomAppBar(
-                name: 'Sign Up',
+                name: 'sign_up_screen.title'.tr,
               ),
               heightBox16,
               Align(
                 alignment: Alignment.center,
                 child: WelcomeText(
-                  title: 'Create New Account',
-                  subtitle: 'Please fill your detail information.',
+                  title: 'sign_up_screen.header_title'.tr,
+                  subtitle: 'sign_up_screen.header_subtitle'.tr,
                 ),
               ),
               heightBox50,
@@ -105,7 +100,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Full Name',
+                    Text('sign_up_screen.full_name'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -117,16 +112,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return 'Enter name';
+                          return 'sign_up_screen.enter_name'.tr;
                         }
                         return null;
                       },
                       decoration: InputDecoration(
-                          hintText: 'Enter your full name',
+                          hintText: 'sign_up_screen.enter_name'.tr,
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Shop Name',
+                    Text('sign_up_screen.shop_name'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -138,16 +133,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return 'Enter shop name';
+                          return 'sign_up_screen.enter_shop_name'.tr;
                         }
                         return null;
                       },
                       decoration: InputDecoration(
-                          hintText: 'Enter your shop name',
+                          hintText: 'sign_up_screen.enter_shop_name'.tr,
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Email',
+                    Text('sign_up_screen.email'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -159,10 +154,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return 'Enter email';
+                          return 'sign_up_screen.enter_email'.tr;
                         }
                         if (EmailValidator.validate(value) == false) {
-                          return 'Enter a valid email address';
+                          return 'sign_up_screen.enter_valid_email'.tr;
                         }
                         return null;
                       },
@@ -171,7 +166,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Upload your tax documents',
+                    Text('sign_up_screen.upload_tax_documents'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -198,7 +193,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   },
                                   child: Center(
                                     child: Text(
-                                      'Upload again',
+                                      'sign_up_screen.upload_again'.tr,
                                       style: TextStyle(fontSize: 14),
                                     ),
                                   ),
@@ -240,7 +235,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     size: 40,
                                   ),
                                   Text(
-                                    'Upload',
+                                    'sign_up_screen.upload'.tr,
                                     style: TextStyle(fontSize: 24),
                                   )
                                 ],
@@ -261,7 +256,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               borderRadius: BorderRadius.circular(30),
                               border: Border.all(
                                   color: AppColors.iconButtonThemeColor)),
-                          child: Center(child: Text('Share your location')),
+                          child: Center(child: Text('sign_up_screen.share_location'.tr)),
                         ),
                       ),
                     ),
@@ -274,15 +269,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     heightBox24,
                     Visibility(
-                      visible:
-                          showButton && latitude != null, // Updated condition
+                      visible: showButton && latitude != null,
                       replacement: Opacity(
                         opacity: 0.5,
                         child: CustomElevatedButton(
-                          text: 'Verify Email',
+                          text: 'sign_up_screen.verify_email'.tr,
                           onPressed: () {
                             showSnackBarMessage(context,
-                                'Please share your location to proceed', true);
+                                'sign_up_screen.share_location_error'.tr, true);
                           },
                         ),
                       ),
@@ -295,8 +289,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 onPressed: controller.inProgress
                                     ? () {}
                                     : () => onTapToNextButton(),
-                                text:
-                                    controller.inProgress ? '' : 'Verify Email',
+                                text: controller.inProgress
+                                    ? ''
+                                    : 'sign_up_screen.verify_email'.tr,
                               ),
                               if (controller.inProgress)
                                 SizedBox(
@@ -314,9 +309,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     heightBox12,
                     AuthenticationFooterSection(
-                      fTextName: 'Already have an account? ',
+                      fTextName: 'sign_up_screen.already_have_account'.tr,
                       fTextColor: Color(0xff33363F),
-                      sTextName: 'Log In',
+                      sTextName: 'sign_up_screen.log_in'.tr,
                       sTextColor: Color.fromARGB(255, 253, 107, 45),
                       ontap: () {
                         Get.to(SignInScreen());
@@ -348,10 +343,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (isSuccess) {
         if (mounted) {
           clearTextField();
-          showSnackBarMessage(context, 'New user created');
+          showSnackBarMessage(context, 'sign_up_screen.success_message'.tr);
           Get.to(ReviewScreen());
-          // print('My token ---------------------------------------');
-          // print(signUpController.token);
         }
       } else {
         if (mounted) {
@@ -363,7 +356,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void clearTextField() {
-    // Clear the text fields
     emailCtrl.clear();
     nameCtrl.clear();
     shopnameCtrl.clear();

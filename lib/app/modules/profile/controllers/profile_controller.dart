@@ -1,4 +1,3 @@
-
 import 'package:expriy_deals_vendors/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/model/profile_model.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/services/profile_services.dart';
@@ -24,7 +23,7 @@ class ProfileController extends GetxController {
     super.onInit();
     getProfileData();
   }
- 
+
   Future<bool> getProfileData() async {
     final token = StorageUtil.getData(StorageUtil.userAccessToken);
     if (token == null) {
@@ -38,6 +37,8 @@ class ProfileController extends GetxController {
     );
     if (response.isSuccess) {
       _errorMessage.value = '';
+      print('vendorId: ${response.responseData['data']['_id']}');
+      StorageUtil.saveData('vendorId', response.responseData['data']['_id']);
       _profileModel.value = ProfileModel.fromJson(response.responseData);
       _inProgress.value = false;
       return true;
@@ -67,12 +68,15 @@ class ProfileController extends GetxController {
     final isSuccess = await _profileService.logout();
     _inProgress.value = false;
     if (isSuccess) {
-      Get.snackbar('Success', 'Logged out successfully', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Success', 'Logged out successfully',
+          snackPosition: SnackPosition.BOTTOM);
       Get.off(SignInScreen());
     } else {
       _errorMessage.value = 'Failed to log out';
       Get.snackbar('Error', 'Failed to log out',
-          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.redAccent, colorText: Colors.white);
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white);
     }
   }
 }

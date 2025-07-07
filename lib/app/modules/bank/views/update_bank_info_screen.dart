@@ -59,14 +59,14 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox24,
-              CustomAppBar(name: 'Update Bank Info', isBack: true),
+              CustomAppBar(name: 'update_bank_info_screen.title'.tr, isBack: true),
               heightBox12,
               Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Account number',
+                    Text('update_bank_info_screen.account_number'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -77,8 +77,7 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.number,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter account number';
-          
+                        if (value!.isEmpty) return 'update_bank_info_screen.enter_account_number'.tr;
                         return null;
                       },
                       decoration: InputDecoration(
@@ -86,7 +85,7 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Routing number',
+                    Text('update_bank_info_screen.routing_number'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -97,8 +96,7 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.number,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter routing number';
-          
+                        if (value!.isEmpty) return 'update_bank_info_screen.enter_routing_number'.tr;
                         return null;
                       },
                       decoration: InputDecoration(
@@ -106,7 +104,7 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Bank name',
+                    Text('update_bank_info_screen.bank_name'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -117,8 +115,7 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter bank name';
-          
+                        if (value!.isEmpty) return 'update_bank_info_screen.enter_bank_name'.tr;
                         return null;
                       },
                       decoration: InputDecoration(
@@ -126,7 +123,7 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Bankholder name',
+                    Text('update_bank_info_screen.bank_holder_name'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -137,8 +134,7 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter bankholder name';
-          
+                        if (value!.isEmpty) return 'update_bank_info_screen.enter_bank_holder_name'.tr;
                         return null;
                       },
                       decoration: InputDecoration(
@@ -146,7 +142,7 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Bank address',
+                    Text('update_bank_info_screen.bank_address'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -157,8 +153,7 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter bank address';
-          
+                        if (value!.isEmpty) return 'update_bank_info_screen.enter_bank_address'.tr;
                         return null;
                       },
                       decoration: InputDecoration(
@@ -178,7 +173,7 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
                         onPressed: controller.inProgress
                             ? () {}
                             : () => onTapToNextButton(),
-                        text: controller.inProgress ? '' : 'Update Bank Info',
+                        text: controller.inProgress ? '' : 'update_bank_info_screen.update_button'.tr,
                       ),
                       if (controller.inProgress)
                         SizedBox(
@@ -213,21 +208,14 @@ class _UpdateBankInfoScreenState extends State<UpdateBankInfoScreen> {
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'Card info updated successfully', false);
+          showSnackBarMessage(context, 'update_bank_info_screen.success_message'.tr, false);
           Get.back();
-          // print('My token ---------------------------------------');
-          // print(signUpController.token);
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, updateBankInfoController.errorMessage!, true);
-          }
         }
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(
-            context, updateBankInfoController.errorMessage!, true);
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, updateBankInfoController.errorMessage ?? 'update_bank_info_screen.error_message'.tr, true);
+        }
       }
     }
   }

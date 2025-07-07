@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+
 
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/profile_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/widthraw/controllers/my_widthdrae_controller.dart';
@@ -10,6 +10,7 @@ import 'package:expriy_deals_vendors/app/widgets/gradiant_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WidthdrawScreen extends StatefulWidget {
   const WidthdrawScreen({super.key});
@@ -26,7 +27,6 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch withdrawal data when the screen initializes
     _profileController.getProfileData();
     _myWidthdrawController.getWidthdraw();
   }
@@ -35,40 +35,48 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(12.h),
         child: Obx(
           () => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 40.h),
-              CustomAppBar(name: 'Earnings'),
+              CustomAppBar(name: 'widthdraw_screen.title'.tr),
               heightBox12,
               Container(
-                height: 192,
+                height: 192.h,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: AppColors.iconButtonThemeColor.withOpacity(0.1),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: EdgeInsets.all(12.0.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Your Balance'),
                       Text(
-                        '\$${_profileController.profileData?.balance ?? '0.00'}',
-                        style: TextStyle(
-                            fontSize: 40, fontWeight: FontWeight.w600),
+                        'widthdraw_screen.your_balance'.tr,
+                        style: GoogleFonts.poppins(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        '\$${_profileController.profileData?.balance?.toStringAsFixed(2) ?? '0.00'}',
+                        style: GoogleFonts.poppins(
+                          fontSize: 40.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       heightBox12,
                       SizedBox(
-                        width: 240,
+                        width: 240.w,
                         child: CustomElevatedButton(
                           onPressed: () {
                             Get.to(const WidthdrawRequestScreen());
                           },
-                          text: 'Withdraw',
+                          text: 'widthdraw_screen.withdraw'.tr,
                         ),
                       ),
                     ],
@@ -76,7 +84,6 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
                 ),
               ),
               heightBox12,
-              // Display loading, error, or data using DataTable
               _myWidthdrawController.inProgress
                   ? const Expanded(
                       child: Center(child: CircularProgressIndicator()),
@@ -86,17 +93,24 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
                           child: Center(
                             child: Text(
                               _myWidthdrawController.errorMessage,
-                              style: const TextStyle(color: Colors.red),
+                              style: GoogleFonts.poppins(
+                                fontSize: 16.sp,
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         )
                       : _myWidthdrawController.myWidthdrawData == null ||
                               _myWidthdrawController.myWidthdrawData!.isEmpty
-                          ? const Expanded(
+                          ? Expanded(
                               child: Center(
                                 child: Text(
-                                  'No withdrawal details available',
-                                  style: TextStyle(fontSize: 16),
+                                  'widthdraw_screen.no_withdrawal_details'.tr,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             )
@@ -116,13 +130,13 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
                                     columns: [
                                       DataColumn(
                                         label: Container(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: EdgeInsets.all(8.0.h),
                                           child: Text(
-                                            'Withdraw ID',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'widthdraw_screen.withdraw_id'.tr,
+                                            style: GoogleFonts.poppins(
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
+                                              fontSize: 14.sp,
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
@@ -130,13 +144,13 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
                                       ),
                                       DataColumn(
                                         label: Container(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: EdgeInsets.all(8.0.h),
                                           child: Text(
-                                            'Amount',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'widthdraw_screen.amount'.tr,
+                                            style: GoogleFonts.poppins(
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
+                                              fontSize: 14.sp,
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
@@ -144,13 +158,13 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
                                       ),
                                       DataColumn(
                                         label: Container(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: EdgeInsets.all(8.0.h),
                                           child: Text(
-                                            'Status',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'widthdraw_screen.status'.tr,
+                                            style: GoogleFonts.poppins(
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
+                                              fontSize: 14.sp,
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
@@ -158,13 +172,13 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
                                       ),
                                       DataColumn(
                                         label: Container(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: EdgeInsets.all(8.0.h),
                                           child: Text(
-                                            'Date',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'widthdraw_screen.date'.tr,
+                                            style: GoogleFonts.poppins(
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
+                                              fontSize: 14.sp,
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
@@ -172,45 +186,51 @@ class _WidthdrawScreenState extends State<WidthdrawScreen> {
                                       ),
                                       DataColumn(
                                         label: Container(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: EdgeInsets.all(8.0.h),
                                           child: Text(
-                                            'Details',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'widthdraw_screen.details'.tr,
+                                            style: GoogleFonts.poppins(
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
+                                              fontSize: 14.sp,
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
                                       ),
                                     ],
-                                    rows: _myWidthdrawController
-                                        .myWidthdrawData!
+                                    rows: _myWidthdrawController.myWidthdrawData!
                                         .map((withdraw) {
                                       return DataRow(cells: [
-                                        DataCell(Text(withdraw.id ?? 'N/A')),
-                                        DataCell(Text(
-                                            '\$${withdraw.amount?.toStringAsFixed(2) ?? '0.00'}')),
                                         DataCell(
-                                            Text(withdraw.status ?? 'N/A')),
-                                        DataCell(Text('N/A')),
-                                        DataCell(InkWell(
-                                          onTap: () {
-                                            // Get.to(WidthdrawRequestScreen(
-                                            //     withdrawDetailsItemModel:
-                                            //         withdraw));
-                                          },
-                                          child: Text(
-                                            'Details',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
-                                              fontWeight: FontWeight.normal,
-                                              fontStyle: FontStyle.italic,
+                                          Text(withdraw.id ?? 'N/A'),
+                                        ),
+                                        DataCell(
+                                          Text(
+                                              '\$${withdraw.amount?.toStringAsFixed(2) ?? '0.00'}'),
+                                        ),
+                                        DataCell(
+                                          Text(withdraw.status ?? 'N/A'),
+                                        ),
+                                       DataCell(Text('N/A')),
+                                        DataCell(
+                                          InkWell(
+                                            onTap: () {
+                                              // Get.to(WidthdrawRequestScreen(
+                                              //     withdrawDetailsItemModel: withdraw));
+                                            },
+                                            child: Text(
+                                              'widthdraw_screen.details'.tr,
+                                              style: GoogleFonts.poppins(
+                                                color:
+                                                    AppColors.iconButtonThemeColor,
+                                                fontWeight: FontWeight.normal,
+                                                fontStyle: FontStyle.italic,
+                                                fontSize: 14.sp,
+                                              ),
                                             ),
                                           ),
-                                        )),
+                                        ),
                                       ]);
                                     }).toList(),
                                   ),

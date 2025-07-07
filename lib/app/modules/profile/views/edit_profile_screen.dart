@@ -1,5 +1,3 @@
-// ignore_for_file: unused_field
-
 import 'dart:io';
 import 'package:expriy_deals_vendors/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/edit_profile_controller.dart';
@@ -16,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class EditProfile extends StatefulWidget {
   final ProfileData profileData;
@@ -38,13 +38,13 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController cityCtrl = TextEditingController();
   TextEditingController stateCtrl = TextEditingController();
   TextEditingController zipcodeCtrl = TextEditingController();
-  TextEditingController countrynCtrl = TextEditingController();
+  TextEditingController countryCtrl = TextEditingController();
   TextEditingController shopNameCtrl = TextEditingController();
   TextEditingController descriptionCtrl = TextEditingController();
 
   static final customCacheManager = CacheManager(
     Config(
-      'customCacheKey', // ক্যাশের জন্য আলাদা নাম
+      'customCacheKey',
       stalePeriod: const Duration(days: 15),
       maxNrOfCacheObjects: 100,
     ),
@@ -59,7 +59,7 @@ class _EditProfileState extends State<EditProfile> {
     cityCtrl.text = widget.profileData.city ?? 'no data';
     stateCtrl.text = widget.profileData.state ?? 'no data';
     zipcodeCtrl.text = widget.profileData.zipCode ?? 'no data';
-    countrynCtrl.text = widget.profileData.country ?? 'no data';
+    countryCtrl.text = widget.profileData.country ?? 'no data';
     shopNameCtrl.text = widget.profileData.shop ?? 'no data';
     descriptionCtrl.text = widget.profileData.document ?? 'no data';
     super.initState();
@@ -77,7 +77,7 @@ class _EditProfileState extends State<EditProfile> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 heightBox20,
-                CustomAppBar(name: 'Update profile'),
+                CustomAppBar(name: 'edit_profile.title'.tr),
                 heightBox12,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -95,51 +95,42 @@ class _EditProfileState extends State<EditProfile> {
                                     fit: BoxFit.cover,
                                   ),
                                 )
-                              // : CachedNetworkImage(
-                              //     cacheManager: customCacheManager,
-                              //     key: UniqueKey(),
-                              //     height: 80,
-                              //     width: 80,
-                              //     fit: BoxFit.fill,
-                              //     maxHeightDiskCache: 200,
-                              //     imageUrl: widget.profileData.profile ??
-                              //         'https://fastly.picsum.photos/id/879/200/300.jpg?hmac=07llkorYxtpw0EwxaeqFKPC5woveWVLykQVnIOyiwd8',
-                              //   )
-                              : Container(
+                              : CachedNetworkImage(
+                                  cacheManager: customCacheManager,
+                                  key: UniqueKey(),
                                   height: 80,
                                   width: 80,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: NetworkImage(widget
-                                                .profileData.profile ??
-                                            'https://fastly.picsum.photos/id/879/200/300.jpg?hmac=07llkorYxtpw0EwxaeqFKPC5woveWVLykQVnIOyiwd8')),
-                                    shape: BoxShape.circle,
-                                  ),
+                                  fit: BoxFit.fill,
+                                  maxHeightDiskCache: 200,
+                                  imageUrl: widget.profileData.profile ??
+                                      'https://fastly.picsum.photos/id/879/200/300.jpg?hmac=07llkorYxtpw0EwxaeqFKPC5woveWVLykQVnIOyiwd8',
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                 ),
                         ),
                         Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: InkWell(
-                              onTap: () {
-                                _imagePickerHelper.showAlertDialog(context,
-                                    (File pickedImage) {
-                                  setState(() {
-                                    image = pickedImage;
-                                  });
+                          bottom: 0,
+                          right: 0,
+                          child: InkWell(
+                            onTap: () {
+                              _imagePickerHelper.showAlertDialog(context,
+                                  (File pickedImage) {
+                                setState(() {
+                                  image = pickedImage;
                                 });
-                              },
-                              child: CircleAvatar(
-                                  backgroundColor:
-                                      AppColors.iconButtonThemeColor,
-                                  radius: 16.r,
-                                  child: Icon(
-                                    Icons.edit,
-                                    color: Colors.white,
-                                    size: 20.h,
-                                  )),
-                            ))
+                              });
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: AppColors.iconButtonThemeColor,
+                              radius: 16.r,
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 20.h,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -149,99 +140,178 @@ class _EditProfileState extends State<EditProfile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Name',
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500),
+                      'edit_profile.name'.tr,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     heightBox4,
                     TextFormField(
                       controller: nameCtrl,
-                      decoration: InputDecoration(),
+                      decoration: InputDecoration(
+                        hintText: 'edit_profile.name'.tr,
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'edit_profile.enter_name'.tr;
+                        }
+                        return null;
+                      },
                     ),
                     heightBox12,
                     Text(
-                      'Email adress',
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500),
+                      'edit_profile.email_address'.tr,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     heightBox4,
                     TextFormField(
                       enabled: false,
                       controller: emailCtrl,
-                      decoration: InputDecoration(),
+                      decoration: InputDecoration(
+                        hintText: 'edit_profile.email_address'.tr,
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
                     ),
                     heightBox12,
-                    heightBox12,
                     Text(
-                      'Contact Information',
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500),
+                      'edit_profile.contact_information'.tr,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     heightBox4,
                     TextFormField(
                       controller: contactCtrl,
-                      decoration: InputDecoration(),
+                      decoration: InputDecoration(
+                        hintText: 'edit_profile.contact_information'.tr,
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'edit_profile.enter_contact_information'.tr;
+                        }
+                        return null;
+                      },
                     ),
                     heightBox12,
                     Text(
-                      'Adress',
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500),
+                      'edit_profile.address'.tr,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     heightBox4,
                     TextFormField(
                       controller: locationCtrl,
-                      decoration: InputDecoration(),
+                      decoration: InputDecoration(
+                        hintText: 'edit_profile.address'.tr,
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'edit_profile.enter_address'.tr;
+                        }
+                        return null;
+                      },
                     ),
                     heightBox12,
                     Text(
-                      'City',
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500),
+                      'edit_profile.city'.tr,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     heightBox4,
                     TextFormField(
                       controller: cityCtrl,
-                      decoration: InputDecoration(),
+                      decoration: InputDecoration(
+                        hintText: 'edit_profile.city'.tr,
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'edit_profile.enter_city'.tr;
+                        }
+                        return null;
+                      },
                     ),
                     heightBox12,
                     Text(
-                      'State',
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500),
+                      'edit_profile.state'.tr,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     heightBox4,
                     TextFormField(
                       controller: stateCtrl,
-                      decoration: InputDecoration(),
+                      decoration: InputDecoration(
+                        hintText: 'edit_profile.state'.tr,
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'edit_profile.enter_state'.tr;
+                        }
+                        return null;
+                      },
                     ),
                     heightBox12,
                     Text(
-                      'Zipcode',
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500),
+                      'edit_profile.zipcode'.tr,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     heightBox4,
                     TextFormField(
                       keyboardType: TextInputType.number,
                       controller: zipcodeCtrl,
-                      decoration: InputDecoration(),
+                      decoration: InputDecoration(
+                        hintText: 'edit_profile.zipcode'.tr,
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'edit_profile.enter_zipcode'.tr;
+                        }
+                        return null;
+                      },
                     ),
                     heightBox12,
                     Text(
-                      'Country',
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500),
+                      'edit_profile.country'.tr,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     heightBox4,
                     TextFormField(
-                      controller: countrynCtrl,
-                      decoration: InputDecoration(),
+                      controller: countryCtrl,
+                      decoration: InputDecoration(
+                        hintText: 'edit_profile.country'.tr,
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'edit_profile.enter_country'.tr;
+                        }
+                        return null;
+                      },
                     ),
                     heightBox12,
-                    SizedBox(
-                      height: 20.h,
-                    ),
+                    SizedBox(height: 20.h),
                   ],
                 ),
                 GetBuilder<EditProfileController>(
@@ -253,10 +323,10 @@ class _EditProfileState extends State<EditProfile> {
                           onPressed: controller.inProgress
                               ? () {}
                               : () => onTapToNextButton(),
-                          text: controller.inProgress ? '' : 'Update',
+                          text: controller.inProgress ? '' : 'edit_profile.title'.tr,
                         ),
                         if (controller.inProgress)
-                          SizedBox(
+                          const SizedBox(
                             width: 24,
                             height: 24,
                             child: CircularProgressIndicator(
@@ -264,50 +334,60 @@ class _EditProfileState extends State<EditProfile> {
                               color: Colors.white,
                             ),
                           ),
-                      ],
-                    );
-                  },
-                ),
-              ],
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await editProfileController.updateProfile(
-          image,
-          nameCtrl.text,
-          emailCtrl.text,
-          contactCtrl.text,
-          locationCtrl.text,
-          cityCtrl.text,
-          stateCtrl.text,
-          zipcodeCtrl.text,
-          countrynCtrl.text,
-          StorageUtil.getData(StorageUtil.userAccessToken));
+        image,
+        nameCtrl.text,
+        emailCtrl.text,
+        contactCtrl.text,
+        locationCtrl.text,
+        cityCtrl.text,
+        stateCtrl.text,
+        zipcodeCtrl.text,
+        countryCtrl.text,
+        StorageUtil.getData(StorageUtil.userAccessToken),
+      );
 
       if (isSuccess) {
         if (mounted) {
           Get.find<ProfileController>().getProfileData();
-          showSnackBarMessage(context, 'Profile updated');
-          Get.to(MainButtonNavbarScreen());
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, editProfileController.errorMessage!, true);
-          }
+          showSnackBarMessage(context, 'edit_profile.success_message'.tr);
+          Get.to(() => MainButtonNavbarScreen());
         }
       } else {
         if (mounted) {
-          // print('Error show ----------------------------------');
           showSnackBarMessage(
-              context, editProfileController.errorMessage!, true);
+              context, editProfileController.errorMessage ?? 'edit_profile.error_message'.tr, true);
         }
       }
     }
+  }
+
+  @override
+  void dispose() {
+    nameCtrl.dispose();
+    emailCtrl.dispose();
+    contactCtrl.dispose();
+    locationCtrl.dispose();
+    cityCtrl.dispose();
+    stateCtrl.dispose();
+    zipcodeCtrl.dispose();
+    countryCtrl.dispose();
+    shopNameCtrl.dispose();
+    descriptionCtrl.dispose();
+    super.dispose();
   }
 }

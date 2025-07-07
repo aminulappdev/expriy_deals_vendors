@@ -10,6 +10,7 @@ import 'package:expriy_deals_vendors/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 
 class ProductScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class ProductScreen extends StatefulWidget {
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
-}
+} 
 
 class _ProductScreenState extends State<ProductScreen> {
   final TextEditingController searchController = TextEditingController();
@@ -34,7 +35,7 @@ class _ProductScreenState extends State<ProductScreen> {
       Get.find<AllCategoryController>();
   final DeleteProductController deleteProductController =
       Get.find<DeleteProductController>();
-  String? _selectedCategoryId; // Track selected category ID
+  String? _selectedCategoryId;
   String searchQuery = '';
   Timer? _debounce;
 
@@ -43,8 +44,7 @@ class _ProductScreenState extends State<ProductScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       allCategoryController.getCategory();
-      allProductController.getProduct(
-          categoryId: null); // Fetch all products initially
+      allProductController.getProduct(categoryId: null);
     });
     searchController.addListener(() {
       _onSearchChanged(searchController.text);
@@ -59,7 +59,6 @@ class _ProductScreenState extends State<ProductScreen> {
     super.dispose();
   }
 
-  // Debounce search input to improve performance
   void _onSearchChanged(String value) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () {
@@ -69,7 +68,6 @@ class _ProductScreenState extends State<ProductScreen> {
     });
   }
 
-  // Filter products based on search query
   List<dynamic> _getFilteredProducts(List<dynamic> products) {
     if (searchQuery.isEmpty) {
       return products;
@@ -90,8 +88,11 @@ class _ProductScreenState extends State<ProductScreen> {
           children: [
             heightBox20,
             Text(
-              'Products',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              'product_screen.title'.tr,
+              style: GoogleFonts.poppins(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             heightBox8,
             Row(
@@ -119,8 +120,8 @@ class _ProductScreenState extends State<ProductScreen> {
                         Expanded(
                           child: TextFormField(
                             controller: searchController,
-                            decoration: const InputDecoration(
-                              hintText: 'Search products',
+                            decoration: InputDecoration(
+                              hintText: 'product_screen.search_products'.tr,
                               border: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               enabledBorder: InputBorder.none,
@@ -157,7 +158,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 },
                 child: Container(
                   height: 32,
-                  width: 123,
+                  width: 130,
                   decoration: BoxDecoration(
                     color: AppColors.iconButtonThemeColor,
                     borderRadius: BorderRadius.circular(50),
@@ -171,9 +172,12 @@ class _ProductScreenState extends State<ProductScreen> {
                         child: const Icon(Icons.add),
                       ),
                       widthBox4,
-                      const Text(
-                        'Add product',
-                        style: TextStyle(color: Colors.white),
+                      Text(
+                        'product_screen.add_product'.tr,
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 12.sp,
+                        ),
                       ),
                     ],
                   ),
@@ -188,7 +192,12 @@ class _ProductScreenState extends State<ProductScreen> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (allCategoryController.categoryData == null ||
                     allCategoryController.categoryData!.isEmpty) {
-                  return const Center(child: Text('No categories found'));
+                  return Center(
+                    child: Text(
+                      'product_screen.no_categories_found'.tr,
+                      style: GoogleFonts.poppins(fontSize: 14.sp),
+                    ),
+                  );
                 } else {
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -233,7 +242,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               child: Center(
                                 child: Text(
                                   category.name ?? 'Category',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     fontSize: 12.sp,
                                     color: isSelected
                                         ? Colors.white
@@ -259,13 +268,22 @@ class _ProductScreenState extends State<ProductScreen> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (allProductController.productData == null ||
                     allProductController.productData!.isEmpty) {
-                  return const Center(child: Text('No products found'));
+                  return Center(
+                    child: Text(
+                      'product_screen.no_products_found'.tr,
+                      style: GoogleFonts.poppins(fontSize: 14.sp),
+                    ),
+                  );
                 }
                 final filteredProducts =
                     _getFilteredProducts(allProductController.productData!);
                 if (filteredProducts.isEmpty && searchQuery.isNotEmpty) {
-                  return const Center(
-                      child: Text('No matching products found'));
+                  return Center(
+                    child: Text(
+                      'product_screen.no_matching_products'.tr,
+                      style: GoogleFonts.poppins(fontSize: 14.sp),
+                    ),
+                  );
                 }
                 return GridView.builder(
                   padding: EdgeInsets.zero,
@@ -284,13 +302,12 @@ class _ProductScreenState extends State<ProductScreen> {
                         discount: product.discount?.toString() ?? '0',
                         deleteOnTap: () {
                           onTapToNextButton(product.id ?? '');
-                        }, 
+                        },
                         editOntap: () {
-                          Get.to(UpdateProductScreen(
-                                  productId: product.id ?? ''))
+                          Get.to(UpdateProductScreen(productId: product.id ?? ''))
                               ?.then((value) {
                             if (value == true) {
-                               allProductController.getProduct(
+                              allProductController.getProduct(
                                   categoryId: _selectedCategoryId);
                             }
                           });
@@ -320,12 +337,13 @@ class _ProductScreenState extends State<ProductScreen> {
     if (isSuccess) {
       if (mounted) {
         allProductController.getProduct();
-        showSnackBarMessage(context, 'Product deleted successfully', false);
+        showSnackBarMessage(
+            context, 'product_screen.delete_success'.tr, false);
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(
-            context, deleteProductController.errorMessage, true);
+        showSnackBarMessage(context,
+            'product_screen.delete_error'.trParams({'error': deleteProductController.errorMessage}), true);
       }
     }
   }

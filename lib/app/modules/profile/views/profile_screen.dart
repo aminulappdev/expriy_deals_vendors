@@ -1,5 +1,5 @@
-// ignore_for_file: deprecated_member_use
 import 'package:expriy_deals_vendors/app/modules/bank/views/bank_info_screen.dart';
+import 'package:expriy_deals_vendors/app/modules/common/views/language_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/common/views/notification_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/profile_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/shop_controller.dart';
@@ -66,13 +66,17 @@ class ProfileScreen extends StatelessWidget {
                             heightBox4,
                             Text(
                               controller.profileData?.name ?? 'No name',
-                              style: const TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w700),
+                              style: GoogleFonts.poppins(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                             Text(
                               controller.profileData?.email ?? 'No email',
-                              style: const TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.w500),
+                              style: GoogleFonts.poppins(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ],
                         );
@@ -80,20 +84,21 @@ class ProfileScreen extends StatelessWidget {
               ),
               heightBox12,
               ProfileDrawerFeature(
-                feature: 'Edit Profile',
+                feature: 'profile_screen.edit_profile'.tr,
                 icon: Icons.person,
                 ontap: () {
                   if (controller.profileData != null) {
                     Get.to(EditProfile(profileData: controller.profileData!));
                   } else {
-                    Get.snackbar('Error', 'Profile data not available');
+                    Get.snackbar('Error',
+                        'profile_screen.error_profile_not_available'.tr);
                   }
                 },
               ),
               ProfileDrawerFeature(
-                feature: 'Edit Shop',
+                feature: 'profile_screen.edit_shop'.tr,
                 icon: Icons.shop,
-                ontap: () { 
+                ontap: () {
                   if (shopController.shopData != null) {
                     print(
                         'Shop data profile page: ${shopController.shopData?.name}');
@@ -101,70 +106,75 @@ class ProfileScreen extends StatelessWidget {
                       shopData: shopController.shopData!,
                     ));
                   } else {
-                    Get.snackbar('Error', 'Shop data not available');
+                    Get.snackbar(
+                        'Error', 'profile_screen.error_shop_not_available'.tr);
                   }
                 },
               ),
               ProfileDrawerFeature(
-                feature: 'Bank Details',
+                feature: 'profile_screen.bank_details'.tr,
                 icon: Icons.payment,
                 ontap: () => Get.to(const BankInfoScreen()),
               ),
               heightBox8,
               ProfileDrawerFeature(
-                feature: 'Widthdaw',
+                feature: 'profile_screen.widthdraw'.tr,
                 icon: Icons.payment,
                 ontap: () => Get.to(const WidthdrawScreen()),
               ),
               heightBox8,
               ProfileDrawerFeature(
-                feature: 'Connect Account',
+                feature: 'profile_screen.connect_account'.tr,
                 icon: Icons.link,
                 ontap: () => _launchURL(),
               ),
               heightBox8,
               Text(
-                'Settings',
+                'profile_screen.settings'.tr,
                 style: GoogleFonts.poppins(
-                    fontSize: 12, fontWeight: FontWeight.w500),
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               heightBox12,
               ProfileDrawerFeature(
-                feature: 'Notification',
+                feature: 'profile_screen.notification'.tr,
                 icon: Icons.notifications,
-                ontap: () {
-                  Get.to(NotificationScreen());
-                },
+                ontap: () => Get.to(NotificationScreen()),
               ),
               heightBox8,
               ProfileDrawerFeature(
-                feature: 'Change password',
+                feature: 'profile_screen.language'.tr,
+                icon: Icons.notifications,
+                ontap: () => Get.to(LanguageScreen()),
+              ),
+              heightBox8,
+              ProfileDrawerFeature(
+                feature: 'profile_screen.change_password'.tr,
                 icon: Icons.lock,
                 ontap: () => Get.to(const ChangePasswordScreen()),
               ),
               heightBox8,
-              // ProfileDrawerFeature(
-              //   feature: 'Delete account',
-              //   icon: Icons.delete,
-              //   ontap: () {},
-              // ),
-              heightBox8,
               Text(
-                'Support',
+                'profile_screen.support'.tr,
                 style: GoogleFonts.poppins(
-                    fontSize: 12, fontWeight: FontWeight.w500),
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               ProfileDrawerFeature(
-                feature: 'Policies',
+                feature: 'profile_screen.policies'.tr,
                 icon: Icons.security,
                 ontap: () => Get.to(InfoScreen(
-                    appBarTitle: 'Privacy & Policies', param: 'privacyPolicy')),
+                    appBarTitle: 'profile_screen.policies'.tr,
+                    param: 'privacyPolicy')),
               ),
               ProfileDrawerFeature(
-                feature: 'About Us',
+                feature: 'profile_screen.about_us'.tr,
                 icon: Icons.groups_2_sharp,
-                ontap: () => Get.to(
-                    InfoScreen(appBarTitle: 'About Us', param: 'aboutUs')),
+                ontap: () => Get.to(InfoScreen(
+                    appBarTitle: 'profile_screen.about_us'.tr,
+                    param: 'aboutUs')),
               ),
               heightBox14,
               Align(
@@ -184,10 +194,12 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         const Icon(Icons.logout, color: Colors.red),
                         widthBox4,
-                        const Text(
-                          'Logout',
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.w600),
+                        Text(
+                          'profile_screen.logout'.tr,
+                          style: GoogleFonts.poppins(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ],
                     ),
@@ -209,7 +221,7 @@ class ProfileScreen extends StatelessWidget {
         throw Exception('Could not launch $url');
       }
     } else {
-      Get.snackbar('Error', 'Link not available');
+      Get.snackbar('Error', 'profile_screen.error_link_not_available'.tr);
     }
   }
 }

@@ -67,11 +67,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   heightBox20,
-                  CustomAppBar(name: 'Add product'),
+                  CustomAppBar(name: 'add_product_screen.title'.tr),
                   heightBox16,
-                  Text('Upload images'),
+                  Text(
+                    'add_product_screen.upload_images'.tr,
+                    style: GoogleFonts.poppins(fontSize: 12.sp),
+                  ),
                   heightBox12,
-                  InkWell( 
+                  InkWell(
                     onTap: _pickImage,
                     child: Container(
                       height: 140,
@@ -85,8 +88,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.add, size: 40),
-                                Text('Add product images',
-                                    style: TextStyle(fontSize: 20)),
+                                Text(
+                                  'add_product_screen.add_product_images'.tr,
+                                  style: GoogleFonts.poppins(fontSize: 20.sp),
+                                ),
                               ],
                             )
                           : SingleChildScrollView(
@@ -133,45 +138,56 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Item Name',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'add_product_screen.item_name'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         TextFormField(
                           controller: nameCtrl,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter item name' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'add_product_screen.enter_item_name'.tr
+                              : null,
                           decoration: InputDecoration(
-                            hintText: 'Item Name',
+                            hintText: 'add_product_screen.item_name'.tr,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
                         heightBox8,
-                        Text('Item Details',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'add_product_screen.item_details'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         TextFormField(
                           controller: detailsCtrl,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter item details' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'add_product_screen.enter_item_details'.tr
+                              : null,
                           decoration: InputDecoration(
-                            hintText: 'Item Details',
+                            hintText: 'add_product_screen.item_details'.tr,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
                         heightBox8,
-                        Text('Category',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'add_product_screen.category'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         Obx(() => allCategoryController.inProgress
                             ? Center(child: CircularProgressIndicator())
@@ -186,16 +202,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       ElevatedButton(
                                         onPressed: () =>
                                             allCategoryController.getCategory(),
-                                        child: Text('Retry'),
+                                        child:
+                                            Text('add_product_screen.retry'.tr),
                                       ),
                                     ],
                                   )
                                 : allCategoryController.categoryData?.isEmpty ??
                                         true
-                                    ? Text('No categories available')
+                                    ? Text(
+                                        'add_product_screen.no_categories_available'
+                                            .tr,
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 14.sp),
+                                      )
                                     : DropdownButtonFormField<String>(
                                         decoration: InputDecoration(
-                                          hintText: 'Select Category',
+                                          hintText:
+                                              'add_product_screen.select_category'
+                                                  .tr,
                                           hintStyle:
                                               TextStyle(color: Colors.grey),
                                           border: OutlineInputBorder(),
@@ -216,51 +240,63 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                           });
                                         },
                                         validator: (value) => value == null
-                                            ? 'Please select a category'
+                                            ? 'add_product_screen.select_category'
+                                                .tr
                                             : null,
                                       )),
                         heightBox8,
-                        Text('Item Price',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'add_product_screen.item_price'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         TextFormField(
                           controller: priceCtrl,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.number,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter price' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'add_product_screen.enter_price'.tr
+                              : null,
                           decoration: InputDecoration(
-                            hintText: 'Item Price',
+                            hintText: 'add_product_screen.item_price'.tr,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
                         heightBox8,
-                        Text('Item Quantity',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'add_product_screen.item_quantity'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         TextFormField(
                           controller: quantityCtrl,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.number,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter quantity' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'add_product_screen.enter_quantity'.tr
+                              : null,
                           decoration: InputDecoration(
-                            hintText: 'Item Quantity',
+                            hintText: 'add_product_screen.item_quantity'.tr,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
                         heightBox8,
-                        Text('Expiry Date',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'add_product_screen.expiry_date'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         TextFormField(
                           controller: expiryDateCtrl,
@@ -278,10 +314,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             }
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter expiry date' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'add_product_screen.enter_expiry_date'.tr
+                              : null,
                           decoration: InputDecoration(
-                            hintText: 'Expiry Date',
+                            hintText: 'add_product_screen.expiry_date'.tr,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
@@ -296,10 +333,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 keyboardType: TextInputType.number,
-                                validator: (value) =>
-                                    value!.isEmpty ? 'Enter days' : null,
+                                validator: (value) => value!.isEmpty
+                                    ? 'add_product_screen.enter_days'.tr
+                                    : null,
                                 decoration: InputDecoration(
-                                  hintText: 'Days',
+                                  hintText: 'add_product_screen.days'.tr,
                                   hintStyle: TextStyle(color: Colors.grey),
                                 ),
                               ),
@@ -311,10 +349,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 keyboardType: TextInputType.number,
-                                validator: (value) =>
-                                    value!.isEmpty ? 'Enter discount' : null,
+                                validator: (value) => value!.isEmpty
+                                    ? 'add_product_screen.enter_discount'.tr
+                                    : null,
                                 decoration: InputDecoration(
-                                  hintText: 'Discount %',
+                                  hintText: 'add_product_screen.discount'.tr,
                                   hintStyle: TextStyle(color: Colors.grey),
                                 ),
                               ),
@@ -337,8 +376,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     if (selectedCategoryId == null) {
-                                      Get.snackbar(
-                                          'Error', 'Please select a category');
+                                      Get.snackbar('Error',
+                                          'add_product_screen.error_select_category'.tr);
                                       return;
                                     }
                                     bool success = await controller.addProduct(
@@ -356,16 +395,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       clearData();
                                       allCategoryController.getCategory();
                                       Get.snackbar('Success',
-                                          'Product added successfully');
+                                          'add_product_screen.success_message'.tr);
                                     } else {
                                       Get.snackbar(
                                           'Error',
                                           controller.errorMessage ??
-                                              'Failed to add product');
+                                              'add_product_screen.error_message'.tr);
                                     }
                                   }
                                 },
-                                text: 'Save',
+                                text: 'add_product_screen.save'.tr,
                               ),
                       ],
                     ),

@@ -1,4 +1,3 @@
-
 import 'package:expriy_deals_vendors/app/modules/common/views/main_bottom_nav_bar.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/change_password_controller.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
@@ -42,9 +41,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               heightBox20,
-              CustomAppBar(
-                name: 'Change Password',
-              ),
+              CustomAppBar(name: 'change_password_screen.title'.tr),
               heightBox16,
               heightBox12,
               Form(
@@ -57,7 +54,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return 'Enter password';
+                          return 'change_password_screen.enter_password'.tr;
                         }
                         return null;
                       },
@@ -80,7 +77,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             });
                           },
                         ),
-                        hintText: 'Current password',
+                        hintText: 'change_password_screen.current_password'.tr,
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
@@ -90,7 +87,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return 'Enter password';
+                          return 'change_password_screen.enter_password'.tr;
                         }
                         return null;
                       },
@@ -113,7 +110,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             });
                           },
                         ),
-                        hintText: 'New password',
+                        hintText: 'change_password_screen.new_password'.tr,
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
@@ -123,7 +120,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return 'Enter password';
+                          return 'change_password_screen.enter_password'.tr;
                         }
                         return null;
                       },
@@ -146,12 +143,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             });
                           },
                         ),
-                        hintText: 'Confirm password',
+                        hintText: 'change_password_screen.confirm_password'.tr,
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
                     heightBox24,
-                     GetBuilder<ChangePasswordController>(
+                    GetBuilder<ChangePasswordController>(
                       builder: (controller) {
                         return Stack(
                           alignment: Alignment.center,
@@ -162,10 +159,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                   : () => onTapToNextButton(),
                               text: controller.inProgress
                                   ? ''
-                                  : 'Change Password',
+                                  : 'change_password_screen.title'.tr,
                             ),
                             if (controller.inProgress)
-                              SizedBox(
+                              const SizedBox(
                                 width: 24,
                                 height: 24,
                                 child: CircularProgressIndicator(
@@ -190,40 +187,37 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await changePasswordController.changePassword(
-          oldPasswordCtrl.text,
-          passwordCtrl.text,
-          confirmPasswordCtrl.text,
-          StorageUtil.getData(StorageUtil.userAccessToken));
+        oldPasswordCtrl.text,
+        passwordCtrl.text,
+        confirmPasswordCtrl.text,
+        StorageUtil.getData(StorageUtil.userAccessToken),
+      );
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'Change password successfully done');
-          Get.to(MainButtonNavbarScreen());
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, changePasswordController.errorMessage!, true);
-          }
+          showSnackBarMessage(context, 'change_password_screen.success_message'.tr);
+          Get.to(() => MainButtonNavbarScreen());
         }
       } else {
         if (mounted) {
           showSnackBarMessage(
-              context, changePasswordController.errorMessage!, true);
+              context, changePasswordController.errorMessage ?? 'change_password_screen.error_message'.tr, true);
         }
       }
     }
   }
 
   void clearTextField() {
+    oldPasswordCtrl.clear();
     passwordCtrl.clear();
     confirmPasswordCtrl.clear();
   }
 
   @override
   void dispose() {
-    super.dispose();
-
+    oldPasswordCtrl.dispose();
     passwordCtrl.dispose();
     confirmPasswordCtrl.dispose();
+    super.dispose();
   }
 }

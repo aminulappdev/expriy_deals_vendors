@@ -6,24 +6,22 @@ import 'package:expriy_deals_vendors/app/widgets/gradiant_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 
 class AddCategoryScreen extends StatefulWidget {
   const AddCategoryScreen({super.key});
+
   @override
   State<AddCategoryScreen> createState() => _AddCategoryScreenState();
 }
 
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
 
-  bool _obscureText = true;
   bool isChecked = false;
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -33,30 +31,41 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox20,
-              CustomAppBar(name: 'Add category'),
+              CustomAppBar(name: 'add_category_screen.title'.tr),
               heightBox16,
-              Text('Item Name',
-                  style: GoogleFonts.poppins(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff626262))),
+              Text(
+                'add_category_screen.item_name'.tr,
+                style: GoogleFonts.poppins(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff626262),
+                ),
+              ),
               heightBox8,
               TextFormField(
                 controller: emailCtrl,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: TextInputType.emailAddress,
                 validator: (String? value) {
-                  if (value!.isEmpty) return 'Enter email';
+                  if (value!.isEmpty) return 'add_category_screen.enter_email'.tr;
                   if (!EmailValidator.validate(value)) {
-                    return 'Enter a valid email address';
+                    return 'add_category_screen.invalid_email'.tr;
                   }
                   return null;
                 },
-                decoration:
-                    InputDecoration(hintStyle: TextStyle(color: Colors.grey)),
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
               ),
               heightBox8,
-              Text('Uplpad image'),
+              Text(
+                'add_category_screen.upload_image'.tr,
+                style: GoogleFonts.poppins(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff626262),
+                ),
+              ),
               heightBox12,
               InkWell(
                 onTap: () {},
@@ -64,8 +73,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                   height: 140,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.black)),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.black),
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -74,19 +84,20 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                         size: 40,
                       ),
                       Text(
-                        'Add product',
+                        'add_category_screen.add_product'.tr,
                         style: TextStyle(fontSize: 20),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
               heightBox8,
               CustomElevatedButton(
-                  onPressed: () {
-                    Get.to(MainButtonNavbarScreen());
-                  },
-                  text: 'Save'),
+                onPressed: () {
+                  Get.to(MainButtonNavbarScreen());
+                },
+                text: 'add_category_screen.save'.tr,
+              ),
             ],
           ),
         ),
@@ -94,7 +105,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     );
   }
 
-  
   void clearTextField() {
     emailCtrl.clear();
     passwordCtrl.clear();

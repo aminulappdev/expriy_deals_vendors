@@ -18,6 +18,8 @@ class OrderDetailsController extends GetxController {
   List<OrderDetailsItemModel>? get addToCartData =>
       orderDetailsModel.value?.data?.data ?? [];
 
+  late String vendorId;
+
   @override
   void onInit() {
     super.onInit();
@@ -32,9 +34,12 @@ class OrderDetailsController extends GetxController {
 
     print('Using token: $token');
     _inProgress.value = true;
-
-    final NetworkResponse response = await Get.find<NetworkCaller>()
-        .getRequest(Urls.orderDetailstUrl, accesToken: token);
+    vendorId = StorageUtil.getData("vendorId");
+    Map<String, dynamic> param = {"author": vendorId};
+    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
+        Urls.orderDetailstUrl,
+        accesToken: token,
+        queryParams: param);
 
     print('API Response: ${response.responseData}');
     print('Is Success: ${response.isSuccess}, Error: ${response.errorMessage}');

@@ -41,11 +41,13 @@ class _EarningScreenState extends State<EarningScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 widthBox12,
-                Text('Earnings',
-                    style: GoogleFonts.poppins(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
-                    )),
+                Text(
+                  'earning_screen.title'.tr,
+                  style: GoogleFonts.poppins(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ],
             ),
             heightBox12,
@@ -69,13 +71,17 @@ class _EarningScreenState extends State<EarningScreen> {
                     controller.allEarningsData!.isEmpty) {
                   return Center(
                     child: Text(
-                      'No earnings data available',
+                      'earning_screen.no_earnings_data'.tr,
                       style: GoogleFonts.poppins(fontSize: 14.sp),
                     ),
                   );
                 }
                 return SingleChildScrollView(
                   child: Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
@@ -90,7 +96,7 @@ class _EarningScreenState extends State<EarningScreen> {
                             columns: [
                               DataColumn(
                                 label: Text(
-                                  'Serial',
+                                  'earning_screen.serial_column'.tr,
                                   style: GoogleFonts.poppins(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.bold,
@@ -99,7 +105,7 @@ class _EarningScreenState extends State<EarningScreen> {
                               ),
                               DataColumn(
                                 label: Text(
-                                  'Customer Name',
+                                  'earning_screen.customer_name_column'.tr,
                                   style: GoogleFonts.poppins(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.bold,
@@ -108,7 +114,7 @@ class _EarningScreenState extends State<EarningScreen> {
                               ),
                               DataColumn(
                                 label: Text(
-                                  'Date',
+                                  'earning_screen.date_column'.tr,
                                   style: GoogleFonts.poppins(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.bold,
@@ -117,7 +123,7 @@ class _EarningScreenState extends State<EarningScreen> {
                               ),
                               DataColumn(
                                 label: Text(
-                                  'Amount',
+                                  'earning_screen.amount_column'.tr,
                                   style: GoogleFonts.poppins(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.bold,
@@ -126,7 +132,7 @@ class _EarningScreenState extends State<EarningScreen> {
                               ),
                               DataColumn(
                                 label: Text(
-                                  'Details',
+                                  'earning_screen.details_column'.tr,
                                   style: GoogleFonts.poppins(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.bold,
@@ -137,12 +143,9 @@ class _EarningScreenState extends State<EarningScreen> {
                             rows: List.generate(
                               controller.allEarningsData!.length,
                               (index) {
-                                final earning =
-                                    controller.allEarningsData![index];
-                                // Format date to show only 'yyyy-MM-dd'
+                                final earning = controller.allEarningsData![index];
                                 final formattedDate = earning.createdAt != null
-                                    ? DateFormat('yyyy-MM-dd')
-                                        .format(earning.createdAt!)
+                                    ? DateFormat('yyyy-MM-dd').format(earning.createdAt!)
                                     : 'N/A';
                                 return DataRow(
                                   cells: [
@@ -150,11 +153,8 @@ class _EarningScreenState extends State<EarningScreen> {
                                       SizedBox(
                                         width: 60.w,
                                         child: Text(
-                                          (index + 1)
-                                              .toString()
-                                              .padLeft(2, '0'),
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 14.sp),
+                                          (index + 1).toString().padLeft(2, '0'),
+                                          style: GoogleFonts.poppins(fontSize: 14.sp),
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -168,12 +168,12 @@ class _EarningScreenState extends State<EarningScreen> {
                                               height: 30.h,
                                               width: 30.w,
                                               decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
+                                                borderRadius: BorderRadius.circular(8),
                                                 image: DecorationImage(
-                                                  image: NetworkImage(earning
-                                                          .user?.profile ??
-                                                      'https://fastly.picsum.photos/id/134/200/300.jpg?hmac=KN18cCDft4FPM0XJpr7EhZLtUP6Z4cZqtF8KThtTvsI'),
+                                                  image: NetworkImage(
+                                                    earning.user?.profile ??
+                                                        'https://fastly.picsum.photos/id/134/200/300.jpg?hmac=KN18cCDft4FPM0XJpr7EhZLtUP6Z4cZqtF8KThtTvsI',
+                                                  ),
                                                   fit: BoxFit.fill,
                                                 ),
                                               ),
@@ -181,10 +181,8 @@ class _EarningScreenState extends State<EarningScreen> {
                                             widthBox8,
                                             Expanded(
                                               child: Text(
-                                                earning.author?.name ??
-                                                    'Unknown Customer',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 14.sp),
+                                                earning.author?.name ?? 'Unknown Customer',
+                                                style: GoogleFonts.poppins(fontSize: 14.sp),
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
@@ -198,8 +196,7 @@ class _EarningScreenState extends State<EarningScreen> {
                                         width: 100.w,
                                         child: Text(
                                           formattedDate,
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 14.sp),
+                                          style: GoogleFonts.poppins(fontSize: 14.sp),
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -209,8 +206,7 @@ class _EarningScreenState extends State<EarningScreen> {
                                         width: 80.w,
                                         child: Text(
                                           '\$${earning.price?.toString() ?? 'N/A'}',
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 14.sp),
+                                          style: GoogleFonts.poppins(fontSize: 14.sp),
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -220,13 +216,12 @@ class _EarningScreenState extends State<EarningScreen> {
                                         width: 80.w,
                                         child: TextButton(
                                           onPressed: () {
-                                            // Placeholder action for details button
-                                            Get.to(EarningDetailsScreen(
-                                              allEarningsItemModel: earning,
-                                            ));
+                                            Get.to(() => EarningDetailsScreen(
+                                                  allEarningsItemModel: earning,
+                                                ));
                                           },
                                           child: Text(
-                                            'View',
+                                            'earning_screen.view_button'.tr,
                                             style: GoogleFonts.poppins(
                                               fontSize: 12.sp,
                                               color: Colors.blue,

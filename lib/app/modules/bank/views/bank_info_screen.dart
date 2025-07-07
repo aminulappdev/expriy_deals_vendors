@@ -29,7 +29,7 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             heightBox24,
-            CustomAppBar(name: 'Create Bank Info', isBack: true),
+            CustomAppBar(name: 'bank_info_screen.title'.tr, isBack: true),
             heightBox12,
             Align(
               alignment: Alignment.topRight,
@@ -41,8 +41,8 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
                   children: [
                     Tooltip(
                       message: hasBankDetails
-                          ? 'Bank details already exist'
-                          : 'Create new bankInfo',
+                          ? 'bank_info_screen.existing_details_tooltip'.tr
+                          : 'bank_info_screen.create_tooltip'.tr,
                       child: InkWell(
                         onTap: hasBankDetails
                             ? null
@@ -73,7 +73,7 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
                     if (hasBankDetails) ...[
                       widthBox8,
                       Tooltip(
-                        message: 'Edit bank details',
+                        message: 'bank_info_screen.edit_tooltip'.tr,
                         child: InkWell(
                           onTap: () {
                             Get.to(() => UpdateBankInfoScreen(
@@ -114,35 +114,35 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
                   children: [
                     heightBox8,
                     CardInfoCard(
-                      title: 'Account number',
+                      title: 'bank_info_screen.account_number'.tr,
                       subtitle: bankDetailsController
                               .bankDetailsData?.accountNumber ??
                           'N/A',
                     ),
                     heightBox8,
                     CardInfoCard(
-                      title: 'Routing number',
+                      title: 'bank_info_screen.routing_number'.tr,
                       subtitle: bankDetailsController
                               .bankDetailsData?.routingNumber ??
                           'N/A',
                     ),
                     heightBox8,
                     CardInfoCard(
-                      title: 'Bank name',
+                      title: 'bank_info_screen.bank_name'.tr,
                       subtitle:
                           bankDetailsController.bankDetailsData?.bankName ??
                               'N/A',
                     ),
                     heightBox8,
                     CardInfoCard(
-                      title: 'Bankholder name',
+                      title: 'bank_info_screen.bank_holder_name'.tr,
                       subtitle: bankDetailsController
                               .bankDetailsData?.bankHolderName ??
                           'N/A',
                     ),
                     heightBox8,
                     CardInfoCard(
-                      title: 'Bank address',
+                      title: 'bank_info_screen.bank_address'.tr,
                       subtitle:
                           bankDetailsController.bankDetailsData?.bankAddress ??
                               'N/A',

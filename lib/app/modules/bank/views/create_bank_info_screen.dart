@@ -5,7 +5,7 @@ import 'package:expriy_deals_vendors/app/widgets/gradiant_elevated_button.dart';
 import 'package:expriy_deals_vendors/app/widgets/show_snackBar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:get/Get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CreateBankInfoScreen extends StatefulWidget {
@@ -27,6 +27,7 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final CreateBankInfoController createBankInfoController =
       Get.find<CreateBankInfoController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,14 +38,14 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox24,
-              CustomAppBar(name: 'Fill-up Bank Info', isBack: true),
+              CustomAppBar(name: 'create_bank_info_screen.title'.tr, isBack: true),
               heightBox12,
               Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Account number',
+                    Text('create_bank_info_screen.account_number'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -55,8 +56,7 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.number,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter account number';
-          
+                        if (value!.isEmpty) return 'create_bank_info_screen.enter_account_number'.tr;
                         return null;
                       },
                       decoration: InputDecoration(
@@ -64,7 +64,7 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Routing number',
+                    Text('create_bank_info_screen.routing_number'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -75,8 +75,7 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.number,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter routing number';
-          
+                        if (value!.isEmpty) return 'create_bank_info_screen.enter_routing_number'.tr;
                         return null;
                       },
                       decoration: InputDecoration(
@@ -84,7 +83,7 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Bank name',
+                    Text('create_bank_info_screen.bank_name'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -95,8 +94,7 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter bank name';
-          
+                        if (value!.isEmpty) return 'create_bank_info_screen.enter_bank_name'.tr;
                         return null;
                       },
                       decoration: InputDecoration(
@@ -104,7 +102,7 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Bankholder name',
+                    Text('create_bank_info_screen.bank_holder_name'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -115,8 +113,7 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter bankholder name';
-          
+                        if (value!.isEmpty) return 'create_bank_info_screen.enter_bank_holder_name'.tr;
                         return null;
                       },
                       decoration: InputDecoration(
@@ -124,7 +121,7 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Bank address',
+                    Text('create_bank_info_screen.bank_address'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -135,8 +132,7 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter bank address';
-          
+                        if (value!.isEmpty) return 'create_bank_info_screen.enter_bank_address'.tr;
                         return null;
                       },
                       decoration: InputDecoration(
@@ -156,7 +152,7 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
                         onPressed: controller.inProgress
                             ? () {}
                             : () => onTapToNextButton(),
-                        text: controller.inProgress ? '' : 'Save Info',
+                        text: controller.inProgress ? '' : 'create_bank_info_screen.save_button'.tr,
                       ),
                       if (controller.inProgress)
                         SizedBox(
@@ -171,7 +167,6 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
                   );
                 },
               ),
-              // CustomElevatedButton(onPressed: onTapToNextButton, text: 'Save Info'),
             ],
           ),
         ),
@@ -191,21 +186,14 @@ class _CreateBankInfoScreenState extends State<CreateBankInfoScreen> {
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'Card info created');
+          showSnackBarMessage(context, 'create_bank_info_screen.success_message'.tr);
           Get.back();
-          // print('My token ---------------------------------------');
-          // print(signUpController.token);
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, createBankInfoController.errorMessage!, true);
-          }
         }
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(
-            context, createBankInfoController.errorMessage!, true);
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, createBankInfoController.errorMessage ?? 'create_bank_info_screen.error_message'.tr, true);
+        }
       }
     }
   }

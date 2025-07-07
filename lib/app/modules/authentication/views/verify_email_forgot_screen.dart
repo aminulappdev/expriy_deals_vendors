@@ -1,4 +1,3 @@
-
 import 'package:expriy_deals_vendors/app/modules/authentication/views/otp_forgot_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/auth_header_text.dart';
 import 'package:expriy_deals_vendors/app/utils/assets_path.dart';
@@ -17,11 +16,9 @@ class VerifyEmailScreenWithForgot extends StatefulWidget {
   State<VerifyEmailScreenWithForgot> createState() =>
       _VerifyEmailScreenWithForgotState();
 }
- 
+
 class _VerifyEmailScreenWithForgotState
     extends State<VerifyEmailScreenWithForgot> {
-  // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   void initState() {
     super.initState();
@@ -38,7 +35,7 @@ class _VerifyEmailScreenWithForgotState
             children: [
               heightBox20,
               CustomAppBar(
-                name: 'Check Email',
+                name: 'verify_email_forgot_screen.title'.tr,
               ),
               heightBox100,
               CircleAvatar(
@@ -48,9 +45,8 @@ class _VerifyEmailScreenWithForgotState
               ),
               heightBox16,
               AuthHeaderText(
-                title: 'A letter has been sent.',
-                subtitle:
-                    'Your next step is inside your inbox. Check your email to unlock it.',
+                title: 'verify_email_forgot_screen.header_title'.tr,
+                subtitle: 'verify_email_forgot_screen.header_subtitle'.tr,
                 titleFontSize: 20, 
                 subtitleFontSize: 12,
                 sizeBoxHeight: 215,
@@ -61,9 +57,8 @@ class _VerifyEmailScreenWithForgotState
                   Get.to(OTPVerifyForgotScreen(
                     token: widget.token,
                   ));
-                  // Navigator.pushNamed(context, OTPVerifyForgotScreen.routeName);
                 },
-                text: 'Read My Letter',
+                text: 'verify_email_forgot_screen.confirm_button'.tr,
               ),
               heightBox8,
             ],

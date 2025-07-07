@@ -1,12 +1,11 @@
 import 'package:expriy_deals_vendors/app/modules/authentication/views/sign_in_screen.dart';
-import 'package:expriy_deals_vendors/app/modules/authentication/views/sign_up_screen.dart';
+
 import 'package:expriy_deals_vendors/app/modules/onboarding/views/page_view.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -19,9 +18,9 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   List<String> buttonTexts = [
-    'Get Started',
-    'Keep Reading',
-    'Begin Your First Letter'
+    'onboarding_screen.button_get_started'.tr,
+    'onboarding_screen.button_keep_reading'.tr,
+    'onboarding_screen.button_begin_first_letter'.tr
   ];
 
   final PageController _pageController = PageController();
@@ -48,26 +47,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   showBackButton: false,
                   imageHeight: 280,
                   onBoardingRow: false,
-                  title: "Turn Near-Expiry Products into Sales!",
-                  subtitle:
-                      "Use our map view to find stores and products near you, or browse by categories.",
+                  title: 'onboarding_screen.page1_title'.tr,
+                  subtitle: 'onboarding_screen.page1_subtitle'.tr,
                   pageController: _pageController,
                 ),
                 OnboardingPage(
                   showBackButton: true,
                   imageHeight: 280,
                   onBoardingRow: true,
-                  title:
-                      "This is your space to care, to be heard, to feel safe.",
-                  subtitle: "",
+                  title: 'onboarding_screen.page2_title'.tr,
+                  subtitle: 'onboarding_screen.page2_subtitle'.tr,
                   pageController: _pageController,
                 ),
                 OnboardingPage(
                   showBackButton: true,
                   imageHeight: 280,
                   onBoardingRow: false,
-                  title: "You are safe here. You are seen. You are heard.",
-                  subtitle: "",
+                  title: 'onboarding_screen.page3_title'.tr,
+                  subtitle: 'onboarding_screen.page3_subtitle'.tr,
                   pageController: _pageController,
                 ),
               ],
@@ -104,7 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         curve: Curves.easeInOut,
                       );
                     } else {
-                     Get.to(SignInScreen());
+                      Get.to(() => SignInScreen());
                     }
                   },
                   child: Row(
@@ -113,14 +110,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       Text(
                         buttonTexts[_currentPage],
                         style: GoogleFonts.poppins(
-                            fontSize: 20.sp,
-                            color: AppColors.iconButtonThemeColor),
+                          fontSize: 20.sp,
+                          color: AppColors.iconButtonThemeColor,
+                        ),
                       ),
                       widthBox4,
                       Icon(
                         Icons.arrow_forward_ios,
                         color: AppColors.iconButtonThemeColor,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -131,12 +129,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   height: 2,
                   width: 350,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                    Colors.white,
-                    AppColors.iconButtonThemeColor,
-                  ])),
+                    gradient: LinearGradient(colors: [
+                      Colors.white,
+                      AppColors.iconButtonThemeColor,
+                    ]),
+                  ),
                 ),
-              )
+              ),
             ],
           ),
           heightBox20,

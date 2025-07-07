@@ -30,7 +30,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   void initState() {
     super.initState();
     selectedStatus =
-        widget.orderDetailsItemModel.status?.capitalizeFirst ?? 'Pending';
+        widget.orderDetailsItemModel.status?.capitalizeFirst ?? 'order_details_screen.status_pending'.tr;
   }
 
   @override
@@ -46,7 +46,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     heightBox20,
-                    CustomAppBar(name: 'Order Details'),
+                    CustomAppBar(name: 'order_details_screen.title'.tr),
                     heightBox12,
                     Card(
                       child: Container(
@@ -129,23 +129,23 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                                       .black12),
                                                         ),
                                                       ),
-                                                      items: const [
+                                                      items: [
                                                         DropdownMenuItem(
-                                                            value: 'Pending',
-                                                            child: Text(
-                                                                'Pending')),
+                                                          value: 'order_details_screen.status_pending'.tr,
+                                                          child: Text('order_details_screen.status_pending'.tr),
+                                                        ),
                                                         DropdownMenuItem(
-                                                            value: 'Ongoing',
-                                                            child: Text(
-                                                                'Ongoing')),
+                                                          value: 'order_details_screen.status_ongoing'.tr,
+                                                          child: Text('order_details_screen.status_ongoing'.tr),
+                                                        ),
                                                         DropdownMenuItem(
-                                                            value: 'Delivered',
-                                                            child: Text(
-                                                                'Delivered')),
+                                                          value: 'order_details_screen.status_delivered'.tr,
+                                                          child: Text('order_details_screen.status_delivered'.tr),
+                                                        ),
                                                         DropdownMenuItem(
-                                                            value: 'Cancel',
-                                                            child:
-                                                                Text('Cancel')),
+                                                          value: 'order_details_screen.status_cancel'.tr,
+                                                          child: Text('order_details_screen.status_cancel'.tr),
+                                                        ),
                                                       ],
                                                       onChanged: (value) async {
                                                         if (value != null) {
@@ -162,32 +162,36 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                                       '');
                                                           if (success) {
                                                             Get.snackbar(
-                                                                'Success',
-                                                                'Status updated to $value');
-
+                                                              'Success',
+                                                              'order_details_screen.success_message'.trParams({
+                                                                'status': value
+                                                              }),
+                                                            );
                                                             setState(() {
                                                               controller
                                                                   .getCart();
                                                             });
                                                           } else {
                                                             Get.snackbar(
-                                                                'Error',
-                                                                controller
-                                                                        .errorMessage ??
-                                                                    'Failed to update status');
+                                                              'Error',
+                                                              controller
+                                                                      .errorMessage ??
+                                                                  'order_details_screen.error_message'.tr,
+                                                            );
                                                             setState(() {
                                                               selectedStatus = widget
                                                                       .orderDetailsItemModel
                                                                       .status
                                                                       ?.capitalizeFirst ??
-                                                                  'Pending';
+                                                                  'order_details_screen.status_pending'.tr;
                                                             });
                                                           }
                                                         }
                                                       },
-                                                      style: TextStyle(
-                                                          fontSize: 10,
-                                                          color: Colors.red),
+                                                      style: GoogleFonts.poppins(
+                                                        fontSize: 10.sp,
+                                                        color: Colors.red,
+                                                      ),
                                                       isDense: true,
                                                       iconSize: 20,
                                                     )),
@@ -226,27 +230,35 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     ),
                     heightBox10,
                     Text(
-                        'Order Id: ${widget.orderDetailsItemModel.id ?? 'N/A'}'),
+                      'order_details_screen.order_id'.tr + ': ${widget.orderDetailsItemModel.id ?? 'N/A'}',
+                      style: GoogleFonts.poppins(fontSize: 14.sp),
+                    ),
                     heightBox4,
                     Text(
-                        'Delivery Address: ${widget.orderDetailsItemModel.billingDetails?.address ?? 'N/A'}'),
+                      'order_details_screen.delivery_address'.tr + ': ${widget.orderDetailsItemModel.billingDetails?.address ?? 'N/A'}',
+                      style: GoogleFonts.poppins(fontSize: 14.sp),
+                    ),
                     heightBox4,
                     Text(
-                        'Date: ${widget.orderDetailsItemModel.createdAt ?? 'N/A'}'),
+                      'order_details_screen.date'.tr + ': ${widget.orderDetailsItemModel.createdAt ?? 'N/A'}',
+                      style: GoogleFonts.poppins(fontSize: 14.sp),
+                    ),
                     heightBox30,
                     Text(
-                      'Price Details',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      'order_details_screen.price_details'.tr,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     heightBox8,
                     PriceRow(
-                      name: 'Price',
+                      name: 'order_details_screen.price'.tr,
                       price: widget.orderDetailsItemModel.product?.price
                               ?.toString() ??
                           'N/A',
-                      nameSize: 14,
-                      priceSize: 14,
+                      nameSize: 14.sp,
+                      priceSize: 14.sp,
                     ),
                     heightBox10,
                     Container(
@@ -256,9 +268,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     ),
                     heightBox10,
                     PriceRow(
-                      name: 'Total',
-                      nameSize: 14,
-                      priceSize: 14,
+                      name: 'order_details_screen.total'.tr,
+                      nameSize: 14.sp,
+                      priceSize: 14.sp,
                       price: widget.orderDetailsItemModel.product?.price
                               ?.toString() ??
                           'N/A',

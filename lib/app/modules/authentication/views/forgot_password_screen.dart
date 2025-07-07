@@ -1,4 +1,3 @@
-
 import 'package:expriy_deals_vendors/app/modules/authentication/views/verify_email_forgot_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/auth_header_text.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
@@ -31,20 +30,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             children: [
               heightBox20,
               CustomAppBar(
-                name: 'Forgot Password',
+                name: 'forgot_password_screen.title'.tr,
               ),
               heightBox16,
               AuthHeaderText(
-                title: 'No worries!',
-                subtitle:
-                    'Enter your registered email address or mobile number and we’ll send you instructions to reset your password. Let’s get you back on track quickly and securely!"',
+                title: 'forgot_password_screen.header_title'.tr,
+                subtitle: 'forgot_password_screen.header_subtitle'.tr,
                 titleFontSize: 15,
                 subtitleFontSize: 12,
                 sizeBoxHeight: 400,
               ),
               heightBox12,
               Text(
-                'Email Address',
+                'forgot_password_screen.email_address'.tr,
                 style: GoogleFonts.poppins(
                     fontSize: 14.sp, fontWeight: FontWeight.w500),
               ),
@@ -67,11 +65,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         child: Icon(Icons.email_sharp),
                       ),
                       SizedBox(
-                        width: 250.w,
+                        width:250.w,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Email:',
+                            Text('forgot_password_screen.email_label'.tr,
                                 style: GoogleFonts.poppins(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w500)),
@@ -101,7 +99,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
               ),
               heightBox12,
-              
             ],
           ),
         ),

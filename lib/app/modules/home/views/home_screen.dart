@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:expriy_deals_vendors/app/modules/earnings/controllers/earning_dashboard_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/home/widgets/revenue_card.dart';
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/profile_controller.dart';
@@ -9,6 +7,7 @@ import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graphic/graphic.dart' as graphic;
 
 class HomeScreen extends StatefulWidget {
@@ -22,11 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final EarningDashboardController earningDashboardController =
       Get.put(EarningDashboardController());
   final ProfileController profileController = Get.put(ProfileController());
+  late String vendorId;
 
   @override
   void initState() {
     profileController.getProfileData();
     earningDashboardController.getEarningDashboard(selectedYear);
+
     super.initState();
   }
 
@@ -38,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .map((income) => {
               'month': income.month ?? '',
               'value': income.income ?? 0,
-              'type': 'Income', // Single type for all income data
+              'type': 'Income',
             })
         .toList();
   }
@@ -67,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ProfileController>();
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -88,47 +90,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                           controller.profileData!.profile!)
                                       : const AssetImage(AssetsPath.appleLogo),
                             ),
-                            // Container(
-                            //   height: 42,
-                            //   width: 42,
-                            //   decoration: BoxDecoration(
-                            //     shape: BoxShape.circle,
-                            //     color: const Color(0xffFB6000).withOpacity(0.10),
-                            //   ),
-                            //   child: const Icon(Icons.notifications),
-                            // )
                           ],
                         );
                 }),
               ),
-              // GetBuilder<ProfileController>(builder: (controller) {
-              //   return Row(
-              //     mainAxisAlignment: MainAxisAlignment.start,
-              //     children: [
-              //       // Container(
-              //       //   height: 42,
-              //       //   width: 42,
-              //       //   decoration: BoxDecoration(
-              //       //     shape: BoxShape.circle,
-              //       //     color: const Color(0xffFB6000).withOpacity(0.10),
-              //       //   ),
-              //       //   child: const Icon(Icons.notifications),
-              //       // )
-              //     ],
-              //   );
-              // }),
               heightBox12,
               GetBuilder<EarningDashboardController>(builder: (controller) {
                 if (controller.inProgress) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (controller.earningDashboardModel.value == null) {
-                  return const Center(child: Text('No data available'));
+                  return Center(
+                    child: Text(
+                      'home_screen.no_data_available'.tr,
+                      style: GoogleFonts.poppins(fontSize: 14.sp),
+                    ),
+                  );
                 } else {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       RevenueCard(
-                        name: 'Total Revenue',
+                        name: 'home_screen.total_revenue'.tr,
                         selectedMonth: selectedYear,
                         revenue: controller.earningDashboardData?.totalIncome
                                 .toString() ??
@@ -136,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         highlightColor: Colors.green,
                       ),
                       RevenueCard(
-                        name: 'Total Products',
+                        name: 'home_screen.total_products'.tr,
                         selectedMonth: selectedYear,
                         revenue: controller.earningDashboardData?.totalProducts
                                 .toString() ??
@@ -152,12 +134,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Earning Summary',
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                    'home_screen.earning_summary'.tr,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15.sp,
+                    ),
                   ),
                   Container(
                     height: 30.h,
-                    width: 80,
+                    width: 80.w,
                     padding: const EdgeInsets.symmetric(horizontal: 6),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -200,8 +185,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (controller) {
                   final chartData = getChartData();
                   if (chartData.isEmpty) {
-                    return const Center(
-                        child: Text('No earning data available'));
+                    return Center(
+                      child: Text(
+                        'home_screen.no_earning_data'.tr,
+                        style: GoogleFonts.poppins(fontSize: 14.sp),
+                      ),
+                    );
                   }
                   return graphic.Chart(
                     data: chartData,
@@ -218,8 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         position:
                             graphic.Varset('month') * graphic.Varset('value'),
                         color: graphic.ColorEncode(
-                          value: const Color(
-                              0xfffb5c00), // Single color for all bars
+                          value: const Color(0xfffb5c00),
                         ),
                         modifiers: [graphic.StackModifier()],
                       ),

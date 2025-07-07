@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_product_conrtoller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/product_details_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/widgets/product_caresoul_slider.dart';
@@ -22,16 +20,13 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final ProductDetailsController productDetailsController =
       Get.put(ProductDetailsController());
-
   final AllProductController allProductController =
       Get.put(AllProductController());
-
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      print('Product ID details page theke: ${widget.productId}');
       productDetailsController.productDetails(widget.productId);
     });
   }
@@ -56,7 +51,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomAppBar(name: 'Product Details'),
+                    CustomAppBar(name: 'product_detail_screen.title'.tr),
                     heightBox12,
                     HomeCarouselSlider(
                       images:
@@ -81,9 +76,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                     heightBox8,
                     Text(
-                      'Product Details',
+                      'product_detail_screen.product_details'.tr,
                       style: GoogleFonts.poppins(
-                          fontSize: 16.sp, fontWeight: FontWeight.w400),
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                     heightBox4,
                     Html(data: data.details ?? ''),

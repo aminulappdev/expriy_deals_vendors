@@ -62,12 +62,12 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
             children: [
               heightBox20,
               CustomAppBar(
-                name: 'OTP Verification',
+                name: 'otp_verify_screen.title'.tr,
               ),
               heightBox16,
               AuthHeaderText(
-                title: 'Enter OTP',
-                subtitle: 'We have just sentb you 6 digitcode via uour email.',
+                title: 'otp_verify_screen.header_title'.tr,
+                subtitle: 'otp_verify_screen.header_subtitle'.tr,
                 titleFontSize: 20,
                 subtitleFontSize: 12,
                 sizeBoxHeight: 200,
@@ -96,7 +96,6 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                           fieldHeight: 50.h,
                           fieldWidth: 50.h,
                           activeFillColor: Colors.white,
-                          // ignore: deprecated_member_use
                           inactiveFillColor: Color(0xffD9A48E).withOpacity(0.1),
                           selectedFillColor: Colors.white),
                       backgroundColor: Colors.transparent,
@@ -113,7 +112,9 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                               onPressed: controller.inProgress
                                   ? () {}
                                   : () => onTapToNextButton(),
-                              text: controller.inProgress ? '' : 'Confirm',
+                              text: controller.inProgress
+                                  ? ''
+                                  : 'otp_verify_screen.confirm_button'.tr,
                             ),
                             if (controller.inProgress)
                               SizedBox(
@@ -140,11 +141,11 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                    text: 'Didn’t receive code? ',
+                                    text: 'otp_verify_screen.didnt_receive_code'.tr,
                                     style: GoogleFonts.poppins(
                                         color: Colors.black, fontSize: 16.sp)),
                                 TextSpan(
-                                    text: 'Resend code',
+                                    text: 'otp_verify_screen.resend_code'.tr,
                                     style: GoogleFonts.poppins(
                                         color: Colors.orange, fontSize: 16.sp)),
                               ],
@@ -155,11 +156,11 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                  text: 'Resend code',
+                                  text: 'otp_verify_screen.resend_code'.tr,
                                   style: GoogleFonts.poppins(
                                       color: Colors.black, fontSize: 16.sp)),
                               TextSpan(
-                                  text: ' $remainingTime',
+                                  text: ' ${remainingTime.value}',
                                   style: GoogleFonts.poppins(
                                       color: Colors.orange, fontSize: 16.sp)),
                               TextSpan(
@@ -186,13 +187,12 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess =
           await otpVerifyController.otyVerify(otpCtrl.text, widget.token);
-      print(
-          'My token ---------------------------------------\n-------\n------');
+      print('My token ---------------------------------------\n-------\n------');
       print(widget.token);
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'Otp verification successfully done');
+          showSnackBarMessage(context, 'otp_verify_screen.success_message'.tr);
           Get.to(SignInScreen());
         } else {
           if (mounted) {
@@ -211,7 +211,6 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   @override
   void dispose() {
     super.dispose();
-
     otpCtrl.dispose();
   }
 }

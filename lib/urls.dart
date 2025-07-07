@@ -1,5 +1,5 @@
 class Urls {
-  static const String _baseUrl = 'https://api.expirydeals.online/api/v1/';
+  static const String _baseUrl = 'https://api.expirydeals.online/api/v1';
   // static const String _baseUrl = 'http://192.168.10.22:7000/api/v1';
   static const String createUserUrl = '$_baseUrl/vendor-request';
   static const String otpVerifyrUrl = '$_baseUrl/otp/verify-otp';

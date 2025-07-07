@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:expriy_deals_vendors/app/modules/order/controllers/order_details_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/order/views/order_details_screen.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
@@ -7,6 +5,7 @@ import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -22,7 +21,6 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch order details when the screen initializes
     orderDetailsController.getCart();
   }
 
@@ -37,12 +35,13 @@ class _OrderScreenState extends State<OrderScreen> {
             children: [
               SizedBox(height: 40.h),
               Text(
-                'My Orders',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                'order_screen.title'.tr,
+                style: GoogleFonts.poppins(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               heightBox12,
-
-              // Display loading, error, or data using DataTable
               orderDetailsController.inProgress
                   ? const Expanded(
                       child: Center(child: CircularProgressIndicator()))
@@ -51,17 +50,20 @@ class _OrderScreenState extends State<OrderScreen> {
                           child: Center(
                             child: Text(
                               orderDetailsController.errorMessage!,
-                              style: const TextStyle(color: Colors.red),
+                              style: GoogleFonts.poppins(
+                                fontSize: 16.sp,
+                                color: Colors.red,
+                              ),
                             ),
                           ),
                         )
                       : orderDetailsController.addToCartData == null ||
                               orderDetailsController.addToCartData!.isEmpty
-                          ? const Expanded(
+                          ? Expanded(
                               child: Center(
                                 child: Text(
-                                  'No order details available',
-                                  style: TextStyle(fontSize: 16),
+                                  'order_screen.no_order_details'.tr,
+                                  style: GoogleFonts.poppins(fontSize: 16.sp),
                                 ),
                               ),
                             )
@@ -83,10 +85,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                         label: Container(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Order ID',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'order_screen.order_id_column'.tr,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
                                             ),
                                             textAlign: TextAlign.center,
@@ -97,10 +99,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                         label: Container(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Customer',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'order_screen.customer_column'.tr,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
                                             ),
                                             textAlign: TextAlign.center,
@@ -111,10 +113,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                         label: Container(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Product Name',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'order_screen.product_name_column'.tr,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
                                             ),
                                             textAlign: TextAlign.center,
@@ -125,10 +127,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                         label: Container(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Quantity',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'order_screen.quantity_column'.tr,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
                                             ),
                                             textAlign: TextAlign.center,
@@ -139,10 +141,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                         label: Container(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Status',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'order_screen.status_column'.tr,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
                                             ),
                                             textAlign: TextAlign.center,
@@ -153,10 +155,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                         label: Container(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Amount',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'order_screen.amount_column'.tr,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
                                             ),
                                             textAlign: TextAlign.center,
@@ -167,10 +169,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                         label: Container(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Details',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'order_screen.details_column'.tr,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.bold,
                                             ),
                                             textAlign: TextAlign.center,
@@ -193,14 +195,14 @@ class _OrderScreenState extends State<OrderScreen> {
                                             '\$${order.totalPrice?.toStringAsFixed(2) ?? '0.00'}')),
                                         DataCell(InkWell(
                                           onTap: () {
-                                            Get.to(OrderDetailsScreen(
+                                            Get.to(() => OrderDetailsScreen(
                                                 orderDetailsItemModel: order));
                                           },
                                           child: Text(
-                                            'Details',
-                                            style: TextStyle(
-                                              color: AppColors
-                                                  .iconButtonThemeColor,
+                                            'order_screen.details_column'.tr,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.sp,
+                                              color: AppColors.iconButtonThemeColor,
                                               fontWeight: FontWeight.normal,
                                               fontStyle: FontStyle.italic,
                                             ),

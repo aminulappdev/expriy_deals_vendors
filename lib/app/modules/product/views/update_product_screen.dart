@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use, unnecessary_to_list_in_spreads, avoid_print
-
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_category_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/all_product_conrtoller.dart';
 import 'package:expriy_deals_vendors/app/modules/product/controllers/product_details_controller.dart';
@@ -41,10 +39,10 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   final AllProductController allProductController =
       Get.put(AllProductController());
 
-  List<File> selectedImages = []; // For new images picked by the user
+  List<File> selectedImages = [];
   final ImagePicker _picker = ImagePicker();
   String? selectedCategoryId;
-  bool isFormPrefilled = false; // Flag to prevent re-pre-filling
+  bool isFormPrefilled = false;
 
   Future<void> _pickImage() async {
     final pickedFiles = await _picker.pickMultiImage();
@@ -57,10 +55,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   @override
   void initState() {
     super.initState();
-    print(
-        'Update Product Screen initialized with product ID: ${widget.productId}');
     if (widget.productId != null) {
-      // Fetch product details and pre-fill form
       productDetailScreen.productDetails(widget.productId!).then((success) {
         if (success && !isFormPrefilled) {
           final productData = productDetailScreen.productDetailsData;
@@ -71,7 +66,6 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
               priceCtrl.text = productData.price.toString();
               quantityCtrl.text = productData.stock.toString();
               expiryDateCtrl.text = productData.expiredAt.toString();
-              // Calculate days until expiry or use a relevant field
               if (productData.expiredAt != null) {
                 daysCtrl.text = productData.expiredAt!
                     .difference(DateTime.now())
@@ -80,7 +74,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
               }
               discountCtrl.text = productData.discount.toString();
               selectedCategoryId = productData.category?.id;
-              isFormPrefilled = true; // Mark as pre-filled
+              isFormPrefilled = true;
             });
           }
         }
@@ -107,9 +101,12 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   heightBox20,
-                  CustomAppBar(name: 'Update product'),
+                  CustomAppBar(name: 'update_product_screen.title'.tr),
                   heightBox16,
-                  Text('Upload images'),
+                  Text(
+                    'update_product_screen.upload_images'.tr,
+                    style: GoogleFonts.poppins(fontSize: 12.sp),
+                  ),
                   heightBox12,
                   InkWell(
                     onTap: _pickImage,
@@ -121,7 +118,6 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                         border: Border.all(color: Colors.black),
                       ),
                       child: Obx(() {
-                        // Combine controller's displayImages and local selectedImages
                         final hasImages =
                             productDetailScreen.displayImages.isNotEmpty ||
                                 selectedImages.isNotEmpty;
@@ -130,7 +126,6 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    // Display pre-fetched images (URLs)
                                     ...productDetailScreen.displayImages
                                         .asMap()
                                         .entries
@@ -164,39 +159,36 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                           ],
                                         ),
                                       );
-                                    }).toList(),
-                                    // Display newly picked images (Files)
-                                    ...selectedImages
-                                        .asMap()
-                                        .entries
-                                        .map((entry) {
-                                      return Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Stack(
-                                          children: [
-                                            Image.file(
-                                              entry.value,
-                                              width: 100,
-                                              height: 100,
-                                              fit: BoxFit.cover,
-                                            ),
-                                            Positioned(
-                                              right: 0,
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    selectedImages
-                                                        .removeAt(entry.key);
-                                                  });
-                                                },
-                                                child: Icon(Icons.remove_circle,
-                                                    color: Colors.red),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
                                     }),
+                                    ...selectedImages.asMap().entries.map(
+                                          (entry) => Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Stack(
+                                              children: [
+                                                Image.file(
+                                                  entry.value,
+                                                  width: 100,
+                                                  height: 100,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                Positioned(
+                                                  right: 0,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        selectedImages
+                                                            .removeAt(entry.key);
+                                                      });
+                                                    },
+                                                    child: Icon(
+                                                        Icons.remove_circle,
+                                                        color: Colors.red),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                   ],
                                 ),
                               )
@@ -204,8 +196,11 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(Icons.add, size: 40),
-                                  Text('Add product images',
-                                      style: TextStyle(fontSize: 20)),
+                                  Text(
+                                    'update_product_screen.add_product_images'
+                                        .tr,
+                                    style: GoogleFonts.poppins(fontSize: 20.sp),
+                                  ),
                                 ],
                               );
                       }),
@@ -217,45 +212,56 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Item Name',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'update_product_screen.item_name'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         TextFormField(
                           controller: nameCtrl,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter item name' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'update_product_screen.enter_item_name'.tr
+                              : null,
                           decoration: InputDecoration(
-                            hintText: 'Item Name',
+                            hintText: 'update_product_screen.item_name'.tr,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
                         heightBox8,
-                        Text('Item Details',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'update_product_screen.item_details'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         TextFormField(
                           controller: detailsCtrl,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter item details' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'update_product_screen.enter_item_details'.tr
+                              : null,
                           decoration: InputDecoration(
-                            hintText: 'Item Details',
+                            hintText: 'update_product_screen.item_details'.tr,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
                         heightBox8,
-                        Text('Category',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'update_product_screen.category'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         Obx(() => allCategoryController.inProgress
                             ? Center(child: CircularProgressIndicator())
@@ -270,16 +276,24 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       ElevatedButton(
                                         onPressed: () =>
                                             allCategoryController.getCategory(),
-                                        child: Text('Retry'),
+                                        child: Text(
+                                            'update_product_screen.retry'.tr),
                                       ),
                                     ],
                                   )
                                 : allCategoryController.categoryData?.isEmpty ??
                                         true
-                                    ? Text('No categories available')
+                                    ? Text(
+                                        'update_product_screen.no_categories_available'
+                                            .tr,
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 14.sp),
+                                      )
                                     : DropdownButtonFormField<String>(
                                         decoration: InputDecoration(
-                                          hintText: 'Select Category',
+                                          hintText:
+                                              'update_product_screen.select_category'
+                                                  .tr,
                                           hintStyle:
                                               TextStyle(color: Colors.grey),
                                           border: OutlineInputBorder(),
@@ -300,51 +314,63 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                           });
                                         },
                                         validator: (value) => value == null
-                                            ? 'Please select a category'
+                                            ? 'update_product_screen.select_category'
+                                                .tr
                                             : null,
                                       )),
                         heightBox8,
-                        Text('Item Price',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'update_product_screen.item_price'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         TextFormField(
                           controller: priceCtrl,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.number,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter price' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'update_product_screen.enter_price'.tr
+                              : null,
                           decoration: InputDecoration(
-                            hintText: 'Item Price',
+                            hintText: 'update_product_screen.item_price'.tr,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
                         heightBox8,
-                        Text('Item Quantity',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'update_product_screen.item_quantity'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         TextFormField(
                           controller: quantityCtrl,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.number,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter quantity' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'update_product_screen.enter_quantity'.tr
+                              : null,
                           decoration: InputDecoration(
-                            hintText: 'Item Quantity',
+                            hintText: 'update_product_screen.item_quantity'.tr,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
                         heightBox8,
-                        Text('Expiry Date',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff626262))),
+                        Text(
+                          'update_product_screen.expiry_date'.tr,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff626262),
+                          ),
+                        ),
                         heightBox8,
                         TextFormField(
                           controller: expiryDateCtrl,
@@ -362,10 +388,11 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                             }
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter expiry date' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'update_product_screen.enter_expiry_date'.tr
+                              : null,
                           decoration: InputDecoration(
-                            hintText: 'Expiry Date',
+                            hintText: 'update_product_screen.expiry_date'.tr,
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
                         ),
@@ -380,10 +407,11 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 keyboardType: TextInputType.number,
-                                validator: (value) =>
-                                    value!.isEmpty ? 'Enter days' : null,
+                                validator: (value) => value!.isEmpty
+                                    ? 'update_product_screen.enter_days'.tr
+                                    : null,
                                 decoration: InputDecoration(
-                                  hintText: 'Days',
+                                  hintText: 'update_product_screen.days'.tr,
                                   hintStyle: TextStyle(color: Colors.grey),
                                 ),
                               ),
@@ -395,10 +423,11 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 keyboardType: TextInputType.number,
-                                validator: (value) =>
-                                    value!.isEmpty ? 'Enter discount' : null,
+                                validator: (value) => value!.isEmpty
+                                    ? 'update_product_screen.enter_discount'.tr
+                                    : null,
                                 decoration: InputDecoration(
-                                  hintText: 'Discount %',
+                                  hintText: 'update_product_screen.discount'.tr,
                                   hintStyle: TextStyle(color: Colors.grey),
                                 ),
                               ),
@@ -422,7 +451,9 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                   if (_formKey.currentState!.validate()) {
                                     if (selectedCategoryId == null) {
                                       Get.snackbar(
-                                          'Error', 'Please select a category');
+                                          'Error',
+                                          'update_product_screen.error_select_category'
+                                              .tr);
                                       return;
                                     }
                                     bool success =
@@ -442,17 +473,20 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       clearData();
                                       allProductController.getProduct();
                                       Get.back();
-                                      Get.snackbar('Success',
-                                          'Product updated successfully');
+                                      Get.snackbar(
+                                          'Success',
+                                          'update_product_screen.success_message'
+                                              .tr);
                                     } else {
                                       Get.snackbar(
                                           'Error',
                                           controller.errorMessage ??
-                                              'Failed to add product');
+                                              'update_product_screen.error_message'
+                                                  .tr);
                                     }
                                   }
                                 },
-                                text: 'Update Product',
+                                text: 'update_product_screen.update_product'.tr,
                               ),
                       ],
                     ),
@@ -476,7 +510,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
     discountCtrl.clear();
     selectedImages.clear();
     productDetailScreen.displayImages.clear();
-    isFormPrefilled = false; // Reset flag for future use
+    isFormPrefilled = false;
   }
 
   @override

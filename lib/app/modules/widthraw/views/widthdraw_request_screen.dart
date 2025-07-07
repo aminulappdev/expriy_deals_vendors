@@ -19,9 +19,8 @@ class WidthdrawRequestScreen extends StatefulWidget {
 class _WidthdrawRequestScreenState extends State<WidthdrawRequestScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController amountController = TextEditingController();
-  TextEditingController regionController = TextEditingController();
   final WidthdrawRequestController widthdrawRequestController =
-      Get.put(WidthdrawRequestController());
+      Get.find<WidthdrawRequestController>();
   final MyWidthdrawController _myWidthdrawController =
       Get.find<MyWidthdrawController>();
 
@@ -29,36 +28,45 @@ class _WidthdrawRequestScreenState extends State<WidthdrawRequestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: EdgeInsets.all(12.0.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             heightBox24,
-            CustomAppBar(name: 'Widthdraw Request', isBack: true),
+            CustomAppBar(name: 'widthdraw_request_screen.title'.tr, isBack: true),
             heightBox12,
             Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Amount',
-                      style: GoogleFonts.poppins(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff626262))),
+                  Text(
+                    'widthdraw_request_screen.amount'.tr,
+                    style: GoogleFonts.poppins(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff626262),
+                    ),
+                  ),
                   heightBox8,
                   TextFormField(
                     controller: amountController,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     keyboardType: TextInputType.number,
                     validator: (String? value) {
-                      if (value!.isEmpty) return 'Enter amount';
-
+                      if (value == null || value.isEmpty) {
+                        return 'widthdraw_request_screen.enter_amount'.tr;
+                      }
+                      final double? amount = double.tryParse(value);
+                      if (amount == null || amount <= 0) {
+                        return 'widthdraw_request_screen.enter_amount'.tr;
+                      }
                       return null;
                     },
                     decoration: InputDecoration(
-                        hintText: 'amount',
-                        hintStyle: TextStyle(color: Colors.grey)),
+                      hintText: 'widthdraw_request_screen.amount'.tr,
+                      hintStyle: const TextStyle(color: Colors.grey),
+                    ),
                   ),
                   heightBox8,
                 ],
@@ -74,10 +82,12 @@ class _WidthdrawRequestScreenState extends State<WidthdrawRequestScreen> {
                       onPressed: controller.inProgress
                           ? () {}
                           : () => onTapToNextButton(),
-                      text: controller.inProgress ? '' : 'Submit Request',
+                      text: controller.inProgress
+                          ? ''
+                          : 'widthdraw_request_screen.submit_request'.tr,
                     ),
                     if (controller.inProgress)
-                      SizedBox(
+                      const SizedBox(
                         width: 24,
                         height: 24,
                         child: CircularProgressIndicator(
@@ -98,33 +108,37 @@ class _WidthdrawRequestScreenState extends State<WidthdrawRequestScreen> {
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await widthdrawRequestController.widthdrawRequest(
-        amountController.text.isNotEmpty ? int.parse(amountController.text) : 0,
+        amountController.text.isNotEmpty
+            ? int.parse(amountController.text)
+            : 0,
       );
 
       if (isSuccess) {
         if (mounted) {
           _myWidthdrawController.getWidthdraw();
-          showSnackBarMessage(context, 'Widthdraw successfully done');
+          showSnackBarMessage(context, 'widthdraw_request_screen.success_message'.tr);
           Get.back();
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, widthdrawRequestController.errorMessage!, true);
-          }
         }
       } else {
         if (mounted) {
           showSnackBarMessage(
-              context, widthdrawRequestController.errorMessage!, true);
+            context,
+            widthdrawRequestController.errorMessage ??
+                'widthdraw_request_screen.error_message'.tr,
+            true,
+          );
         }
       }
     }
   }
 
-  void clearTextField() {}
+  void clearTextField() {
+    amountController.clear();
+  }
 
   @override
   void dispose() {
+    amountController.dispose();
     super.dispose();
   }
 }

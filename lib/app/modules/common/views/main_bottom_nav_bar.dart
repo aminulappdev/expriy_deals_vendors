@@ -5,6 +5,7 @@ import 'package:expriy_deals_vendors/app/modules/product/views/product_screen.da
 import 'package:expriy_deals_vendors/app/modules/profile/views/profile_screen.dart';
 import 'package:expriy_deals_vendors/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MainButtonNavbarScreen extends StatefulWidget {
   static String routeName = '/mainbottom-nav-screen';
@@ -17,21 +18,21 @@ class MainButtonNavbarScreen extends StatefulWidget {
 
 class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
   int _currentPage = 0;
-  String _currentTitle = "Home";
+  String _currentTitle = "main_button_navbar_screen.home".tr;
   Color _currentColor = Colors.black;
   Color _inactiveColor = AppColors.iconButtonThemeColor;
 
   List<TabDataModel> tabs = [
-    TabDataModel(iconData: Icons.home, title: "Home", tabColor: Colors.orange),
-    TabDataModel(iconData: Icons.add_box, title: "Cart", tabColor: Colors.blue),
-    TabDataModel(iconData: Icons.menu, title: "List", tabColor: Colors.green),
-    TabDataModel(iconData: Icons.analytics, title: "Profile", tabColor: Colors.purple),
-    TabDataModel(iconData: Icons.settings, title: "Settings", tabColor: Colors.red), // New tab
+    TabDataModel(iconData: Icons.home, title: "main_button_navbar_screen.home".tr, tabColor: Colors.orange),
+    TabDataModel(iconData: Icons.add_box, title: "main_button_navbar_screen.products".tr, tabColor: Colors.blue),
+    TabDataModel(iconData: Icons.menu, title: "main_button_navbar_screen.orders".tr, tabColor: Colors.green),
+    TabDataModel(iconData: Icons.analytics, title: "main_button_navbar_screen.earnings".tr, tabColor: Colors.purple),
+    TabDataModel(iconData: Icons.person, title: "main_button_navbar_screen.profile".tr, tabColor: Colors.red),
   ];
 
   List<Widget> pageList = [
     HomeScreen(),
-    ProductScreen(shouldBackButton: false,),
+    ProductScreen(shouldBackButton: false),
     OrderScreen(),
     EarningScreen(),
     ProfileScreen(),
@@ -40,20 +41,20 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pageList[_currentPage], // Display the selected page based on the current tab index
+      body: pageList[_currentPage],
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(12),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
-              color: AppColors.iconButtonThemeColor, // Border color around the entire BottomNavigationBar
-              width: 1.0, // Border width
+              color: AppColors.iconButtonThemeColor,
+              width: 1.0,
             ),
-            borderRadius: BorderRadius.circular(30), // Optional: Rounded corners for the bottom bar
+            borderRadius: BorderRadius.circular(30),
           ),
           child: BottomNavigationBar(
-            elevation: 0.0, // Remove shadow by setting elevation to 0
+            elevation: 0.0,
             currentIndex: _currentPage,
             onTap: (index) {
               setState(() {
@@ -70,7 +71,7 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
                           ? Colors.black
                           : _inactiveColor,
                     ),
-                    label: tab.title, // Title for each tab
+                    label: tab.title,
                   ),
                 )
                 .toList(),
@@ -78,7 +79,7 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
             selectedItemColor: _currentColor,
             unselectedItemColor: _inactiveColor,
             showUnselectedLabels: false,
-            backgroundColor: Colors.transparent, // Background color is now transparent (handled by container)
+            backgroundColor: Colors.transparent,
             selectedFontSize: 14,
             unselectedFontSize: 12,
           ),
@@ -88,7 +89,6 @@ class _MainButtonNavbarScreenState extends State<MainButtonNavbarScreen> {
   }
 }
 
-// Model class for tabs
 class TabDataModel {
   final IconData iconData;
   final String title;

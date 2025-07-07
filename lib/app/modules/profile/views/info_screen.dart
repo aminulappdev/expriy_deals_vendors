@@ -1,4 +1,3 @@
-
 import 'package:expriy_deals_vendors/app/modules/profile/controllers/content_controller.dart';
 import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
@@ -9,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class InfoScreen extends StatefulWidget {
-  InfoScreen({super.key, required this.appBarTitle, required this.param});
+  const InfoScreen({super.key, required this.appBarTitle, required this.param});
   final String appBarTitle;
   final String param;
 
@@ -18,7 +17,7 @@ class InfoScreen extends StatefulWidget {
 }
 
 class _InfoScreenState extends State<InfoScreen> {
-  final ContentController contentController = Get.put(ContentController());
+  final ContentController contentController = Get.find<ContentController>();
 
   @override
   void initState() {
@@ -32,81 +31,95 @@ class _InfoScreenState extends State<InfoScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(12.r),
-          child: GetBuilder<ContentController>(builder: (controller) {
-            print('all data ${controller.contetData}');
-            if (controller.inProgress) {
-              return SizedBox(
-                height: 500,
-                width: 300,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-            if (controller.errorMessage != null) {
-              return SizedBox(
-                height: 500,
-                width: 300,
-                child: Center(
-                  child: Text(
-                    controller.errorMessage ?? "Error loading data",
+          child: GetBuilder<ContentController>(
+            builder: (controller) {
+              print('all data ${controller.contentData}');
+              if (controller.inProgress) {
+                return SizedBox(
+                  height: 500.h,
+                  width: double.infinity,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              if (controller.errorMessage != null) {
+                return SizedBox(
+                  height: 500.h,
+                  width: double.infinity,
+                  child: Center(
+                    child: Text(
+                      controller.errorMessage ??
+                          'info_screen.error_loading_data'.tr,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.red,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+              if (controller.contentData == null) {
+                return SizedBox(
+                  height: 500.h,
+                  width: double.infinity,
+                  child: Center(
+                    child: Text(
+                      'info_screen.no_data_available'.tr,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  heightBox20,
+                  CustomAppBar(
+                    name: widget.appBarTitle == 'Privacy & Policies'
+                        ? 'info_screen.privacy_policies'.tr
+                        : widget.appBarTitle == 'About Us'
+                            ? 'info_screen.about_us'.tr
+                            : widget.appBarTitle.tr,
+                  ),
+                  heightBox8,
+                  Text(
+                    widget.appBarTitle == 'Privacy & Policies'
+                        ? 'info_screen.privacy_policies'.tr
+                        : widget.appBarTitle == 'About Us'
+                            ? 'info_screen.about_us'.tr
+                            : widget.appBarTitle.tr,
                     style: GoogleFonts.poppins(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
-                      color: Colors.red,
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.justify,
                   ),
-                ),
+                  heightBox4,
+                  Html(
+                    data: widget.param == 'aboutUs'
+                        ? controller.contetData?.aboutUs ?? ""
+                        : widget.param == 'privacyPolicy'
+                            ? controller.contetData?.privacyPolicy ?? ""
+                            : widget.param == 'termsAndConditions'
+                                ? controller.contetData?.termsAndConditions ??
+                                    ""
+                                : widget.param == 'supports'
+                                    ? controller.contetData?.supports ?? ""
+                                    : widget.param == 'faq'
+                                        ? controller.contetData?.faq ?? ""
+                                        : "",
+                  ),
+                ],
               );
-            }
-            if (controller.contetData == null) {
-              return SizedBox(
-                height: 500,
-                width: 300,
-                child: Center(
-                  child: Text(
-                    "No data available",
-                    style: GoogleFonts.poppins(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              );
-            }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                heightBox20,
-                CustomAppBar(name: widget.appBarTitle),
-                heightBox8,
-                Text(
-                  widget.appBarTitle,
-                  style: GoogleFonts.poppins(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.justify,
-                ),
-                heightBox4,
-                Html(
-                  data: widget.param == 'aboutUs'
-                      ? controller.contetData?.aboutUs ?? ""
-                      : widget.param == 'privacyPolicy'
-                          ? controller.contetData?.privacyPolicy ?? ""
-                          : widget.param == 'termsAndConditions'
-                              ? controller.contetData?.termsAndConditions ?? ""
-                              : widget.param == 'supports'
-                                  ? controller.contetData?.supports ?? ""
-                                  : widget.param == 'faq'
-                                      ? controller.contetData?.faq ?? ""
-                                      : "",
-                ),
-              ],
-            );
-          }),
+            },
+          ),
         ),
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:expriy_deals_vendors/app/modules/authentication/controllers/reset_password_controller.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/views/sign_in_screen.dart';
 import 'package:expriy_deals_vendors/app/modules/authentication/widgets/auth_header_text.dart';
@@ -40,12 +39,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             children: [
               heightBox20,
               CustomAppBar(
-                name: 'Reset Password',
+                name: 'reset_password_screen.title'.tr,
               ),
               heightBox16,
               AuthHeaderText(
-                title: 'Let’s secure your space.',
-                subtitle: 'Create a new password to secure your account.',
+                title: 'reset_password_screen.header_title'.tr,
+                subtitle: 'reset_password_screen.header_subtitle'.tr,
                 titleFontSize: 15,
                 subtitleFontSize: 12,
                 sizeBoxHeight: 300,
@@ -56,7 +55,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Enter New Password',
+                    Text('reset_password_screen.enter_new_password'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -67,7 +66,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return 'Enter password';
+                          return 'reset_password_screen.enter_password'.tr;
                         }
                         return null;
                       },
@@ -91,7 +90,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                     ),
                     heightBox12,
-                    Text('Confirm Password',
+                    Text('reset_password_screen.confirm_password'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -102,7 +101,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return 'Enter password';
+                          return 'reset_password_screen.enter_password'.tr;
                         }
                         return null;
                       },
@@ -137,7 +136,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   : () => onTapToNextButton(),
                               text: controller.inProgress
                                   ? ''
-                                  : 'Update Password',
+                                  : 'reset_password_screen.update_password'.tr,
                             ),
                             if (controller.inProgress)
                               SizedBox(
@@ -171,7 +170,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'Reset password successfully done');
+          showSnackBarMessage(context, 'reset_password_screen.success_message'.tr);
           Get.to(SignInScreen());
         } else {
           if (mounted) {
@@ -191,7 +190,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   void dispose() {
     super.dispose();
-
     passwordCtrl.dispose();
     confirmPasswordCtrl.dispose();
   }

@@ -1,4 +1,4 @@
-import 'package:expriy_deals_vendors/get_storage.dart';
+ import 'package:expriy_deals_vendors/get_storage.dart';
 import 'package:expriy_deals_vendors/services/network_caller/network_caller.dart';
 import 'package:expriy_deals_vendors/services/network_caller/network_response.dart';
 import 'package:expriy_deals_vendors/urls.dart';

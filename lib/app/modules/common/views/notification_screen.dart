@@ -22,7 +22,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     allNotificationController.getNotificationList();
-
     super.initState();
   }
 
@@ -39,12 +38,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox24,
-              CustomAppBar(name: 'Notification'),
+              CustomAppBar(name: 'notification_screen.title'.tr),
               heightBox5,
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('All notifications'),
+                  Text('notification_screen.all_notifications'.tr),
                 ],
               ),
               heightBox8,
@@ -58,7 +57,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           DateTime? isoDate = controller
                               .notificationList?.data[index].createdAt;
 
-                          // ignore: unused_local_variable
                           String readableDate =
                               DateFormat('MMMM dd, yyyy').format(isoDate!);
                           String readableTime =
@@ -114,7 +112,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     )
                   : Container(
                       height: 600,
-                      child: Center(child: Text('No notification')),
+                      child: Center(child: Text('notification_screen.no_notification'.tr)),
                     )
             ],
           ),

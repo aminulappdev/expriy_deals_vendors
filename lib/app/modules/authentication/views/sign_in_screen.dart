@@ -16,11 +16,9 @@ import 'package:expriy_deals_vendors/app/utils/responsive_size.dart';
 import 'package:expriy_deals_vendors/app/widgets/costom_app_bar.dart';
 import 'package:expriy_deals_vendors/app/widgets/gradiant_elevated_button.dart';
 import 'package:expriy_deals_vendors/app/widgets/show_snackBar_message.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -55,13 +53,13 @@ class _SignInScreenState extends State<SignInScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox20,
-              CustomAppBar(name: 'Sign In'),
+              CustomAppBar(name: 'sign_in_screen.title'.tr),
               heightBox16,
               Align(
                 alignment: Alignment.center,
                 child: WelcomeText(
-                  title: 'Hi, Welcome back!',
-                  subtitle: 'Sign in to continue exploring the best deals',
+                  title: 'sign_in_screen.header_title'.tr,
+                  subtitle: 'sign_in_screen.header_subtitle'.tr,
                 ),
               ),
               heightBox50,
@@ -70,7 +68,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Email',
+                    Text('sign_in_screen.email'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -81,9 +79,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter email';
+                        if (value!.isEmpty) return 'sign_in_screen.enter_email'.tr;
                         if (!EmailValidator.validate(value)) {
-                          return 'Enter a valid email address';
+                          return 'sign_in_screen.enter_valid_email'.tr;
                         }
                         return null;
                       },
@@ -92,7 +90,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                     heightBox8,
-                    Text('Password',
+                    Text('sign_in_screen.password'.tr,
                         style: GoogleFonts.poppins(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
@@ -102,7 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       controller: passwordCtrl,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? value) {
-                        if (value!.isEmpty) return 'Enter password';
+                        if (value!.isEmpty) return 'sign_in_screen.enter_password'.tr;
                         return null;
                       },
                       obscureText: _obscureText,
@@ -126,7 +124,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         ontap: forgotPasswordBTN,
                       ),
                     ),
-
                     heightBox24,
                     GetBuilder<SignInController>(
                       builder: (controller) {
@@ -137,7 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               onPressed: controller.inProgress
                                   ? () {}
                                   : () => onTapToNextButton(),
-                              text: controller.inProgress ? '' : 'Sign in',
+                              text: controller.inProgress ? '' : 'sign_in_screen.sign_in'.tr,
                             ),
                             if (controller.inProgress)
                               SizedBox(
@@ -153,19 +150,11 @@ class _SignInScreenState extends State<SignInScreen> {
                       },
                     ),
                     Liner(),
-                    
-
                     heightBox12,
-                    // ContinueElevatedButton(
-                    //   name: 'Continue with apple',
-                    //   logoPath: AssetsPath.appleLogo,
-                    //   ontap: () {},
-                    // ),
-                    // heightBox12,
                     AuthenticationFooterSection(
-                      fTextName: 'Don’t have an account? ',
+                      fTextName: 'sign_in_screen.dont_have_account'.tr,
                       fTextColor: Color(0xff33363F),
-                      sTextName: 'Sign up',
+                      sTextName: 'sign_in_screen.sign_up'.tr,
                       sTextColor: Color(0xff33363F),
                       ontap: () {
                         Get.to(SignUpScreen());
@@ -181,8 +170,6 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  
-
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await signInController.signIn(
@@ -192,7 +179,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
       if (isSuccess) {
         if (mounted) {
-          showSnackBarMessage(context, 'Login successfully done');
+          showSnackBarMessage(context, 'sign_in_screen.success_message'.tr);
           Get.offAll(MainButtonNavbarScreen());
         }
       } else if (signInController.errorMessage!.contains('verified')) {
@@ -201,7 +188,6 @@ class _SignInScreenState extends State<SignInScreen> {
         );
 
         if (isSuccess) {
-          // ignore: avoid_print
           print('Resend otp success.............');
           Get.to(VerifyEmailScreen(
             token: resendOTPController.otpToken ?? 'Empty token',
@@ -225,7 +211,7 @@ class _SignInScreenState extends State<SignInScreen> {
     final bool isSuccess =
         await forgotPasswordController.forgotPassword(emailCtrl.text);
     if (emailCtrl.text.isEmpty) {
-      showSnackBarMessage(context, 'Fill-up your valid email', true);
+      showSnackBarMessage(context, 'sign_in_screen.fill_valid_email'.tr, true);
     } else if (isSuccess && mounted) {
       Get.to(ForgotPasswordScreen(
         email: emailCtrl.text,
