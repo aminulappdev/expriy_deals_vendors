@@ -1,6 +1,6 @@
 
 import 'package:expriy_deals_vendors/get_storage.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
 
 class ProfileService {
   // Future<bool> deleteAccount() async {
@@ -24,7 +24,7 @@ class ProfileService {
 
   Future<bool> logout() async {
     try {
-      await GoogleSignIn().signOut();
+     // await GoogleSignIn().signOut();
       StorageUtil.deleteData(StorageUtil.userAccessToken);
       return true;
     } catch (e) {

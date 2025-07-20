@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   controller.profileData?.profile != null
                                       ? NetworkImage(
                                           controller.profileData!.profile!)
-                                      : const AssetImage(AssetsPath.appleLogo),
+                                      : const AssetImage(AssetsPath.logo),
                             ),
                           ],
                         );

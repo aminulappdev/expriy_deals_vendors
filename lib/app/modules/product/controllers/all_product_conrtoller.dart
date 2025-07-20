@@ -16,7 +16,7 @@ class AllProductController extends GetxController {
 
   final Rx<ProductModel?> _productModel = Rx<ProductModel?>(null);
   List<ProductItemModel>? get productData =>
-      _productModel.value!.data?.data ?? [];
+      _productModel.value?.data?.data ?? [];
 
   @override
   void onInit() {

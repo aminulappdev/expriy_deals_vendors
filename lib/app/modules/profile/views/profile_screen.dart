@@ -61,7 +61,7 @@ class ProfileScreen extends StatelessWidget {
                                   controller.profileData?.profile != null
                                       ? NetworkImage(
                                           controller.profileData!.profile!)
-                                      : const AssetImage(AssetsPath.appleLogo),
+                                      : const AssetImage(AssetsPath.logo),
                             ),
                             heightBox4,
                             Text(
@@ -145,7 +145,7 @@ class ProfileScreen extends StatelessWidget {
               heightBox8,
               ProfileDrawerFeature(
                 feature: 'profile_screen.language'.tr,
-                icon: Icons.notifications,
+                icon: Icons.language,
                 ontap: () => Get.to(LanguageScreen()),
               ),
               heightBox8,

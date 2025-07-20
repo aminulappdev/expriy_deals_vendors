@@ -34,8 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
   TextEditingController shopnameCtrl = TextEditingController();
-  final CreateUserController createUserController =
-      Get.put(CreateUserController());
+  final CreateUserController createUserController = Get.put(CreateUserController());
 
   File? image;
   final ImagePickerHelper _imagePickerHelper = ImagePickerHelper();
@@ -44,26 +43,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
   double? latitude;
   double? longitude;
 
-  Future<void> requestLocationPermission() async {
-    final ph.PermissionStatus status = await ph.Permission.location.request();
-    if (status.isGranted) {
-      // Permission granted; you can now retrieve the location.
-    } else if (status.isDenied) {
-      print('Location_permission_denied');
-    }
+  @override
+  void initState() {
+    super.initState();
   }
 
-  Future<void> getCurrentLocation() async {
-    final loc.Location location = loc.Location();
+  Future<void> _getCurrentLocation() async {
+    print(">>>>> Getting location: $latitude");
+
+    loc.Location location = loc.Location();
+    bool serviceEnabled;
+    loc.PermissionStatus permissionGranted;
+    loc.LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        showSnackBarMessage(context, 'Location services are disabled.', true);
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == loc.PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != loc.PermissionStatus.granted) {
+        showSnackBarMessage(context, 'Location permission denied.', true);
+        return;
+      }
+    }
+
     try {
-      final loc.LocationData locationData = await location.getLocation();
+      locationData = await location.getLocation();
       setState(() {
-        latitude = locationData.latitude!;
-        longitude = locationData.longitude!;
-        print('Location is $latitude and $longitude');
+        latitude = locationData.latitude;
+        longitude = locationData.longitude;
       });
+   //   showSnackBarMessage(context, 'Location fetched successfully: ($latitude, $longitude)', false);
     } catch (e) {
-      print('Error getting location: $e');
+      showSnackBarMessage(context, 'Failed to get location: $e', true);
     }
   }
 
@@ -98,247 +117,253 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                     Text('sign_up_screen.full_name'.tr,
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      controller: nameCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (String? value) {
-                        if (value!.isEmpty) {
-                          return 'sign_up_screen.enter_name'.tr;
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          hintText: 'sign_up_screen.enter_name'.tr,
-                          hintStyle: TextStyle(color: Colors.grey)),
-                    ),
-                    heightBox8,
-                    Text('sign_up_screen.shop_name'.tr,
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      controller: shopnameCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (String? value) {
-                        if (value!.isEmpty) {
-                          return 'sign_up_screen.enter_shop_name'.tr;
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          hintText: 'sign_up_screen.enter_shop_name'.tr,
-                          hintStyle: TextStyle(color: Colors.grey)),
-                    ),
-                    heightBox8,
-                    Text('sign_up_screen.email'.tr,
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    TextFormField(
-                      controller: emailCtrl,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (String? value) {
-                        if (value!.isEmpty) {
-                          return 'sign_up_screen.enter_email'.tr;
-                        }
-                        if (EmailValidator.validate(value) == false) {
-                          return 'sign_up_screen.enter_valid_email'.tr;
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          hintText: 'example@gmail.com',
-                          hintStyle: TextStyle(color: Colors.grey)),
-                    ),
-                    heightBox8,
-                    Text('sign_up_screen.upload_tax_documents'.tr,
-                        style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff626262))),
-                    heightBox8,
-                    image != null
-                        ? Column(
-                            children: [
-                              Container(
-                                height: 40,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Color(0xff626262)),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: InkWell(
-                                  onTap: () {
-                                    _imagePickerHelper.showAlertDialog(context,
-                                        (File pickedImage) {
-                                      setState(() {
-                                        image = pickedImage;
-                                      });
-                                    });
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      'sign_up_screen.upload_again'.tr,
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              heightBox4,
-                              Center(
-                                child: Image.file(
-                                  image!,
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 250.h,
-                                  fit: BoxFit.fill,
-                                ),
-                              )
-                            ],
-                          )
-                        : Container(
-                            height: 140,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xff626262)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                _imagePickerHelper.showAlertDialog(context,
-                                    (File pickedImage) {
-                                  setState(() {
-                                    image = pickedImage;
-                                  });
-                                });
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.add,
-                                    size: 40,
-                                  ),
-                                  Text(
-                                    'sign_up_screen.upload'.tr,
-                                    style: TextStyle(fontSize: 24),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                    heightBox8,
-                    Center(
-                      child: InkWell(
-                        onTap: () async {
-                          await requestLocationPermission();
-                          await getCurrentLocation();
-                        },
-                        child: Container(
-                          height: 36.h,
-                          width: 250.w,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border.all(
-                                  color: AppColors.iconButtonThemeColor)),
-                          child: Center(child: Text('sign_up_screen.share_location'.tr)),
-                        ),
-                      ),
-                    ),
-                    AgreeConditionCheck(
-                      onChanged: (value) {
-                        setState(() {
-                          showButton = value;
+                    style: GoogleFonts.poppins(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff626262))),
+                heightBox8,
+                TextFormField(
+                  controller: nameCtrl,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  keyboardType: TextInputType.name,
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'sign_up_screen.enter_name'.tr;
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintText: 'sign_up_screen.enter_name'.tr,
+                      hintStyle: TextStyle(color: Colors.grey)),
+                ),
+                heightBox8,
+                Text('sign_up_screen.shop_name'.tr,
+                    style: GoogleFonts.poppins(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff626262))),
+                heightBox8,
+                TextFormField(
+                  controller: shopnameCtrl,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  keyboardType: TextInputType.text,
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'sign_up_screen.enter_shop_name'.tr;
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintText: 'sign_up_screen.enter_shop_name'.tr,
+                      hintStyle: TextStyle(color: Colors.grey)),
+                ),
+                heightBox8,
+                Text('sign_up_screen.email'.tr,
+                    style: GoogleFonts.poppins(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff626262))),
+                heightBox8,
+                TextFormField(
+                  controller: emailCtrl,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'sign_up_screen.enter_email'.tr;
+                    }
+                    if (!EmailValidator.validate(value)) {
+                      return 'sign_up_screen.enter_valid_email'.tr;
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintText: 'example@gmail.com',
+                      hintStyle: TextStyle(color: Colors.grey)),
+                ),
+                heightBox8,
+                Text('sign_up_screen.upload_tax_documents'.tr,
+                    style: GoogleFonts.poppins(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff626262))),
+                heightBox8,
+                image != null
+                    ?  Column(
+              children: [
+              Container(
+              height: 40,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color(0xff626262)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: InkWell(
+                  onTap: () {
+                    _imagePickerHelper.showAlertDialog(context,
+                            (File pickedImage) {
+                          setState(() {
+                            image = pickedImage;
+                          });
                         });
-                      },
+                  },
+                  child: Center(
+                    child: Text(
+                      'sign_up_screen.upload_again'.tr,
+                      style: TextStyle(fontSize: 14),
                     ),
-                    heightBox24,
-                    Visibility(
-                      visible: showButton && latitude != null,
-                      replacement: Opacity(
-                        opacity: 0.5,
-                        child: CustomElevatedButton(
-                          text: 'sign_up_screen.verify_email'.tr,
-                          onPressed: () {
-                            showSnackBarMessage(context,
-                                'sign_up_screen.share_location_error'.tr, true);
-                          },
-                        ),
-                      ),
-                      child: GetBuilder<CreateUserController>(
-                        builder: (controller) {
-                          return Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              CustomElevatedButton(
-                                onPressed: controller.inProgress
-                                    ? () {}
-                                    : () => onTapToNextButton(),
-                                text: controller.inProgress
-                                    ? ''
-                                    : 'sign_up_screen.verify_email'.tr,
-                              ),
-                              if (controller.inProgress)
-                                SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                    heightBox12,
-                    AuthenticationFooterSection(
-                      fTextName: 'sign_up_screen.already_have_account'.tr,
-                      fTextColor: Color(0xff33363F),
-                      sTextName: 'sign_up_screen.log_in'.tr,
-                      sTextColor: Color.fromARGB(255, 253, 107, 45),
-                      ontap: () {
-                        Get.to(SignInScreen());
-                      },
-                    ),
-                    heightBox100
-                  ],
+                  ),
+                ),
+              ),
+              heightBox4,
+              Center(
+                child: Image.file(
+                  image!,
+                  width: MediaQuery.of(context).size.width,
+                  height: 250.h,
+                  fit: BoxFit.fill,
                 ),
               ),
             ],
+          )
+              : Container(
+          height: 140,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            border: Border.all(color: Color(0xff626262)),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: InkWell(
+            onTap: () {
+              _imagePickerHelper.showAlertDialog(context,
+                      (File pickedImage) {
+                    setState(() {
+                      image = pickedImage;
+                    });
+                  });
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add,
+                  size: 40,
+                ),
+                Text(
+                  'sign_up_screen.upload'.tr,
+                  style: TextStyle(fontSize: 24),
+                ),
+              ],
+            ),
           ),
         ),
+        heightBox8,
+        Center(
+          child: InkWell(
+            onTap: () async {
+              await _getCurrentLocation();
+            },
+            child: Container(
+              height: 36.h,
+              width: 250.w,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                      color: AppColors.iconButtonThemeColor)),
+              child: Center(
+                  child: Text('Go to My Live Location'.tr)),
+            ),
+          ),
+        ),
+        AgreeConditionCheck(
+          onChanged: (value) {
+            setState(() {
+              showButton = value;
+            });
+          },
+        ),
+        heightBox24,
+        Visibility(
+          visible: showButton,
+          replacement: Opacity(
+            opacity: 0.5,
+            child: CustomElevatedButton(
+              text: 'sign_up_screen.verify_email'.tr,
+              onPressed: () {
+                showSnackBarMessage(context,
+                    'Please agree to terms and conditions', true);
+              },
+            ),
+          ),
+          child: GetBuilder<CreateUserController>(
+            builder: (controller) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  CustomElevatedButton(
+                    onPressed: controller.inProgress
+                        ? () {}
+                        : () => onTapToNextButton(),
+                    text: controller.inProgress
+                        ? ''
+                        : 'sign_up_screen.verify_email'.tr,
+                  ),
+                  if (controller.inProgress)
+                    SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
+        ),
+        heightBox12,
+        AuthenticationFooterSection(
+          fTextName: 'sign_up_screen.already_have_account'.tr,
+          fTextColor: Color(0xff33363F),
+          sTextName: 'sign_up_screen.log_in'.tr,
+          sTextColor: Color.fromARGB(255, 253, 107, 45),
+          ontap: () {
+            Get.to(SignInScreen());
+          },
+        ),
+        heightBox100,
+        ],
       ),
+    ),
+    ],
+    ),
+    ),
+    ),
     );
   }
 
   Future<void> onTapToNextButton() async {
     print('Work');
     if (_formKey.currentState!.validate()) {
+      if (latitude == null || longitude == null) {
+        showSnackBarMessage(context, 'Please fetch your location first.', true);
+        return;
+      }
+
       final bool isSuccess = await createUserController.createUser(
-          nameCtrl.text,
-          shopnameCtrl.text,
-          emailCtrl.text,
-          image,
-          passwordCtrl.text,
-          latitude ?? 0.0,
-          longitude ?? 0.0);
+        nameCtrl.text,
+        shopnameCtrl.text,
+        emailCtrl.text,
+        image,
+        passwordCtrl.text,
+        latitude!,
+        longitude!,
+      );
 
       if (isSuccess) {
         if (mounted) {
@@ -359,7 +384,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     emailCtrl.clear();
     nameCtrl.clear();
     shopnameCtrl.clear();
-    emailCtrl.clear();
     passwordCtrl.clear();
     image = null;
   }

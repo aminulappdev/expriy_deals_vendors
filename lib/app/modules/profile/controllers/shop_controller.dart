@@ -26,7 +26,7 @@ class ShopController extends GetxController {
   Future<bool> getShopData() async {
     final token = StorageUtil.getData(StorageUtil.userAccessToken);
     if (token == null) {
-      Get.off(SignInScreen());
+      Get.off(() => SignInScreen());
       return false;
     }
     _inProgress.value = true;

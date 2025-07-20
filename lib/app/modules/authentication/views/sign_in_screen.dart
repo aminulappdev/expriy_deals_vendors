@@ -37,8 +37,8 @@ class _SignInScreenState extends State<SignInScreen> {
       ForgotPasswordController();
   final ResendOTPController resendOTPController =
       Get.put(ResendOTPController());
-  final GoogleAuthController googleAuthController =
-      Get.put(GoogleAuthController());
+  // final GoogleAuthController googleAuthController =
+  //     Get.put(GoogleAuthController());
 
   bool _obscureText = true;
   bool isChecked = false;

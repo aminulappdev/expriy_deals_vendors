@@ -7,6 +7,7 @@ class AssetsPath {
   static const String googleLogoUp = '$imagePath/googleLogoUp.png';
   static const String fbLogo = '$imagePath/fbLogo.png';
   static const String appleLogo = '$imagePath/appleLogo.png';
+  static const String logo = '$imagePath/logo.png';
   static const String emailLogo = '$imagePath/emailLogo.png';
   static const String headphone = '$imagePath/headphone.jpg';
   static const String review = '$imagePath/review.png';

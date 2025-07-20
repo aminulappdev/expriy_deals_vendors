@@ -37,14 +37,17 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   languageF('Español', () {
                     
                     changeLanguage('es', 'ES');
+                    Navigator.pop(context);
                   }),
                   heightBox14,
                   languageF('हिन्दी', () {
                     changeLanguage('hi', 'IN');
+                    Navigator.pop(context);
                   }),
                   heightBox14,
                   languageF('English', () {
                     changeLanguage('en', 'US');
+                    Navigator.pop(context);
                   }),
                 ],
               ),
